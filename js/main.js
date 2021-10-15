@@ -1,9 +1,9 @@
 const photos = [
-  require("./img/dino/left.png"),
-  require("./img/dino/right.png"),
+  require("../img/dino/left.png"),
+  require("../img/dino/right.png"),
 ];
-const { initGame } = require("./game");
-const idlePhoto = require("./img/dino/both.png");
+const { initGame } = require("../game");
+const idlePhoto = require("../img/dino/both.png");
 
 const dino = document.getElementById("dino");
 let isRunning = false;
@@ -12,12 +12,28 @@ let counter = 0;
 let timer = null;
 const wrapper = document.querySelector(".outer-wrapper");
 
+function easeInBubble() {
+  const scrollRatio = wrapper.scrollTop / window.innerWidth;
+  document.querySelectorAll(".slide .nes-balloon").forEach((v, i) => {
+    if (i < scrollRatio - 0.5) {
+      v.style.opacity = 1;
+      v.style.transform = "rotate(0)";
+    } else {
+      v.style.opacity = 0;
+      v.style.transform = "rotate(45deg)";
+    }
+  });
+}
+
 wrapper.addEventListener(
   "scroll",
   function () {
+    easeInBubble();
+
     if (timer !== null) {
       clearTimeout(timer);
     }
+
     isRunning = true;
     const currentScroll = wrapper.scrollTop % window.innerWidth;
     const midScreen = window.innerWidth / 2;
@@ -25,7 +41,6 @@ wrapper.addEventListener(
     if (currentScroll < midScreen + 150 && currentScroll > midScreen - 150) {
       isRunning = false;
       const offset = 200 - Math.pow(currentScroll - midScreen, 2) / 112.5;
-      console.log(currentScroll - midScreen);
       dino.style.bottom = `calc(15vh + ${offset}px`;
     } else {
       dino.style.bottom = "15vh";
@@ -78,6 +93,8 @@ playBtn.addEventListener("click", () => {
     document
       .querySelectorAll(".slide:first-child div:not(.ground)")
       .forEach((v) => v.remove());
+    document.querySelector(".slide:first-child nav").innerHTML =
+      '<a class="nes-btn is-warning" href="/">&lt; Back to site</a>';
     isPregame = false;
     document.querySelector(".slide").innerHTML += `
       <button class="nes-btn is-success" id="jump">Jump</button>

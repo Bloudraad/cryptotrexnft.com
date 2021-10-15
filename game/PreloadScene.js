@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import { THEMES } from "../js/preload";
 
 class PreloadScene extends Phaser.Scene {
   constructor() {
@@ -6,6 +7,7 @@ class PreloadScene extends Phaser.Scene {
   }
 
   preload() {
+    console.log(THEMES);
     this.load.audio("jump", require("./assets/jump.m4a"));
     this.load.audio("hit", require("./assets/hit.m4a"));
     this.load.audio("reach", require("./assets/reach.m4a"));

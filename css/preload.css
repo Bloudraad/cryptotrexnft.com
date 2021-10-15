@@ -1,0 +1,59 @@
+#loader {
+  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
+  width: 100vw;
+  background: #222;
+  position: fixed;
+  z-index: 99;
+}
+
+#spinner {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 120px;
+  height: 120px;
+}
+
+#spinner .square {
+  display: block;
+  float: left;
+  width: 40px;
+  height: 40px;
+  background: hsla(0, 0%, 100%, 0);
+  animation: loading 1s infinite;
+}
+
+#s1.square {
+  animation-delay: 0.125s;
+}
+#s2.square {
+  animation-delay: 0.25s;
+}
+#s3.square {
+  animation-delay: 0.875s;
+}
+#s4.square {
+  animation: none;
+}
+#s5.square {
+  animation-delay: 0.375s;
+}
+#s6.square {
+  animation-delay: 0.75s;
+}
+#s7.square {
+  animation-delay: 0.625s;
+}
+#s8.square {
+  animation-delay: 0.5s;
+}
+@keyframes loading {
+  0% {
+    background: hsla(0, 0%, 100%, 1);
+  }
+  100% {
+    background: hsla(0, 0%, 100%, 0);
+  }
+}

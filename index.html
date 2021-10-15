@@ -4,6 +4,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   <link href="css/nes.css" rel="stylesheet" />
   <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/preload.css" />
   <script>
     function adjustVhUnit() {
       let vh = window.innerHeight * 0.01;
@@ -15,22 +16,43 @@
 </head>
 
 <body>
+  <div id="loader">
+    <div id="spinner">
+      <div class="square" id="s0"></div>
+      <div class="square" id="s1"></div>
+      <div class="square" id="s2"></div>
+      <div class="square" id="s3"></div>
+      <div class="square" id="s4"></div>
+      <div class="square" id="s5"></div>
+      <div class="square" id="s6"></div>
+      <div class="square" id="s7"></div>
+      <div class="square" id="s8"></div>
+    </div>
+  </div>
+  <script src="js/preload.js" type="module"></script>
   <div class="outer-wrapper">
     <div class="wrapper">
       <div class="slide">
         <nav class="container-fluid"
           style="display: flex; align-items: center; position: absolute; padding: 20px; justify-content: space-between; width: 100vw;">
-          <div class="nav-brand" style="margin-right: auto;">
+          <div class="nav-brand">
             <a href="/" style="color: inherit; text-decoration: none;">
-              <h3 style="margin-bottom: 0;">
-                Crypto <br /> T-rex
-              </h3>
+              <h2 style="margin-bottom: 0;">
+                Crypto T-rex
+              </h2>
             </a>
           </div>
           <div>
-            <a href="https://discord.com/invite/7GzQyV78Bd" target="_blank"><i class="nes-icon discord"></i></a>
-            <a href="https://www.twitter.com/cryptotrexnft/" target="_blank"><i class="nes-icon twitter"></i></a>
-            <a href="https://www.instagram.com/cryptotrexnft/" target="_blank"><i class="nes-icon instagram"></i></a>
+            <a href="./migrate.html" style="color: inherit; text-decoration: none;">
+              <h3 style="margin-bottom: 0;">Migrate</h3>
+            </a>
+          </div>
+          <div>
+            <a href="https://discord.gg/ekk838XkbV" target="_blank"><i class="nes-icon discord is-large"></i></a>
+            <a href="https://www.twitter.com/cryptotrexnft/" target="_blank"><i
+                class="nes-icon twitter is-large"></i></a>
+            <a href="https://www.instagram.com/cryptotrexnft/" target="_blank"><i
+                class="nes-icon instagram is-large"></i></a>
           </div>
         </nav>
         <div class="ground"></div>
@@ -39,94 +61,88 @@
       <div class="slide">
         <div class="nes-balloon from-left">
           <p>
-            Nifty Rodeo is all about fun. Think of us like an amusement park, except a virtual one.
-            Roadmap 1.0, IDENTITY, consists of key activities designed to enhance your physical and digital identity in
-            the Nifty Rodeo, the wider Solana and overall cryptocurrency space.
+            The Cryptotrex NFT was started seven months ago as a passion project, an awesome product of an individual
+            with immense enthusiasm in technology, art and crypto. Our founder wanted to share his pixel t-rexes with
+            the world. Seven months later, we are here. The CryptotrexNFT is ready to do some big things.
           </p>
           <p>
-            We have chosen to go into pixel art because while many see a pixel as just a dot, it represented a historic
-            moment when mankind took a step towards digitalisation and computers and digital art started to gain
-            relevance.
-            This significant milestone by pixel art reminds us to continually hit milestones in our forage into the NFT
-            space and the world.
+            As an owner of a Cryptotrex, you are in for a big treat.
           </p>
-          <p>Contact us at <a href="mailto:yeehaw@nifty.rodeo">yeehaw@nifty.rodeo</a></p>
         </div>
         <img class="hurdle" src="img/hurdle.png" />
         <div class="ground"></div>
       </div>
       <div class="slide">
         <div class="nes-balloon from-left">
+          <h3><span style="font-size: xx-large">🦖</span> Phase 1 - The Alpha Pack</h3>
           <p>
-            Nifty Rodeo is all about fun. Think of us like an amusement park, except a virtual one.
-            Roadmap 1.0, IDENTITY, consists of key activities designed to enhance your physical and digital identity in
-            the Nifty Rodeo, the wider Solana and overall cryptocurrency space.
+            It is time to get things started with a bang! The magic formula for any NFT project is one that has a total
+            supply of a set of recurring numbers. We will be designing 4 aesthetic animated Cryptorexes, and with that
+            the Alpha Cryptotrex collection, comprising of 1,111 assets, form our genesis collection.
           </p>
           <p>
-            We have chosen to go into pixel art because while many see a pixel as just a dot, it represented a historic
-            moment when mankind took a step towards digitalisation and computers and digital art started to gain
-            relevance.
-            This significant milestone by pixel art reminds us to continually hit milestones in our forage into the NFT
-            space and the world.
+            We will also be migrating to our own ERC-721 Smart Contract, and getting our official website up and
+            running. The Cryptotrex now has its own home on the Internet and blockchain!
           </p>
-          <p>Contact us at <a href="mailto:yeehaw@nifty.rodeo">yeehaw@nifty.rodeo</a></p>
         </div>
         <img class="hurdle" src="img/hurdle.png" />
         <div class="ground"></div>
       </div>
       <div class="slide">
         <div class="nes-balloon from-left">
+          <h3><i class="snes-jp-logo"></i> Phase 2 - Metaverse Invasion!</h3>
           <p>
-            Nifty Rodeo is all about fun. Think of us like an amusement park, except a virtual one.
-            Roadmap 1.0, IDENTITY, consists of key activities designed to enhance your physical and digital identity in
-            the Nifty Rodeo, the wider Solana and overall cryptocurrency space.
+            Flexing a rolex was a thing of the past. Now it’s time to flex your Cryptotrex merch! We’ll be releasing a
+            line of products for you to show off your identity to the rest of the real world. As you walk around decked
+            head to toe as a Cryptotrex (short of having a T-rex onesie, really) , those who don’t know anything about
+            NFTs will just think you’re a dinosaur lover. But for those who know, iykyk :)
           </p>
           <p>
-            We have chosen to go into pixel art because while many see a pixel as just a dot, it represented a historic
-            moment when mankind took a step towards digitalisation and computers and digital art started to gain
-            relevance.
-            This significant milestone by pixel art reminds us to continually hit milestones in our forage into the NFT
-            space and the world.
+            Okay we know. Flexing in the real world is no longer cool, so we’re going to be releasing the Cryptotrexels!
+            (Short for Cryptotrex Voxel, duh). This basically serves as your avatar when you chill in the T-rex meta
+            lair(s) we will be building. A total of 11,111 pieces will be created, and if you own one of the Alpha
+            Collection, you’ll be able to claim your Cryptotrexel for free. Or you can join the Cryptotrex family for
+            0.08 ETH. Or both if you want to own more.
           </p>
-          <p>Contact us at <a href="mailto:yeehaw@nifty.rodeo">yeehaw@nifty.rodeo</a></p>
         </div>
         <img class="hurdle" src="img/hurdle.png" />
         <div class="ground"></div>
       </div>
       <div class="slide">
         <div class="nes-balloon from-left">
+          <h3><i class="nes-icon coin"></i> Phase 3 - T-rexonomics</h3>
           <p>
-            Nifty Rodeo is all about fun. Think of us like an amusement park, except a virtual one.
-            Roadmap 1.0, IDENTITY, consists of key activities designed to enhance your physical and digital identity in
-            the Nifty Rodeo, the wider Solana and overall cryptocurrency space.
+            You’ve got two dinosaurs, why not get an entire collection? We will be introducing the $FOSSIL token, which
+            will have utility purposes such as building your dinosaur army in our game. Staking will be available as
+            well. The possibilities (and fun) will be endless.
           </p>
-          <p>
-            We have chosen to go into pixel art because while many see a pixel as just a dot, it represented a historic
-            moment when mankind took a step towards digitalisation and computers and digital art started to gain
-            relevance.
-            This significant milestone by pixel art reminds us to continually hit milestones in our forage into the NFT
-            space and the world.
-          </p>
-          <p>Contact us at <a href="mailto:yeehaw@nifty.rodeo">yeehaw@nifty.rodeo</a></p>
         </div>
         <img class="hurdle" src="img/hurdle.png" />
         <div class="ground"></div>
       </div>
       <div class="slide">
         <div class="nes-balloon from-left">
+          <h3><i class="nes-icon heart"></i> T in T-rex stands for Team</h3>
           <p>
-            Nifty Rodeo is all about fun. Think of us like an amusement park, except a virtual one.
-            Roadmap 1.0, IDENTITY, consists of key activities designed to enhance your physical and digital identity in
-            the Nifty Rodeo, the wider Solana and overall cryptocurrency space.
+            The Cryptotrex project was started solely to share the love for pixel t-rexes with the world. But we want to
+            do bigger things, larger than the T-rex. And the team here is dedicated to this mission.
           </p>
           <p>
-            We have chosen to go into pixel art because while many see a pixel as just a dot, it represented a historic
-            moment when mankind took a step towards digitalisation and computers and digital art started to gain
-            relevance.
-            This significant milestone by pixel art reminds us to continually hit milestones in our forage into the NFT
-            space and the world.
+            <a href="https://twitter.com/CryptoTrexNFT" target="_blank">@CryptoTrexNFT</a> is all about the artistic
+            direction, and will be creating all the digital assets required.<br />
+            <a href="https://twitter.com/stanley_ngn" target="_blank">@stanley_ngn</a> is the web and game
+            development expert! He’s
+            also well-versed with the technicalities in the metaverse and will be pushing our efforts to enter the
+            sandbox.<br />
+            <a href="https://twitter.com/owenyuwono" target="_blank">@owenyuwono</a> is a blockchain ninja. Yup,
+            naturally he will be
+            helping with the migration, as well as the smart contract for subsequent launches.<br />
+            <a href="https://twitter.com/chrisgohcy" target="_blank">@chrisgohcy</a> will be developing the overall
+            marketing strategy,
+            and facilitating partnerships and collaborations with community artists, brand deals and partnerships!<br />
+            We’re just getting started.
           </p>
-          <p>Contact us at <a href="mailto:yeehaw@nifty.rodeo">yeehaw@nifty.rodeo</a></p>
+          <p>CryptotrexNFT<br /><a href="mailto:rawr@cryptotrexnft.com">rawr@cryptotrexNFT.com</a></p>
         </div>
         <img class="hurdle" src="img/hurdle.png" />
         <div class="ground"></div>
@@ -134,5 +150,5 @@
     </div>
   </div>
   <img id="dino" src="img/dino/both.png" />
-  <script src="script.js" type="module"></script>
+  <script src="js/main.js" type="module"></script>
 </body>

@@ -1,0 +1,18 @@
+body {
+  background: url(../img/banner3.png) repeat center;
+  background-size: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-connecting-placeholder {
+  height: 600px;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  background: url(../img/banner2.png) repeat-x center;
+  background-position: top;
+  background-size: 600px;
+  z-index: -1;
+}

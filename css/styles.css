@@ -138,7 +138,7 @@ body {
   width: 100vw;
   height: 100vh;
   height: calc(var(--vh, 1vh) * 100);
-  background: url(../img/background.jpeg) bottom/cover no-repeat;
+  background: url(../img/themes/desert/background.png) bottom/cover no-repeat;
   clear: both;
   z-index: -1;
   position: relative;
@@ -190,16 +190,21 @@ body {
 .ground {
   height: 26px;
   width: 100vw;
-  background-image: url(../img/ground.png);
+  background-image: url(../img/themes/desert/ground.png);
   background-repeat: repeat-x;
   background-size: auto 100%;
   position: absolute;
-  bottom: 15vh;
-  bottom: calc(var(--vh, 1vh) * 15);
+  bottom: calc(15vh - 26px);
+  bottom: calc(var(--vh, 1vh) * 15 - 26px);
+  z-index: -1;
 }
 
 .slide .nes-balloon {
   margin: 50px;
+  opacity: 0;
+  transform: rotate(45deg);
+  transform-origin: bottom left;
+  transition: transform 0.5s ease-in, opacity 1s ease-in;
 }
 
 .slide:first-child .nes-btn.is-primary {

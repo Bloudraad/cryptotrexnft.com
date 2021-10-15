@@ -16,15 +16,16 @@ class PlayScene extends Phaser.Scene {
     this.hitSound = this.sound.add("hit", { volume: 0.2 });
     this.reachSound = this.sound.add("reach", { volume: 0.2 });
 
+    this.physics.world.setBounds(0, 0, width, height - 26);
     this.startTrigger = this.physics.add
-      .sprite(0, height - 100)
+      .sprite(0, height - 126)
       .setOrigin(0, 1)
       .setImmovable();
     this.ground = this.add
       .tileSprite(0, height, width, 26, "ground")
       .setOrigin(0, 1);
     this.dino = this.physics.add
-      .sprite(0, height, "dino-idle")
+      .sprite(0, height - 26, "dino-idle")
       .setCollideWorldBounds(true)
       .setGravityY(5000)
       .setBodySize(44, 92)
@@ -266,7 +267,9 @@ class PlayScene extends Phaser.Scene {
       obsticle = this.obsticles
         .create(
           this.game.config.width + distance,
-          this.game.config.height - enemyHeight[Math.floor(Math.random() * 2)],
+          this.game.config.height -
+            enemyHeight[Math.floor(Math.random() * 2)] -
+            26,
           `enemy-bird`
         )
         .setOrigin(0, 1);
@@ -276,7 +279,7 @@ class PlayScene extends Phaser.Scene {
       obsticle = this.obsticles
         .create(
           this.game.config.width + distance,
-          this.game.config.height,
+          this.game.config.height - 26,
           `obsticle-${obsticleNum}`
         )
         .setOrigin(0, 1);
