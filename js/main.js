@@ -1,9 +1,8 @@
-const photos = [
-  require("../img/dino/left.png"),
-  require("../img/dino/right.png"),
-];
+const { DINO_COLOR } = require("./preload");
+
+const photos = [DINO_COLOR.left, DINO_COLOR.right];
 const { initGame } = require("../game");
-const idlePhoto = require("../img/dino/both.png");
+const idlePhoto = DINO_COLOR.idle;
 
 const dino = document.getElementById("dino");
 let isRunning = false;
@@ -91,7 +90,7 @@ playBtn.addEventListener("click", () => {
   dino.style.left = 0;
   setTimeout(() => {
     document
-      .querySelectorAll(".slide:first-child div:not(.ground)")
+      .querySelectorAll(".slide:first-child div:not(.ground):not(.underground)")
       .forEach((v) => v.remove());
     document.querySelector(".slide:first-child nav").innerHTML =
       '<a class="nes-btn is-warning" href="/">&lt; Back to site</a>';

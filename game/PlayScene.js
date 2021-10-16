@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import { THEMES } from "../js/preload";
 
 class PlayScene extends Phaser.Scene {
   constructor() {
@@ -11,6 +12,7 @@ class PlayScene extends Phaser.Scene {
     this.isGameRunning = false;
     this.respawnTime = 0;
     this.score = 0;
+    this.deathCount = 0;
 
     this.jumpSound = this.sound.add("jump", { volume: 0.2 });
     this.hitSound = this.sound.add("hit", { volume: 0.2 });
@@ -22,19 +24,20 @@ class PlayScene extends Phaser.Scene {
       .setOrigin(0, 1)
       .setImmovable();
     this.ground = this.add
-      .tileSprite(0, height, width, 26, "ground")
+      .tileSprite(0, height, width, 26, `ground-${THEMES[this.deathCount].id}`)
       .setOrigin(0, 1);
     this.dino = this.physics.add
       .sprite(0, height - 26, "dino-idle")
       .setCollideWorldBounds(true)
       .setGravityY(5000)
-      .setBodySize(44, 92)
+      .setBodySize(69, 94)
       .setDepth(1)
-      .setOrigin(0, 1);
+      .setOrigin(0, 1)
+      .setOffset(30, 0);
 
     this.scoreText = this.add
       .text(width, 0, "00000", {
-        fill: "#535353",
+        fill: "#fff",
         font: '900 35px "Press Start 2P"',
         resolution: 5,
       })
@@ -44,7 +47,7 @@ class PlayScene extends Phaser.Scene {
 
     this.highScoreText = this.add
       .text(0, 0, "00000", {
-        fill: "#535353",
+        fill: "#fff",
         font: '900 35px "Press Start 2P"',
         resolution: 5,
       })
@@ -56,7 +59,10 @@ class PlayScene extends Phaser.Scene {
     this.environment.addMultiple([
       this.add.image(width / 2, 170, "cloud"),
       this.add.image(width - 80, 80, "cloud"),
-      this.add.image(width / 1.3, 100, "cloud"),
+      this.add.image(width / 3, 220, "cloud"),
+      this.add.image(width / 6, 120, "cloud"),
+      this.add.image(width / 10, 150, "cloud"),
+      this.add.image(width / 1.5, 200, "cloud"),
     ]);
     this.environment.setAlpha(0);
 
@@ -67,7 +73,7 @@ class PlayScene extends Phaser.Scene {
     this.restart = this.add.image(0, 80, "restart").setInteractive();
     this.gameOverScreen.add([this.gameOverText, this.restart]);
 
-    this.obsticles = this.physics.add.group();
+    this.obstacles = this.physics.add.group();
 
     this.initAnims();
     this.initStartTrigger();
@@ -81,7 +87,7 @@ class PlayScene extends Phaser.Scene {
   initColliders() {
     this.physics.add.collider(
       this.dino,
-      this.obsticles,
+      this.obstacles,
       () => {
         this.highScoreText.x = this.scoreText.x - this.scoreText.width - 20;
 
@@ -105,6 +111,7 @@ class PlayScene extends Phaser.Scene {
         this.gameOverScreen.setAlpha(1);
         this.score = 0;
         this.hitSound.play();
+        this.deathCount++;
       },
       null,
       this
@@ -147,7 +154,7 @@ class PlayScene extends Phaser.Scene {
   initAnims() {
     this.anims.create({
       key: "dino-run",
-      frames: this.anims.generateFrameNumbers("dino", { start: 2, end: 3 }),
+      frames: this.anims.generateFrameNumbers("dino"),
       frameRate: 10,
       repeat: -1,
     });
@@ -210,11 +217,19 @@ class PlayScene extends Phaser.Scene {
 
   handleInputs() {
     this.restart.on("pointerdown", () => {
+      const theme = THEMES[this.deathCount % THEMES.length];
+      this.ground.setTexture(`ground-${theme.id}`);
+      document.querySelector(
+        ".slide:first-child .underground"
+      ).style.backgroundImage = `url(${theme.underground})`;
+      document.querySelector(
+        ".slide:first-child"
+      ).style.backgroundImage = `url(${theme.background})`;
       this.dino.setVelocityY(0);
       this.dino.body.height = 92;
       this.dino.body.offset.y = 0;
       this.physics.resume();
-      this.obsticles.clear(true, true);
+      this.obstacles.clear(true, true);
       this.isGameRunning = true;
       this.gameOverScreen.setAlpha(0);
       this.anims.resumeAll();
@@ -226,9 +241,9 @@ class PlayScene extends Phaser.Scene {
       }
 
       this.jumpSound.play();
-      this.dino.body.height = 92;
+      this.dino.body.height = 94;
       this.dino.body.offset.y = 0;
-      this.dino.setVelocityY(-1600);
+      this.dino.setVelocityY(-1500);
       this.dino.setTexture("dino", 0);
     };
     this.input.keyboard.on("keydown-SPACE", jump);
@@ -239,8 +254,8 @@ class PlayScene extends Phaser.Scene {
         return;
       }
 
-      this.dino.body.height = 58;
-      this.dino.body.offset.y = 34;
+      this.dino.setSize(150, 60);
+      this.dino.setOffset(0, 34);
     };
     this.input.keyboard.on("keydown-DOWN", duckStart);
     document.getElementById("duck").addEventListener("touchstart", duckStart);
@@ -250,21 +265,21 @@ class PlayScene extends Phaser.Scene {
         return;
       }
 
-      this.dino.body.height = 92;
-      this.dino.body.offset.y = 0;
+      this.dino.setSize(69, 94);
+      this.dino.setOffset(30, 0);
     };
     this.input.keyboard.on("keyup-DOWN", duckEnd);
     document.getElementById("duck").addEventListener("touchend", duckEnd);
   }
 
-  placeObsticle() {
-    const obsticleNum = Math.floor(Math.random() * 7) + 1;
+  placeObstacle() {
+    const obstacleNum = Math.floor(Math.random() * 5) + 1;
     const distance = Phaser.Math.Between(600, 900);
 
-    let obsticle;
-    if (obsticleNum > 6) {
-      const enemyHeight = [20, 50];
-      obsticle = this.obsticles
+    let obstacle;
+    if (obstacleNum > 4) {
+      const enemyHeight = [20, 80];
+      obstacle = this.obstacles
         .create(
           this.game.config.width + distance,
           this.game.config.height -
@@ -273,21 +288,21 @@ class PlayScene extends Phaser.Scene {
           `enemy-bird`
         )
         .setOrigin(0, 1);
-      obsticle.play("enemy-dino-fly", 1);
-      obsticle.body.height = obsticle.body.height / 1.5;
+      obstacle.play("enemy-dino-fly", 1);
+      obstacle.body.height = obstacle.body.height / 1.5;
     } else {
-      obsticle = this.obsticles
+      const theme = THEMES[this.deathCount % THEMES.length];
+      console.log(`obstacle-${theme.id}-${obstacleNum}`);
+      obstacle = this.obstacles
         .create(
           this.game.config.width + distance,
           this.game.config.height - 26,
-          `obsticle-${obsticleNum}`
+          `obstacle-${theme.id}-${obstacleNum}`
         )
         .setOrigin(0, 1);
-
-      obsticle.body.offset.y = +10;
     }
 
-    obsticle.setImmovable();
+    obstacle.setImmovable();
   }
 
   update(time, delta) {
@@ -296,18 +311,18 @@ class PlayScene extends Phaser.Scene {
     }
 
     this.ground.tilePositionX += this.gameSpeed;
-    Phaser.Actions.IncX(this.obsticles.getChildren(), -this.gameSpeed);
+    Phaser.Actions.IncX(this.obstacles.getChildren(), -this.gameSpeed);
     Phaser.Actions.IncX(this.environment.getChildren(), -0.5);
 
     this.respawnTime += delta * this.gameSpeed * 0.08;
     if (this.respawnTime >= 1500) {
-      this.placeObsticle();
+      this.placeObstacle();
       this.respawnTime = 0;
     }
 
-    this.obsticles.getChildren().forEach((obsticle) => {
-      if (obsticle.getBounds().right < 0) {
-        this.obsticles.killAndHide(obsticle);
+    this.obstacles.getChildren().forEach((obstacle) => {
+      if (obstacle.getBounds().right < 0) {
+        this.obstacles.killAndHide(obstacle);
       }
     });
 
@@ -321,7 +336,7 @@ class PlayScene extends Phaser.Scene {
       this.dino.anims.stop();
       this.dino.setTexture("dino", 0);
     } else {
-      this.dino.body.height <= 58
+      this.dino.body.height <= 60
         ? this.dino.play("dino-down-anim", true)
         : this.dino.play("dino-run", true);
     }

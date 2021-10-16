@@ -166,7 +166,7 @@ body {
 
 #dino {
   position: fixed;
-  left: calc(50vw - 44px);
+  left: calc(50vw - 54.5px);
   bottom: 15vh;
   bottom: calc(var(--vh, 1vh) * 15);
   transition: left 2s linear;
@@ -174,7 +174,8 @@ body {
 
 .hurdle {
   left: -75px;
-  top: calc(var(--vh, 1vh) * 85 - 98px);
+  bottom: 15vh;
+  bottom: calc(var(--vh, 1vh) * 15);
   position: absolute;
   z-index: unset;
 }
@@ -196,6 +197,18 @@ body {
   position: absolute;
   bottom: calc(15vh - 26px);
   bottom: calc(var(--vh, 1vh) * 15 - 26px);
+  z-index: -1;
+}
+
+.underground {
+  position: absolute;
+  bottom: 0;
+  background-image: url(../img/themes/desert/underground.png);
+  background-size: 263px auto;
+  background-repeat: repeat;
+  height: calc(15vh - 25px);
+  height: calc(var(--vh, 1vh) * 15 - 25px);
+  width: 100vw;
   z-index: -1;
 }
 
@@ -228,6 +241,12 @@ body {
   bottom: 5vh;
   bottom: calc(var(--vh, 1vh) * 5);
   left: calc(50vw + 100px);
+}
+
+@media (hover: hover) {
+  .slide .nes-balloon p {
+    font-size: small;
+  }
 }
 
 @media (hover: none) {

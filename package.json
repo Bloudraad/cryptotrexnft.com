@@ -5,7 +5,10 @@
   "source": "index.html",
   "scripts": {
     "start": "parcel",
-    "build": "parcel build",
+    "build": "parcel build --dist-dir dist/",
+    "clean": "rimraf .parcel-cache dist",
+    "prebuild": "npm run clean",
+    "postbuild": "copyfiles CNAME dist/",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -23,7 +26,9 @@
     "@parcel/config-default": "^2.0.0-rc.0",
     "@parcel/transformer-image": "^2.0.0-rc.0",
     "@parcel/transformer-raw": "^2.0.0-rc.0",
-    "parcel": "^2.0.0-rc.0"
+    "copyfiles": "^2.4.1",
+    "parcel": "^2.0.0-rc.0",
+    "rimraf": "^3.0.2"
   },
   "dependencies": {
     "phaser": "^3.55.2"
