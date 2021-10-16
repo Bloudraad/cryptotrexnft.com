@@ -30,7 +30,7 @@ class PlayScene extends Phaser.Scene {
       .sprite(0, height - 26, "dino-idle")
       .setCollideWorldBounds(true)
       .setGravityY(5000)
-      .setBodySize(69, 94)
+      .setBodySize(64, 94)
       .setDepth(1)
       .setOrigin(0, 1)
       .setOffset(30, 0);
@@ -265,7 +265,7 @@ class PlayScene extends Phaser.Scene {
         return;
       }
 
-      this.dino.setSize(69, 94);
+      this.dino.setSize(64, 94);
       this.dino.setOffset(30, 0);
     };
     this.input.keyboard.on("keyup-DOWN", duckEnd);
