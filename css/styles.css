@@ -249,7 +249,7 @@ body {
   }
 }
 
-@media (hover: none) {
+@media (pointer: coarse) {
   .slide:first-child .nes-btn.is-success,
   .slide:first-child .nes-btn.is-error {
     display: inline-block;

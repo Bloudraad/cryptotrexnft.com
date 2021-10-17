@@ -68,7 +68,6 @@ class PlayScene extends Phaser.Scene {
       )
       .setFontFamily('"Press Start 2P"')
       .setOrigin(0.5);
-    console.log(this.startPromptText.x, this.startPromptText);
 
     this.environment = this.add.group();
     this.environment.addMultiple([
@@ -308,7 +307,6 @@ class PlayScene extends Phaser.Scene {
       obstacle.body.height = obstacle.body.height / 1.5;
     } else {
       const theme = THEMES[this.deathCount % THEMES.length];
-      console.log(`obstacle-${theme.id}-${obstacleNum}`);
       obstacle = this.obstacles
         .create(
           this.game.config.width + distance,
