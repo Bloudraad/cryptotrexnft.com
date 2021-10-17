@@ -8,7 +8,7 @@
     "build": "parcel build --dist-dir dist/",
     "clean": "rimraf .parcel-cache dist",
     "prebuild": "npm run clean",
-    "postbuild": "copyfiles CNAME dist/",
+    "postbuild": "copyfiles CNAME img/meta-banner.jpeg dist/",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
