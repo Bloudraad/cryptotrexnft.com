@@ -68,6 +68,20 @@ document.addEventListener("touchmove", function (e) {
     behavior: "smooth",
   });
 });
+document.addEventListener("keydown", function (e) {
+  const currentSlide = Math.floor(wrapper.scrollTop / window.innerWidth);
+  if (e.key === "ArrowRight" && currentSlide < 5) {
+    wrapper.scrollTo({
+      top: (currentSlide + 1) * window.innerWidth,
+      behavior: "smooth",
+    });
+  } else if (e.key === "ArrowLeft" && currentSlide > 0) {
+    wrapper.scrollTo({
+      top: (currentSlide - 1) * window.innerWidth,
+      behavior: "smooth",
+    });
+  }
+});
 
 setInterval(() => {
   if (!isRunning && !isPregame) {
