@@ -1,3 +1,6 @@
+const smoothscroll = require("smoothscroll-polyfill");
+smoothscroll.polyfill();
+
 const { DINO_COLOR } = require("./preload");
 
 const photos = [DINO_COLOR.left, DINO_COLOR.right];
