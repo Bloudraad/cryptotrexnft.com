@@ -54,6 +54,21 @@ class PlayScene extends Phaser.Scene {
       .setFontFamily('"Press Start 2P"')
       .setOrigin(1, 0)
       .setAlpha(0);
+    this.startPromptText = this.add
+      .text(
+        width / 2,
+        height / 2,
+        "Press Spacebar/Jump to Start\nArrow Down/Duck to Duck",
+        {
+          fill: "#fff",
+          font: '600 24px "Press Start 2P"',
+          align: "center",
+          resolution: 5,
+        }
+      )
+      .setFontFamily('"Press Start 2P"')
+      .setOrigin(0.5);
+    console.log(this.startPromptText.x, this.startPromptText);
 
     this.environment = this.add.group();
     this.environment.addMultiple([
@@ -130,6 +145,7 @@ class PlayScene extends Phaser.Scene {
         }
 
         this.startTrigger.disableBody(true, true);
+        this.startPromptText.destroy();
 
         const startEvent = this.time.addEvent({
           delay: 1000 / 60,
