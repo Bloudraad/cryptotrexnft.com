@@ -264,4 +264,8 @@ body {
   .slide:first-child .nes-btn.is-primary {
     left: calc(50vw - 98px);
   }
+
+  .slide .nes-balloon p {
+    font-size: large;
+  }
 }
