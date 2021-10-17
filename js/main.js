@@ -40,9 +40,9 @@ wrapper.addEventListener(
     if (currentScroll < midScreen + 150 && currentScroll > midScreen - 150) {
       isRunning = false;
       const offset = 200 - Math.pow(currentScroll - midScreen, 2) / 112.5;
-      dino.style.bottom = `calc(15vh + ${offset}px`;
+      dino.style.bottom = `${0.15 * window.innerHeight + offset}px`;
     } else {
-      dino.style.bottom = "15vh";
+      dino.style.bottom = `${0.15 * window.innerHeight}px`;
     }
 
     timer = setTimeout(function () {
