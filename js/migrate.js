@@ -11,18 +11,30 @@ function loadWeb3() {
     const eth = window.ethereum;
     if (eth) {
         const web3 = new Web3(eth);
-        eth.enable();
-        eth.on('accountsChanged', (accounts) => {
-            // if account changed from metamask, or first time logging in
-            if (accounts.length < 1) {
-                return;
-            }
-            const address = accounts[0];
-            console.log(address);
-        });
-        eth.on('chainChanged', () => {
-            window.location.reload();
-        });
+        try{
+            eth.request({ method: 'eth_requestAccounts' })
+            .then((result) => {
+                console.log(result);
+            })
+            .catch((error) => {
+                const d = document.getElementById("dialog-connect");
+                d.addEventListener('click', load);
+                d.showModal();
+            });
+            eth.on('accountsChanged', (accounts) => {
+                // if account changed from metamask, or first time logging in
+                if (accounts.length < 1) {
+                    return;
+                }
+                const address = accounts[0];
+                console.log(address);
+            });
+            eth.on('chainChanged', () => {
+                window.location.reload();
+            });
+        }catch(err) {
+            console.log(err);
+        }
 
         return web3;
     }
@@ -200,18 +212,17 @@ batchMigrateBtn.addEventListener("click", async () => {
     await batchMigrate(itemIds);
 });
 
-const connectBtn = document.getElementById("migrate-connect");
-connectBtn.addEventListener("click", async () => {
-  const web3 = loadWeb3();
-  const address = await web3Address(web3);
-  await renderItems(address);
-});
-
-const web3 = loadWeb3();
-web3Address(web3).then(async address=>{
+async function load() {
+    const web3 = loadWeb3();
+    const address = await web3Address(web3);
+    if(address === '') {
+        return;
+    };
     await switchChain(window.ethereum);
     await renderItems(address);
-});
+}
+
+window.onload = load;
 
 const addTokenBtn = document.getElementById("addTokenBtn");
 addTokenBtn.addEventListener("click", async () => {
