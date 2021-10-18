@@ -21,13 +21,13 @@ function loadWeb3() {
                 d.addEventListener('click', load);
                 d.showModal();
             });
-            eth.on('accountsChanged', (accounts) => {
+            eth.on('accountsChanged', async (accounts) => {
                 // if account changed from metamask, or first time logging in
                 if (accounts.length < 1) {
                     return;
                 }
                 const address = accounts[0];
-                console.log(address);
+                await renderItems(address);
             });
             eth.on('chainChanged', () => {
                 window.location.reload();
