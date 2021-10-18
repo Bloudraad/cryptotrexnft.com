@@ -34,6 +34,54 @@
 </head>
 
 <body>
-  <div class="header-connecting-placeholder container-fluid"></div>
-  <h2 style="text-align: center;">Coming soon...</h2>
+  <div class="outer-wrapper">
+    <div class="wrapper" style="display: block;">
+      <nav class="container-fluid"
+          style="display: flex; align-items: center; padding: 20px; justify-content: space-between; width: 100vw;">
+          <div class="nav-brand">
+            <a href="/" style="color: inherit; text-decoration: none;">
+              <h2 style="margin-bottom: 0;">
+                Crypto T-rex
+              </h2>
+            </a>
+          </div>
+          <div>
+            <a id="migrate-connect" style="color: inherit; text-decoration: none;">
+              <h3 style="margin-bottom: 0;">Connect</h3>
+            </a>
+          </div>
+          <div>
+            <a href="https://discord.gg/ekk838XkbV" target="_blank"><i class="nes-icon discord is-large"></i></a>
+            <a href="https://www.twitter.com/cryptotrexnft/" target="_blank"><i
+                class="nes-icon twitter is-large"></i></a>
+            <a href="https://www.instagram.com/cryptotrexnft/" target="_blank"><i
+                class="nes-icon instagram is-large"></i></a>
+          </div>
+        </nav>
+        <div class="container-fluid migrate-container">
+          <div class="nes-container is-rounded" style="background-color: white;">
+            <p>
+              Let's migrate!
+            </p>
+            <ul class="nes-list is-disc">
+              <li>Change your duplicate T-rex into a whole new T-rex.</li>
+              <li>Assign correct properties to your T-rexes.</li>
+              <li>Send you free 10 $FOSSIL tokens for each T-rex migrated.</li>
+            </ul>
+            <p>
+              All you have to do, is to click the migrate button down below.
+            </p>
+          </div>
+        </div>
+        <div class="container-fluid migrate-container" style="display: flex; justify-content: space-between;">
+          <button type="button" class="nes-btn" id="batchMigrateBtn">Migrate All</button>
+          <a class="nes-btn" href="./how-to-migrate.html">Migration FAQ</a>
+          <button type="button" class="nes-btn" id="addTokenBtn">Add $FOSSIL token to metamask</button>
+        </div>
+        <div class="container-fluid migrate-container" id="card-list"
+        style="display: grid; grid-template-columns: repeat(6, 1fr); grid-column-gap: 24px;grid-row-gap: 24px;">
+        </div>
+    </div>
+  </div>
+  <script src="js/migrate.js" type="module"></script>
 </body>
