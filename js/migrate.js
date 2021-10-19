@@ -158,8 +158,7 @@ async function addToken(web3) {
 let itemIds = [];
 async function renderItems(address) {
     const opensea = 'https://testnets-api.opensea.io'; // move to env
-    const v1 = '0x88b48f654c30e99bc2e4a1559b4dcf1ad93fa656'; //move to env
-    const url = `${opensea}/api/v1/assets?offset=0&limit=5&asset_contract_address=${v1}&collection=cryptotrex-old&owner=${address}`;
+    const url = `${opensea}/api/v1/assets?offset=0&limit=5&collection=cryptotrex-old&owner=${address}`;
     const res = await fetch(url);
     const body = await res.json();
 
