@@ -2,9 +2,9 @@ import Web3 from "web3";
 import os from "./contracts/ERC1155Test.json";
 import ct from "./contracts/CryptoTrex.json";
 
-const v1 = "0x88b48f654c30e99bc2e4a1559b4dcf1ad93fa656"; //move to env
-const ms = "0x079438b0274eBf1d6D9be4627c68387e6E2119c0";
-const ta = "0x2CB81e6B9acaB06e208F48F71D4D5d9bd29574ce";
+const v1 = '0x88b48f654c30e99bc2e4a1559b4dcf1ad93fa656'; //move to env
+const ms = '0xc25e3565AFE3f8f5c9B65b726218734460C74bb1';
+const ta = '0x1D66f064648f94AC3883F50bb8ca682570946eA4';
 
 function loadWeb3() {
   const eth = window.ethereum;
@@ -174,30 +174,57 @@ async function addToken(web3) {
   }
 }
 let itemIds = [];
+
+const opensea = "https://testnets-api.opensea.io"; // move to env
+async function getV1Items(address) {
+    const url = `${opensea}/api/v1/assets?offset=0&limit=5&collection=cryptotrex-old&owner=${address}`;
+    const res = await fetch(url);
+    const body = await res.json();
+    return body.assets;
+}
+
+async function getV2Items(address) {
+    const url = `${opensea}/api/v1/assets?offset=0&limit=5&collection=crypto-trex-2vztzui7gn&owner=${address}`;
+    const res = await fetch(url);
+    const body = await res.json();
+    return body.assets;
+}
 async function renderItems(address) {
-  const opensea = "https://testnets-api.opensea.io"; // move to env
-  const url = `${opensea}/api/v1/assets?offset=0&limit=5&collection=cryptotrex-old&owner=${address}`;
-  const res = await fetch(url);
-  const body = await res.json();
+    const v1 = await getV1Items(address);
+    const v2 = await getV2Items(address);
+    console.log(v2);
 
   const list = document.querySelector("#card-list");
 
-  if (body.assets.length < 1) {
+  if (v1.length < 1) {
     const batchMigrateBtn = document.getElementById("batchMigrateBtn");
     batchMigrateBtn.textContent = "Nothing to migrate";
     batchMigrateBtn.classList = "nes-btn is-disabled";
     batchMigrateBtn.disabled = true;
-    return;
   }
 
-  body.assets.forEach((e) => {
-    itemIds.push(e.token_id);
+  if(v1){
+    v1.forEach((e) => {
+      list.appendChild(buildCard(e, false));
+    });
+  }
 
+  if(v2){
+    v2.forEach((e) => {
+        console.log(e);
+      list.appendChild(buildCard(e, true));
+    });
+  }
+}
+
+function buildCard(e, migrated) {
     const card = document.createElement("div");
-    card.classList = "nes-container is-rounded";
+    card.classList = "nes-container item-card is-rounded";
     card.style = "background-color: white; display: block;";
-    const imageContainer = document.createElement("div");
+    const imageContainer = document.createElement("a");
     imageContainer.classList = "nes-container is-rounded";
+    imageContainer.href = e.permalink;
+    imageContainer.target = "_blank";
     imageContainer.style =
       "background-color: white; padding: 0px !important; display: flex; justify-content: center";
     const image = document.createElement("img");
@@ -210,9 +237,15 @@ async function renderItems(address) {
     nameDiv.textContent = e.name;
     const migrateBtn = document.createElement("button");
     migrateBtn.type = "button";
-    migrateBtn.classList = "nes-btn";
+    if(!migrated) {
+        migrateBtn.classList = "nes-btn";
+        migrateBtn.textContent = "Migrate";
+    } else {
+        migrateBtn.classList = "nes-btn is-disabled";
+        migrateBtn.disabled = true;
+        migrateBtn.textContent = "Migrated";
+    }
     migrateBtn.style = "width: 100%";
-    migrateBtn.textContent = "Migrate";
     migrateBtn.addEventListener("click", () => migrate(e.token_id));
     card.appendChild(imageContainer);
     card.appendChild(nameDiv);
@@ -222,15 +255,12 @@ async function renderItems(address) {
     cardContainer.classList.add("col-md-3", "col-xs-6", "pb-1");
     cardContainer.appendChild(card);
 
-    // Add element to list
-    list.appendChild(cardContainer);
-  });
+    return cardContainer;
 }
 // document.addEventListener('load', renderItems);
 
 const batchMigrateBtn = document.getElementById("batchMigrateBtn");
 batchMigrateBtn.addEventListener("click", async () => {
-  console.log(itemIds);
   await batchMigrate(itemIds);
 });
 
