@@ -14,11 +14,6 @@ body {
   z-index: -1;
 }
 
-.migrate-container {
-  margin: 1rem;
-}
-
-
 .nes-icon.discord::before {
   width: 1px;
   height: 1px;
@@ -148,5 +143,81 @@ body {
       8px 16px 0 0.02em, 9px 16px 0 0.02em, 10px 16px 0 0.02em,
       11px 16px 0 0.02em, 12px 16px 0 0.02em, 13px 16px 0 0.02em,
       14px 16px 0 0.02em, 15px 16px 0 0.02em;
+  }
+}
+
+.nes-container {
+  background-color: #fff;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.justify-content-between {
+  justify-content: space-between;
+}
+
+.pt-1 {
+  padding-top: 1rem;
+}
+
+.pb-1 {
+  padding-bottom: 1rem;
+}
+
+@media (min-width: 576px) {
+  .nes-icon {
+    margin-right: 48px;
+    margin-bottom: 48px;
+    transform: scale(4);
+  }
+}
+
+@media (max-width: 575px) {
+  h2 {
+    font-size: 1rem;
+  }
+
+  h3 {
+    font-size: 0.8rem;
+  }
+
+  p,
+  li,
+  button {
+    font-size: 0.66667rem;
+  }
+}
+
+@media (max-width: 375px) {
+  h2 {
+    font-size: 0.8rem;
+  }
+
+  h3 {
+    font-size: 0.64rem;
+  }
+
+  p,
+  li,
+  button {
+    font-size: 0.533333rem;
+  }
+}
+
+@media (max-width: 300px) {
+  h2 {
+    font-size: 0.64rem;
+  }
+
+  h3 {
+    font-size: 0.512rem;
+  }
+
+  p,
+  li,
+  button {
+    font-size: 0.427rem;
   }
 }
