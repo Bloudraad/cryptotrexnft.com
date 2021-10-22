@@ -2,9 +2,9 @@ import Web3 from "web3";
 import os from "./contracts/ERC1155Test.json";
 import ct from "./contracts/CryptoTrex.json";
 
-const v1 = '0x88b48f654c30e99bc2e4a1559b4dcf1ad93fa656'; //move to env
-const ms = '0xc25e3565AFE3f8f5c9B65b726218734460C74bb1';
-const ta = '0x1D66f064648f94AC3883F50bb8ca682570946eA4';
+const v1 = process.env.V1;
+const ms = process.env.MS;
+const ta = process.env.TA;
 
 function loadWeb3() {
   const eth = window.ethereum;
@@ -175,24 +175,24 @@ async function addToken(web3) {
 }
 let itemIds = [];
 
-const opensea = "https://testnets-api.opensea.io"; // move to env
+const opensea = process.env.OPENSEA;
 async function getV1Items(address) {
-    const url = `${opensea}/api/v1/assets?offset=0&limit=5&collection=cryptotrex-old&owner=${address}`;
-    const res = await fetch(url);
-    const body = await res.json();
-    return body.assets;
+  const url = `${opensea}/api/v1/assets?offset=0&limit=5&collection=cryptotrex-old&owner=${address}`;
+  const res = await fetch(url);
+  const body = await res.json();
+  return body.assets;
 }
 
 async function getV2Items(address) {
-    const url = `${opensea}/api/v1/assets?offset=0&limit=5&collection=crypto-trex-2vztzui7gn&owner=${address}`;
-    const res = await fetch(url);
-    const body = await res.json();
-    return body.assets;
+  const url = `${opensea}/api/v1/assets?offset=0&limit=5&collection=crypto-trex-2vztzui7gn&owner=${address}`;
+  const res = await fetch(url);
+  const body = await res.json();
+  return body.assets;
 }
 async function renderItems(address) {
-    const v1 = await getV1Items(address);
-    const v2 = await getV2Items(address);
-    console.log(v2);
+  const v1 = await getV1Items(address);
+  const v2 = await getV2Items(address);
+  console.log(v2);
 
   const list = document.querySelector("#card-list");
 
@@ -203,59 +203,59 @@ async function renderItems(address) {
     batchMigrateBtn.disabled = true;
   }
 
-  if(v1){
+  if (v1) {
     v1.forEach((e) => {
       list.appendChild(buildCard(e, false));
     });
   }
 
-  if(v2){
+  if (v2) {
     v2.forEach((e) => {
-        console.log(e);
+      console.log(e);
       list.appendChild(buildCard(e, true));
     });
   }
 }
 
 function buildCard(e, migrated) {
-    const card = document.createElement("div");
-    card.classList = "nes-container item-card is-rounded";
-    card.style = "background-color: white; display: block;";
-    const imageContainer = document.createElement("a");
-    imageContainer.classList = "nes-container is-rounded";
-    imageContainer.href = e.permalink;
-    imageContainer.target = "_blank";
-    imageContainer.style =
-      "background-color: white; padding: 0px !important; display: flex; justify-content: center";
-    const image = document.createElement("img");
-    image.src = e.image_thumbnail_url;
-    image.crossOrigin = "anonymous";
-    image.style.width = "100%";
-    imageContainer.appendChild(image);
-    const nameDiv = document.createElement("p");
-    nameDiv.classList.add("pt-1");
-    nameDiv.textContent = e.name;
-    const migrateBtn = document.createElement("button");
-    migrateBtn.type = "button";
-    if(!migrated) {
-        migrateBtn.classList = "nes-btn";
-        migrateBtn.textContent = "Migrate";
-    } else {
-        migrateBtn.classList = "nes-btn is-disabled";
-        migrateBtn.disabled = true;
-        migrateBtn.textContent = "Migrated";
-    }
-    migrateBtn.style = "width: 100%";
-    migrateBtn.addEventListener("click", () => migrate(e.token_id));
-    card.appendChild(imageContainer);
-    card.appendChild(nameDiv);
-    card.appendChild(migrateBtn);
+  const card = document.createElement("div");
+  card.classList = "nes-container item-card is-rounded";
+  card.style = "background-color: white; display: block;";
+  const imageContainer = document.createElement("a");
+  imageContainer.classList = "nes-container is-rounded";
+  imageContainer.href = e.permalink;
+  imageContainer.target = "_blank";
+  imageContainer.style =
+    "background-color: white; padding: 0px !important; display: flex; justify-content: center";
+  const image = document.createElement("img");
+  image.src = e.image_thumbnail_url;
+  image.crossOrigin = "anonymous";
+  image.style.width = "100%";
+  imageContainer.appendChild(image);
+  const nameDiv = document.createElement("p");
+  nameDiv.classList.add("pt-1");
+  nameDiv.textContent = e.name;
+  const migrateBtn = document.createElement("button");
+  migrateBtn.type = "button";
+  if (!migrated) {
+    migrateBtn.classList = "nes-btn";
+    migrateBtn.textContent = "Migrate";
+  } else {
+    migrateBtn.classList = "nes-btn is-disabled";
+    migrateBtn.disabled = true;
+    migrateBtn.textContent = "Migrated";
+  }
+  migrateBtn.style = "width: 100%";
+  migrateBtn.addEventListener("click", () => migrate(e.token_id));
+  card.appendChild(imageContainer);
+  card.appendChild(nameDiv);
+  card.appendChild(migrateBtn);
 
-    const cardContainer = document.createElement("div");
-    cardContainer.classList.add("col-md-3", "col-xs-6", "pb-1");
-    cardContainer.appendChild(card);
+  const cardContainer = document.createElement("div");
+  cardContainer.classList.add("col-md-3", "col-xs-6", "pb-1");
+  cardContainer.appendChild(card);
 
-    return cardContainer;
+  return cardContainer;
 }
 // document.addEventListener('load', renderItems);
 
