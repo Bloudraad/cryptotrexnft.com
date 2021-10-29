@@ -31,7 +31,7 @@ async function addToken(web3) {
   const tokenAddress = process.env.TA;
   const tokenSymbol = "FOSSIL";
   const tokenDecimals = 18;
-  const tokenImage = "http://placekitten.com/200/300";
+  const tokenImage = "https://gateway.pinata.cloud/ipfs/QmZpPpnuASN7riY1UwVftSMowJAgMbf9x1k9pCaH5buSEQ";
 
   try {
     // wasAdded is a boolean. Like any RPC method, an error may be thrown.
