@@ -34,7 +34,16 @@
 </head>
 
 <body>
-  <div class="header-connecting-placeholder container-fluid"></div>
+  <dialog class="nes-dialog" id="dialog-connect">
+    <form method="dialog">
+      <p class="title">Not connected</p>
+      <p>Please connect your metamask account.</p>
+      <menu class="dialog-menu">
+        <button class="nes-btn">Back</button>
+        <button class="nes-btn is-primary">Connect</button>
+      </menu>
+    </form>
+  </dialog>
   <div class="outer-wrapper">
     <div class="wrapper" style="display: block;">
       <nav class="container-fluid"
@@ -52,20 +61,51 @@
           <a href="https://www.instagram.com/cryptotrexnft/" target="_blank"><i class="nes-icon instagram"></i></a>
         </div>
       </nav>
-      <div class="container" style="text-align: center; margin-top:30vh">
-        <div>
-          <h3 style="text-align: center; color: white">Our hard-working archaeologists have uncovered the FOSSIL and are
-            pumped to share them with the community.</h3>
-          <button class="nes-btn" id="addTokenBtn">Add $FOSSIL token to metamask</button>
-          <br /><br />
-          <h3 style="text-align: center; color: white">Check out how they can be used in our <a
-              href="https://whitepaper.cryptotrexnft.com" target="_blank">whitepaper</a>.</h3>
-          <h3 style="text-align: center; color: white">Protect yourself against scammers by checking our official
-            contract on <a href="https://etherscan.io/token/0x9b805ad1425b17e39870dfe7d1d48ec7fc53690b"
-              target="_blank">etherscan</a>.</h3>
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="nes-container is-rounded">
+              <p>
+                Let's migrate!
+              </p>
+              <ul class="nes-list is-disc">
+                <li>Change your duplicate T-rex into a whole new T-rex.</li>
+                <li>Assign correct properties to your T-rexes.</li>
+                <li>Send you free 10 $FOSSIL tokens for each T-rex migrated.</li>
+              </ul>
+              <p>Follow this 3 basic steps to migrate your CryptoTrexes</p>
+              <ol>
+                <li><strong>Sign In</strong>, metamask will prompt you to sign and connect the CryptoTrex website to
+                  your address.
+                </li>
+                <li>
+                  <strong>Approve</strong>, before we begin migrating, we would need to approve the migration action.
+                  This is Ethereum's security measure to make sure that the next transaction is not malicious.
+                </li>
+                <li><strong>Migrate</strong>, finally migrate your CryptoTrex by migrating one-by-one or by pressing the
+                  "Migrate All" button to save gas if you have multiple Rexes.
+                </li>
+              </ol>
+            </div>
+          </div>
+        </div>
+        <div class="row pt-1">
+          <div class="col-xs-12 justify-content-between d-flex">
+            <button type="button" class="nes-btn" id="batchMigrateBtn" style="margin-right: 10px;">Migrate All</button>
+            <button type="button" class="nes-btn" id="addTokenBtn">Add $FOSSIL token to metamask</button>
+          </div>
+        </div>
+        <div class="row pt-1" id="card-list">
+        </div>
+        <div class="row pb-1">
+          <div class="col-xs-12">
+            <div class="nes-container is-rounded">
+              <h3>Frequently Asked Questions</h3>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
-  <script src="js/addtoken.js" type="module"></script>
+  <script src="js/migrate.js" type="module"></script>
 </body>
