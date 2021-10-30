@@ -14,6 +14,8 @@ jobs:
         with:
           node-version: "14"
       - run: npm install
+      - run: npm install -g rimraf
+      - run: npm install cssnano
       - run: npm run build
       - uses: peaceiris/actions-gh-pages@v3
         with:
