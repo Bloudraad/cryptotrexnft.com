@@ -78,7 +78,7 @@ async function batchMigrate(ids) {
   ids.forEach((id) => {
     tokenIds.push(web3.utils.toBN(id));
   });
-  console.log(tokenIds, ids);
+  if(tokenIds.length < 1) return;
 
   const osc = new web3.eth.Contract(os.abi, v1);
   osc.methods
@@ -192,7 +192,6 @@ async function getV2Items(address) {
 async function renderItems(address) {
   const v1 = await getV1Items(address);
   const v2 = await getV2Items(address);
-  console.log(v2);
 
   const list = document.querySelector("#card-list");
 
@@ -205,6 +204,7 @@ async function renderItems(address) {
 
   if (v1) {
     v1.forEach((e) => {
+      itemIds.push(e.token_id);
       list.appendChild(buildCard(e, false));
     });
   }
