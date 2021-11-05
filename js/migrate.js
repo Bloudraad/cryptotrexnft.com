@@ -177,14 +177,14 @@ let itemIds = [];
 
 const opensea = process.env.OPENSEA;
 async function getV1Items(address) {
-  const url = `${opensea}/api/v1/assets?offset=0&limit=5&collection=cryptotrex&owner=${address}`;
+  const url = `${opensea}/api/v1/assets?offset=0&limit=50&collection=cryptotrex&owner=${address}`;
   const res = await fetch(url);
   const body = await res.json();
   return body.assets;
 }
 
 async function getV2Items(address) {
-  const url = `${opensea}/api/v1/assets?offset=0&limit=5&collection=cryptotrex-genesis&owner=${address}`;
+  const url = `${opensea}/api/v1/assets?offset=0&limit=50&collection=cryptotrex-genesis&owner=${address}`;
   const res = await fetch(url);
   const body = await res.json();
   return body.assets;
