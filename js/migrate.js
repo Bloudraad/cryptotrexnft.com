@@ -65,8 +65,8 @@ async function switchChain(web3) {
 
 async function web3Address(web3) {
   const addr = await web3.eth.getAccounts();
-  if (addr < 1) {
-    return "";
+  if (addr.length < 1) {
+    return;
   }
   return addr[0];
 }
@@ -267,7 +267,7 @@ batchMigrateBtn.addEventListener("click", async () => {
 async function load() {
   const web3 = loadWeb3();
   const address = await web3Address(web3);
-  if (address === "") {
+  if (!address) {
     return;
   }
   await switchChain(window.ethereum);
