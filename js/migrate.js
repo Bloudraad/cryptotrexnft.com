@@ -65,8 +65,8 @@ async function switchChain(web3) {
 
 async function web3Address(web3) {
   const addr = await web3.eth.getAccounts();
-  if (addr < 1) {
-    return "";
+  if (addr.length < 1) {
+    return;
   }
   return addr[0];
 }
@@ -147,7 +147,7 @@ async function addToken(web3) {
   const tokenAddress = ta;
   const tokenSymbol = "FOSSIL";
   const tokenDecimals = 18;
-  const tokenImage = "http://placekitten.com/200/300";
+  const tokenImage = "https://gateway.pinata.cloud/ipfs/QmZpPpnuASN7riY1UwVftSMowJAgMbf9x1k9pCaH5buSEQ";
 
   try {
     // wasAdded is a boolean. Like any RPC method, an error may be thrown.
@@ -177,14 +177,14 @@ let itemIds = [];
 
 const opensea = process.env.OPENSEA;
 async function getV1Items(address) {
-  const url = `${opensea}/api/v1/assets?offset=0&limit=5&collection=cryptotrex-old&owner=${address}`;
+  const url = `${opensea}/api/v1/assets?offset=0&limit=5&collection=cryptotrex&owner=${address}`;
   const res = await fetch(url);
   const body = await res.json();
   return body.assets;
 }
 
 async function getV2Items(address) {
-  const url = `${opensea}/api/v1/assets?offset=0&limit=5&collection=crypto-trex-2vztzui7gn&owner=${address}`;
+  const url = `${opensea}/api/v1/assets?offset=0&limit=5&collection=cryptotrex-genesis&owner=${address}`;
   const res = await fetch(url);
   const body = await res.json();
   return body.assets;
@@ -267,7 +267,7 @@ batchMigrateBtn.addEventListener("click", async () => {
 async function load() {
   const web3 = loadWeb3();
   const address = await web3Address(web3);
-  if (address === "") {
+  if (!address) {
     return;
   }
   await switchChain(window.ethereum);

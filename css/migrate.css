@@ -166,6 +166,19 @@ body {
   padding-bottom: 1rem;
 }
 
+.question h3 + p,
+.question h3 + ul {
+  display: none;
+}
+
+.question h3.active > span {
+  writing-mode: vertical-lr;
+}
+.question h3.active + p,
+.question h3.active + ul {
+  display: block;
+}
+
 @media (min-width: 576px) {
   .nes-icon {
     margin-right: 48px;
