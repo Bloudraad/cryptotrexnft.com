@@ -131,7 +131,7 @@ async function approve() {
       const approveBtn = document.getElementById("approveBtn");
       approveBtn.textContent = "Approving...";
       approveBtn.disabled = true;
-      approveBtn.classList = "nes-btn is-primary is-disabled";
+      approveBtn.classList = "nes-btn is-primary";
     });
 }
 
@@ -210,7 +210,18 @@ async function renderApprovalPrompt() {
   const migrView = document.getElementById("migrationView");
   apprView.hidden = false;
   migrView.hidden = true;
+
+  const web3 = loadWeb3();
+  const address = await web3Address(web3);
+  const chainId = await web3.eth.getChainId();
+  const v1 = await getV1Items(address, config[chainId].opensea_api, config[chainId].old_collection);
+
+  if (v1.length < 1) {
+    const warning = document.getElementById("warningNoTrex");
+    warning.hidden = false;
+  }
 }
+
 async function renderItems(address) {
   const apprView = document.getElementById("approvalView");
   const migrView = document.getElementById("migrationView");
@@ -222,7 +233,6 @@ async function renderItems(address) {
   const v2 = await getV2Items(address, config[chainId].opensea_api, config[chainId].new_collection);
 
   const list = document.querySelector("#card-list");
-  console.log(web3.currentProvider.isMetaMask);
   if(web3.currentProvider.isMetaMask) {
     const addTokenBtn = document.getElementById("addTokenBtn");
     addTokenBtn.hidden = false;
@@ -251,7 +261,7 @@ async function renderItems(address) {
     v2.forEach((e) => {
       list.appendChild(buildCard(e, true));
     });
-  }l
+  }
 }
 
 function buildCard(e, migrated) {
