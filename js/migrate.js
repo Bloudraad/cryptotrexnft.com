@@ -1,7 +1,7 @@
 import Web3 from "web3";
 import os from "./contracts/ERC1155Test.json";
 import ct from "./contracts/CryptoTrex.json";
-import config from "./config";
+import {config} from "./config";
 
 function loadWeb3() {
   const eth = window.ethereum;

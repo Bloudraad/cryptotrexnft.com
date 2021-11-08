@@ -1,4 +1,4 @@
-export default config = {
+export const config = {
     1: {
         migration_address:'0x01FAd58CC2f0d3282724bE1DA34b90709Bf04e37',
         origin_address: '0x495f947276749Ce646f68AC8c248420045cb7b5e',
