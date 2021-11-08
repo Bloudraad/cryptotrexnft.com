@@ -25,7 +25,6 @@ function loadWeb3() {
         }
         const address = accounts[0];
         const approved = await isApproved(web3, address);
-        console.log(address, approved);
         if(approved) {
           await renderItems(address);
         } else {
@@ -78,11 +77,23 @@ async function batchMigrate(ids) {
   });
   if(tokenIds.length < 1) return;
   const c = new web3.eth.Contract(ct.abi, config[chainId].migration_address);
-  c.methods
-    .migrateBatch(tokenIds)
-    .send({ from: address })
-    .on("receipt", console.log)
-    .on("transactionHash", console.log);
+  const batchMigrateBtn = document.getElementById("batchMigrateBtn");
+  c.methods.migrateBatch(tokenIds)
+           .send({ from: address })
+           .on("receipt", ()=>{
+              batchMigrateBtn.disabled = true;
+              batchMigrateBtn.textContent = "Migrated";
+              batchMigrateBtn.classList = "nes-btn is-success";
+           })
+           .on("transactionHash", ()=>{
+              batchMigrateBtn.textContent = "Migrating...";
+              batchMigrateBtn.classList = "nes-btn";
+           })
+           .on("error", ()=>{
+              batchMigrateBtn.disabled = true;
+              batchMigrateBtn.textContent = "Failed";
+              batchMigrateBtn.classList = "nes-btn is-error";
+           })
 }
 
 async function isApproved(web3, address) {
@@ -120,11 +131,11 @@ async function approve() {
       const approveBtn = document.getElementById("approveBtn");
       approveBtn.textContent = "Approving...";
       approveBtn.disabled = true;
-      approveBtn.classList = "nes-btn is-disabled";
+      approveBtn.classList = "nes-btn is-primary is-disabled";
     });
 }
 
-async function migrate(id) {
+async function migrate(id, btn) {
   const web3 = loadWeb3();
   const address = await web3Address(web3);
   const chainId = await web3.eth.getChainId();
@@ -133,9 +144,22 @@ async function migrate(id) {
   const c = new web3.eth.Contract(ct.abi, config[chainId].migration_address);
   c.methods.migrate(tokenId)
            .send({ from: address })
-           .on("receipt", console.log)
-           .on("transactionHash", console.log);
-  return;
+           .on("receipt", ()=>{
+              btn.disabled = true;
+              btn.classList = "nes-btn is-success";
+              btn.textContent = "Migrated";
+           })
+           .on("transactionHash", hash=>{
+             btn.textContent = "Migrating...";
+             btn.addEventListener('click', ()=>{
+                window.open(`https://etherscan.io/tx/${hash}`, '_blank').focus();
+             });
+           })
+           .on("error", ()=>{
+              btn.disabled = true;
+              btn.textContent = "Failed";
+              btn.classList = "nes-btn is-error";
+           })
 }
 
 async function addToken(eth) {
@@ -198,6 +222,11 @@ async function renderItems(address) {
   const v2 = await getV2Items(address, config[chainId].opensea_api, config[chainId].new_collection);
 
   const list = document.querySelector("#card-list");
+  console.log(web3.currentProvider.isMetaMask);
+  if(web3.currentProvider.isMetaMask) {
+    const addTokenBtn = document.getElementById("addTokenBtn");
+    addTokenBtn.hidden = false;
+  }
 
   if (v1.length < 1) {
     const batchMigrateBtn = document.getElementById("batchMigrateBtn");
@@ -207,9 +236,13 @@ async function renderItems(address) {
   }
 
   if (v1) {
-    v1.forEach((e) => {
+    const c = new web3.eth.Contract(os.abi, config[chainId].origin_address);
+    v1.forEach(async (e) => {
       itemIds.push(e.token_id);
-      list.appendChild(buildCard(e, false));
+      const balance = await c.methods.balanceOf(address, e.token_id)
+               .call({ from: address });
+      const migrated = balance && balance < 1;
+      list.appendChild(buildCard(e, migrated));
     });
   }
 
@@ -217,7 +250,7 @@ async function renderItems(address) {
     v2.forEach((e) => {
       list.appendChild(buildCard(e, true));
     });
-  }
+  }l
 }
 
 function buildCard(e, migrated) {
@@ -240,6 +273,7 @@ function buildCard(e, migrated) {
   nameDiv.textContent = e.name;
   const migrateBtn = document.createElement("button");
   migrateBtn.type = "button";
+
   if (!migrated) {
     migrateBtn.classList = "nes-btn";
     migrateBtn.textContent = "Migrate";
@@ -249,7 +283,7 @@ function buildCard(e, migrated) {
     migrateBtn.textContent = "Migrated";
   }
   migrateBtn.style = "width: 100%";
-  migrateBtn.addEventListener("click", () => migrate(e.token_id));
+  migrateBtn.addEventListener("click", () => migrate(e.token_id, migrateBtn));
   card.appendChild(imageContainer);
   card.appendChild(nameDiv);
   card.appendChild(migrateBtn);
@@ -274,7 +308,6 @@ async function load() {
   }
   // await switchChain(window.ethereum);
   const approved = await isApproved(web3, address);
-  console.log(approved)
   if(approved) {
     await renderItems(address);
   } else {
