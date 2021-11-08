@@ -85,9 +85,12 @@ async function batchMigrate(ids) {
               batchMigrateBtn.textContent = "Migrated";
               batchMigrateBtn.classList = "nes-btn is-success";
            })
-           .on("transactionHash", ()=>{
+           .on("transactionHash", hash=>{
               batchMigrateBtn.textContent = "Migrating...";
               batchMigrateBtn.classList = "nes-btn";
+              batchMigrateBtn.addEventListener('click', ()=>{
+                 window.open(`https://etherscan.io/tx/${hash}`, '_blank').focus();
+              });
            })
            .on("error", ()=>{
               batchMigrateBtn.disabled = true;
@@ -317,7 +320,7 @@ async function load() {
   if (!address) {
     return;
   }
-  // await switchChain(window.ethereum);
+  await switchChain(window.ethereum);
   const approved = await isApproved(web3, address);
   if(approved) {
     await renderItems(address);
