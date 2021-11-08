@@ -58,7 +58,23 @@
           <a href="https://www.instagram.com/cryptotrexnft/" target="_blank"><i class="nes-icon instagram"></i></a>
         </div>
       </nav>
-      <div class="container">
+
+      <div class="container" id="approvalView" hidden>
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="nes-container is-rounded">
+              <p>
+                Before we begin, please approve first!
+              </p>
+              <div class="justify-content-between" id="approvalContainer">
+                <button type="button" class="nes-btn is-primary" id="approveBtn" style="margin-right: 10px;">Approve</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container" id="migrationView" hidden>
         <div class="row">
           <div class="col-xs-12">
             <div class="nes-container is-rounded">
@@ -70,30 +86,18 @@
                 <li>Assign correct properties to your T-rexes.</li>
                 <li>Send you free 10 $FOSSIL tokens for each T-rex migrated.</li>
               </ul>
-              <p>Follow this 3 basic steps to migrate your CryptoTrexes</p>
-              <ol>
-                <li><strong>Sign In</strong>, metamask will prompt you to sign and connect the CryptoTrex website to
-                  your address.
-                </li>
-                <li>
-                  <strong>Approve</strong>, before we begin migrating, we would need to approve the migration action.
-                  This is Ethereum's security measure to make sure that the next transaction is not malicious.
-                </li>
-                <li><strong>Migrate</strong>, finally migrate your CryptoTrex by migrating one-by-one or by pressing the
-                  "Migrate All" button to save gas if you have multiple Rexes.
-                </li>
-              </ol>
             </div>
           </div>
         </div>
         <div class="row pt-1">
           <div class="col-xs-12 justify-content-between d-flex">
             <button type="button" class="nes-btn" id="batchMigrateBtn" style="margin-right: 10px;">Migrate All</button>
-            <button type="button" class="nes-btn" id="addTokenBtn">Add $FOSSIL token to metamask</button>
+            <button type="button" class="nes-btn" id="addTokenBtn">Add $FOSSIL token</button>
           </div>
         </div>
         <div class="row pt-1" id="card-list">
         </div>
+
         <div class="row pb-1">
           <div class="col-xs-12">
             <div class="nes-container is-rounded">
