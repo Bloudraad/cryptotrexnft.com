@@ -241,8 +241,9 @@ async function renderItems(address) {
       itemIds.push(e.token_id);
       const balance = await c.methods.balanceOf(address, e.token_id)
                .call({ from: address });
-      const migrated = balance && balance < 1;
-      list.appendChild(buildCard(e, migrated));
+      if(balance && balance > 0){
+        list.appendChild(buildCard(e, false));
+      }
     });
   }
 

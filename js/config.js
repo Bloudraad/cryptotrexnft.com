@@ -13,6 +13,6 @@ export const config = {
         token_address: '0x99eE7Dc7E959B32817e3DeD51cfEeE4c9836d174',
         opensea_api: 'https://testnets-api.opensea.io',
         old_collection: 'unidentified-contract-i5yykj3vuu',
-        new_collection: 'cryptotrex-genesis'
+        new_collection: 'cryptotrex-6fl9h8uqll'
     }
 }
