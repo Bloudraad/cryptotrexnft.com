@@ -1,9 +1,9 @@
-import Phaser from "phaser";
-import { THEMES } from "../js/preload";
+import Phaser from 'phaser';
+import { THEMES } from '../js/preload';
 
 class PlayScene extends Phaser.Scene {
   constructor() {
-    super("PlayScene");
+    super('PlayScene');
   }
 
   create() {
@@ -14,9 +14,9 @@ class PlayScene extends Phaser.Scene {
     this.score = 0;
     this.deathCount = 0;
 
-    this.jumpSound = this.sound.add("jump", { volume: 0.2 });
-    this.hitSound = this.sound.add("hit", { volume: 0.2 });
-    this.reachSound = this.sound.add("reach", { volume: 0.2 });
+    this.jumpSound = this.sound.add('jump', { volume: 0.2 });
+    this.hitSound = this.sound.add('hit', { volume: 0.2 });
+    this.reachSound = this.sound.add('reach', { volume: 0.2 });
 
     this.physics.world.setBounds(0, 0, width, height - 26);
     this.startTrigger = this.physics.add
@@ -27,7 +27,7 @@ class PlayScene extends Phaser.Scene {
       .tileSprite(0, height, width, 26, `ground-${THEMES[this.deathCount].id}`)
       .setOrigin(0, 1);
     this.dino = this.physics.add
-      .sprite(0, height - 26, "dino-idle")
+      .sprite(0, height - 26, 'dino-idle')
       .setCollideWorldBounds(true)
       .setGravityY(5000)
       .setBodySize(64, 94)
@@ -36,8 +36,8 @@ class PlayScene extends Phaser.Scene {
       .setOffset(30, 0);
 
     this.scoreText = this.add
-      .text(width, 0, "00000", {
-        fill: "#fff",
+      .text(width, 0, '00000', {
+        fill: '#fff',
         font: '900 35px "Press Start 2P"',
         resolution: 5,
       })
@@ -46,8 +46,8 @@ class PlayScene extends Phaser.Scene {
       .setAlpha(0);
 
     this.highScoreText = this.add
-      .text(0, 0, "00000", {
-        fill: "#fff",
+      .text(0, 0, '00000', {
+        fill: '#fff',
         font: '900 35px "Press Start 2P"',
         resolution: 5,
       })
@@ -58,33 +58,33 @@ class PlayScene extends Phaser.Scene {
       .text(
         width / 2,
         height / 2,
-        "Press Spacebar/Jump to Start\nArrow Down/Duck to Duck",
+        'Press Spacebar/Jump to Start\nArrow Down/Duck to Duck',
         {
-          fill: "#fff",
+          fill: '#fff',
           font: '600 24px "Press Start 2P"',
-          align: "center",
+          align: 'center',
           resolution: 5,
-        }
+        },
       )
       .setFontFamily('"Press Start 2P"')
       .setOrigin(0.5);
 
     this.environment = this.add.group();
     this.environment.addMultiple([
-      this.add.image(width / 2, 170, "cloud"),
-      this.add.image(width - 80, 80, "cloud"),
-      this.add.image(width / 3, 220, "cloud"),
-      this.add.image(width / 6, 120, "cloud"),
-      this.add.image(width / 10, 150, "cloud"),
-      this.add.image(width / 1.5, 200, "cloud"),
+      this.add.image(width / 2, 170, 'cloud'),
+      this.add.image(width - 80, 80, 'cloud'),
+      this.add.image(width / 3, 220, 'cloud'),
+      this.add.image(width / 6, 120, 'cloud'),
+      this.add.image(width / 10, 150, 'cloud'),
+      this.add.image(width / 1.5, 200, 'cloud'),
     ]);
     this.environment.setAlpha(0);
 
     this.gameOverScreen = this.add
       .container(width / 2, height / 2 - 50)
       .setAlpha(0);
-    this.gameOverText = this.add.image(0, 0, "game-over");
-    this.restart = this.add.image(0, 80, "restart").setInteractive();
+    this.gameOverText = this.add.image(0, 0, 'game-over');
+    this.restart = this.add.image(0, 80, 'restart').setInteractive();
     this.gameOverScreen.add([this.gameOverText, this.restart]);
 
     this.obstacles = this.physics.add.group();
@@ -94,8 +94,8 @@ class PlayScene extends Phaser.Scene {
     this.initColliders();
     this.handleInputs();
     this.handleScore();
-    document.getElementById("dino").remove();
-    document.querySelector(".ground").remove();
+    document.getElementById('dino').remove();
+    document.querySelector('.ground').remove();
   }
 
   initColliders() {
@@ -106,20 +106,20 @@ class PlayScene extends Phaser.Scene {
         this.highScoreText.x = this.scoreText.x - this.scoreText.width - 20;
 
         const highScore = this.highScoreText.text.substr(
-          this.highScoreText.text.length - 5
+          this.highScoreText.text.length - 5,
         );
         const newScore =
           Number(this.scoreText.text) > Number(highScore)
             ? this.scoreText.text
             : highScore;
 
-        this.highScoreText.setText("HI " + newScore);
+        this.highScoreText.setText('HI ' + newScore);
         this.highScoreText.setAlpha(1);
 
         this.physics.pause();
         this.isGameRunning = false;
         this.anims.pauseAll();
-        this.dino.setTexture("dino-hurt");
+        this.dino.setTexture('dino-hurt');
         this.respawnTime = 0;
         this.gameSpeed = 10;
         this.gameOverScreen.setAlpha(1);
@@ -128,7 +128,7 @@ class PlayScene extends Phaser.Scene {
         this.deathCount++;
       },
       null,
-      this
+      this,
     );
   }
 
@@ -152,7 +152,7 @@ class PlayScene extends Phaser.Scene {
           callbackScope: this,
           callback: () => {
             this.dino.setVelocityX(80);
-            this.dino.play("dino-run", 1);
+            this.dino.play('dino-run', 1);
             this.isGameRunning = true;
             this.dino.setVelocityX(0);
             this.scoreText.setAlpha(1);
@@ -162,21 +162,21 @@ class PlayScene extends Phaser.Scene {
         });
       },
       null,
-      this
+      this,
     );
   }
 
   initAnims() {
     this.anims.create({
-      key: "dino-run",
-      frames: this.anims.generateFrameNumbers("dino"),
+      key: 'dino-run',
+      frames: this.anims.generateFrameNumbers('dino'),
       frameRate: 10,
       repeat: -1,
     });
 
     this.anims.create({
-      key: "dino-down-anim",
-      frames: this.anims.generateFrameNumbers("dino-down", {
+      key: 'dino-down-anim',
+      frames: this.anims.generateFrameNumbers('dino-down', {
         start: 0,
         end: 1,
       }),
@@ -185,8 +185,8 @@ class PlayScene extends Phaser.Scene {
     });
 
     this.anims.create({
-      key: "enemy-dino-fly",
-      frames: this.anims.generateFrameNumbers("enemy-bird", {
+      key: 'enemy-dino-fly',
+      frames: this.anims.generateFrameNumbers('enemy-bird', {
         start: 0,
         end: 1,
       }),
@@ -225,20 +225,20 @@ class PlayScene extends Phaser.Scene {
           score.unshift(0);
         }
 
-        this.scoreText.setText(score.join(""));
+        this.scoreText.setText(score.join(''));
       },
     });
   }
 
   handleInputs() {
-    this.restart.on("pointerdown", () => {
+    this.restart.on('pointerdown', () => {
       const theme = THEMES[this.deathCount % THEMES.length];
       this.ground.setTexture(`ground-${theme.id}`);
       document.querySelector(
-        ".slide:first-child .underground"
+        '.slide:first-child .underground',
       ).style.backgroundImage = `url(${theme.underground})`;
       document.querySelector(
-        ".slide:first-child"
+        '.slide:first-child',
       ).style.backgroundImage = `url(${theme.background})`;
       this.dino.setVelocityY(0);
       this.dino.body.height = 92;
@@ -259,10 +259,10 @@ class PlayScene extends Phaser.Scene {
       this.dino.body.height = 94;
       this.dino.body.offset.y = 0;
       this.dino.setVelocityY(-1500);
-      this.dino.setTexture("dino", 0);
+      this.dino.setTexture('dino', 0);
     };
-    this.input.keyboard.on("keydown-SPACE", jump);
-    document.getElementById("jump").addEventListener("touchstart", jump);
+    this.input.keyboard.on('keydown-SPACE', jump);
+    document.getElementById('jump').addEventListener('touchstart', jump);
 
     const duckStart = () => {
       if (!this.dino.body.onFloor() || !this.isGameRunning) {
@@ -272,8 +272,8 @@ class PlayScene extends Phaser.Scene {
       this.dino.setSize(150, 60);
       this.dino.setOffset(0, 34);
     };
-    this.input.keyboard.on("keydown-DOWN", duckStart);
-    document.getElementById("duck").addEventListener("touchstart", duckStart);
+    this.input.keyboard.on('keydown-DOWN', duckStart);
+    document.getElementById('duck').addEventListener('touchstart', duckStart);
 
     const duckEnd = () => {
       if (this.score !== 0 && !this.isGameRunning) {
@@ -283,8 +283,8 @@ class PlayScene extends Phaser.Scene {
       this.dino.setSize(64, 94);
       this.dino.setOffset(30, 0);
     };
-    this.input.keyboard.on("keyup-DOWN", duckEnd);
-    document.getElementById("duck").addEventListener("touchend", duckEnd);
+    this.input.keyboard.on('keyup-DOWN', duckEnd);
+    document.getElementById('duck').addEventListener('touchend', duckEnd);
   }
 
   placeObstacle() {
@@ -300,10 +300,10 @@ class PlayScene extends Phaser.Scene {
           this.game.config.height -
             enemyHeight[Math.floor(Math.random() * 2)] -
             26,
-          `enemy-bird`
+          `enemy-bird`,
         )
         .setOrigin(0, 1);
-      obstacle.play("enemy-dino-fly", 1);
+      obstacle.play('enemy-dino-fly', 1);
       obstacle.body.height = obstacle.body.height / 1.5;
     } else {
       const theme = THEMES[this.deathCount % THEMES.length];
@@ -311,7 +311,7 @@ class PlayScene extends Phaser.Scene {
         .create(
           this.game.config.width + distance,
           this.game.config.height - 26,
-          `obstacle-${theme.id}-${obstacleNum}`
+          `obstacle-${theme.id}-${obstacleNum}`,
         )
         .setOrigin(0, 1);
     }
@@ -348,11 +348,11 @@ class PlayScene extends Phaser.Scene {
 
     if (this.dino.body.deltaAbsY() > 0) {
       this.dino.anims.stop();
-      this.dino.setTexture("dino", 0);
+      this.dino.setTexture('dino', 0);
     } else {
       this.dino.body.height <= 60
-        ? this.dino.play("dino-down-anim", true)
-        : this.dino.play("dino-run", true);
+        ? this.dino.play('dino-down-anim', true)
+        : this.dino.play('dino-run', true);
     }
   }
 }

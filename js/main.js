@@ -1,34 +1,34 @@
-const smoothscroll = require("smoothscroll-polyfill");
+const smoothscroll = require('smoothscroll-polyfill');
 smoothscroll.polyfill();
 
-const { DINO_COLOR } = require("./preload");
+const { DINO_COLOR } = require('./preload');
 
 const photos = [DINO_COLOR.left, DINO_COLOR.right];
-const { initGame } = require("../game");
+const { initGame } = require('../game');
 const idlePhoto = DINO_COLOR.idle;
 
-const dino = document.getElementById("dino");
+const dino = document.getElementById('dino');
 let isRunning = false;
 let isPregame = false;
 let counter = 0;
 let timer = null;
-const wrapper = document.querySelector(".outer-wrapper");
+const wrapper = document.querySelector('.outer-wrapper');
 
 function easeInBubble() {
   const scrollRatio = wrapper.scrollTop / window.innerWidth;
-  document.querySelectorAll(".slide .nes-balloon").forEach((v, i) => {
+  document.querySelectorAll('.slide .nes-balloon').forEach((v, i) => {
     if (i < scrollRatio - 0.5) {
       v.style.opacity = 1;
-      v.style.transform = "rotate(0)";
+      v.style.transform = 'rotate(0)';
     } else {
       v.style.opacity = 0;
-      v.style.transform = "rotate(45deg)";
+      v.style.transform = 'rotate(45deg)';
     }
   });
 }
 
 wrapper.addEventListener(
-  "scroll",
+  'scroll',
   function () {
     easeInBubble();
 
@@ -52,12 +52,12 @@ wrapper.addEventListener(
       isRunning = false;
     }, 50);
   },
-  false
+  false,
 );
 
 let lastX = 0;
 let lastY = 0;
-document.addEventListener("touchmove", function (e) {
+document.addEventListener('touchmove', function (e) {
   const yDiff = e.touches[0].clientY - lastY;
   const xDiff = e.touches[0].clientX - lastX;
   lastY = e.touches[0].clientY;
@@ -68,20 +68,20 @@ document.addEventListener("touchmove", function (e) {
   const currentSlide = Math.floor(wrapper.scrollTop / window.innerWidth);
   wrapper.scrollTo({
     top: (currentSlide - diff / Math.abs(diff)) * window.innerWidth,
-    behavior: "smooth",
+    behavior: 'smooth',
   });
 });
-document.addEventListener("keydown", function (e) {
+document.addEventListener('keydown', function (e) {
   const currentSlide = Math.floor(wrapper.scrollTop / window.innerWidth);
-  if (e.key === "ArrowRight" && currentSlide < 5) {
+  if (e.key === 'ArrowRight' && currentSlide < 5) {
     wrapper.scrollTo({
       top: (currentSlide + 1) * window.innerWidth,
-      behavior: "smooth",
+      behavior: 'smooth',
     });
-  } else if (e.key === "ArrowLeft" && currentSlide > 0) {
+  } else if (e.key === 'ArrowLeft' && currentSlide > 0) {
     wrapper.scrollTo({
       top: (currentSlide - 1) * window.innerWidth,
-      behavior: "smooth",
+      behavior: 'smooth',
     });
   }
 });
@@ -95,24 +95,24 @@ setInterval(() => {
   counter = (counter + 1) % photos.length;
 }, 100);
 
-const playBtn = document.getElementById("btn-play");
-playBtn.addEventListener("click", () => {
+const playBtn = document.getElementById('btn-play');
+playBtn.addEventListener('click', () => {
   playBtn.remove();
-  const parent = document.querySelector(".slide");
-  const slides = document.querySelectorAll(".slide");
+  const parent = document.querySelector('.slide');
+  const slides = document.querySelectorAll('.slide');
   slides.forEach((val, key) => key > 0 && val.remove());
-  document.querySelector(".wrapper").style.width = "100vw";
-  document.querySelector(".wrapper").style.marginBottom = "-100vw";
+  document.querySelector('.wrapper').style.width = '100vw';
+  document.querySelector('.wrapper').style.marginBottom = '-100vw';
   isPregame = true;
   dino.style.left = 0;
   setTimeout(() => {
     document
-      .querySelectorAll(".slide:first-child div:not(.ground):not(.underground)")
+      .querySelectorAll('.slide:first-child div:not(.ground):not(.underground)')
       .forEach((v) => v.remove());
-    document.querySelector(".slide:first-child nav").innerHTML =
+    document.querySelector('.slide:first-child nav').innerHTML =
       '<a class="nes-btn is-warning" href="/">&lt; Back to site</a>';
     isPregame = false;
-    document.querySelector(".slide").innerHTML += `
+    document.querySelector('.slide').innerHTML += `
       <button class="nes-btn is-success" id="jump">Jump</button>
       <button class="nes-btn is-error" id="duck">Duck</button>
     `;

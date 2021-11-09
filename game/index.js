@@ -1,7 +1,7 @@
-import Phaser from "phaser";
+import Phaser from 'phaser';
 
-import PlayScene from "./PlayScene";
-import PreloadScene from "./PreloadScene";
+import PlayScene from './PlayScene';
+import PreloadScene from './PreloadScene';
 
 export function initGame(parent) {
   const config = {
@@ -11,7 +11,7 @@ export function initGame(parent) {
     pixelArt: true,
     transparent: true,
     physics: {
-      default: "arcade",
+      default: 'arcade',
       arcade: {
         debug: false,
       },

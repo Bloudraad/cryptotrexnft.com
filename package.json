@@ -9,7 +9,21 @@
     "clean": "rimraf .parcel-cache dist",
     "prebuild": "npm run clean",
     "postbuild": "copyfiles CNAME img/meta-banner.jpeg dist/",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "format": "prettier --config .prettierrc --write ./**/*.{html,js,json,css}",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky install",
+    "lint-staged": "lint-staged"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{html,js,json,css}": [
+      "prettier  --config .prettierrc --write",
+      "git add"
+    ]
   },
   "repository": {
     "type": "git",
@@ -24,7 +38,10 @@
   "homepage": "https://github.com/stanleynguyen/cryptotrexnft.com#readme",
   "devDependencies": {
     "copyfiles": "^2.4.1",
+    "husky": "^7.0.4",
+    "lint-staged": "^11.2.6",
     "parcel": "^2.0.0",
+    "prettier": "^2.4.1",
     "rimraf": "^3.0.2"
   },
   "dependencies": {
