@@ -4,8 +4,8 @@ export const config = {
         origin_address: '0x495f947276749Ce646f68AC8c248420045cb7b5e',
         token_address: '0x9b805ad1425b17e39870dfe7d1d48ec7fc53690b',
         opensea_api: 'https://api.opensea.io',
-        old_collection: 'cryptotrex',
-        new_collection: 'cryptotrex-genesis'
+        old_collection: 'cryptotrexold',
+        new_collection: 'cryptotrex'
     },
     4: {
         migration_address:'0x89332FaDe7d03e1E21Ec3ca1be46E157C1f73647',
