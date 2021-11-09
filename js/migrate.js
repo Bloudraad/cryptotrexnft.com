@@ -1,10 +1,7 @@
 import Web3 from "web3";
 import os from "./contracts/ERC1155Test.json";
 import ct from "./contracts/CryptoTrex.json";
-
-const v1 = process.env.V1;
-const ms = process.env.MS;
-const ta = process.env.TA;
+import {config} from "./config";
 
 function loadWeb3() {
   const eth = window.ethereum;
@@ -27,7 +24,12 @@ function loadWeb3() {
           return;
         }
         const address = accounts[0];
-        await renderItems(address);
+        const approved = await isApproved(web3, address);
+        if(approved) {
+          await renderItems(address);
+        } else {
+          await renderApprovalPrompt();
+        }
       });
       eth.on("chainChanged", () => {
         window.location.reload();
@@ -52,12 +54,6 @@ async function switchChain(web3) {
         },
       ],
     });
-
-    if (wasAdded) {
-      console.log("Thanks for your interest!");
-    } else {
-      console.log("Your loss!");
-    }
   } catch (error) {
     console.log(error);
   }
@@ -74,84 +70,113 @@ async function web3Address(web3) {
 async function batchMigrate(ids) {
   const web3 = loadWeb3();
   const address = await web3Address(web3);
+  const chainId = await web3.eth.getChainId();
   let tokenIds = [];
   ids.forEach((id) => {
     tokenIds.push(web3.utils.toBN(id));
   });
   if(tokenIds.length < 1) return;
-
-  const osc = new web3.eth.Contract(os.abi, v1);
-  osc.methods
-    .isApprovedForAll(address, ms)
-    .call({ from: address })
-    .then((result) => {
-      const c = new web3.eth.Contract(ct.abi, ms);
-      if (result) {
-        c.methods
-          .migrateBatch(tokenIds)
-          .send({ from: address })
-          .on("receipt", console.log)
-          .on("transactionHash", console.log);
-      } else {
-        osc.methods
-          .setApprovalForAll(ms, true)
-          .send({ from: address })
-          .on("receipt", () => {
-            c.methods
-              .migrateBatch(tokenIds)
-              .send({ from: address })
-              .on("receipt", console.log)
-              .on("transactionHash", console.log);
-          })
-          .on("transactionHash", console.log);
-      }
-    });
+  const c = new web3.eth.Contract(ct.abi, config[chainId].migration_address);
+  const batchMigrateBtn = document.getElementById("batchMigrateBtn");
+  c.methods.migrateBatch(tokenIds)
+           .send({ from: address })
+           .on("receipt", ()=>{
+              batchMigrateBtn.disabled = true;
+              batchMigrateBtn.textContent = "Migrated";
+              batchMigrateBtn.classList = "nes-btn is-success";
+           })
+           .on("transactionHash", hash=>{
+              batchMigrateBtn.textContent = "Migrating...";
+              batchMigrateBtn.classList = "nes-btn";
+              batchMigrateBtn.addEventListener('click', ()=>{
+                 window.open(`https://etherscan.io/tx/${hash}`, '_blank').focus();
+              });
+           })
+           .on("error", ()=>{
+              batchMigrateBtn.disabled = true;
+              batchMigrateBtn.textContent = "Failed";
+              batchMigrateBtn.classList = "nes-btn is-error";
+           })
 }
 
-async function migrate(id) {
+async function isApproved(web3, address) {
+  const chainId = await web3.eth.getChainId();
+  const osc = new web3.eth.Contract(os.abi, config[chainId].origin_address);
+  return await osc.methods
+    .isApprovedForAll(address, config[chainId].migration_address)
+    .call({ from: address });
+}
+
+async function approve() {
   const web3 = loadWeb3();
   const address = await web3Address(web3);
-  const tokenId = web3.utils.toBN(id);
-
-  const osc = new web3.eth.Contract(os.abi, v1);
+  const chainId = await web3.eth.getChainId();
+  const osc = new web3.eth.Contract(os.abi, config[chainId].origin_address);
   osc.methods
-    .isApprovedForAll(address, ms)
-    .call({ from: address })
-    .then((result) => {
-      const c = new web3.eth.Contract(ct.abi, ms);
-      if (result) {
-        c.methods
-          .migrate(tokenId)
-          .send({ from: address })
-          .on("receipt", console.log)
-          .on("transactionHash", console.log);
-      } else {
-        osc.methods
-          .setApprovalForAll(ms, true)
-          .send({ from: address })
-          .on("receipt", () => {
-            c.methods
-              .migrate(tokenId)
-              .send({ from: address })
-              .on("receipt", console.log)
-              .on("transactionHash", console.log);
-          })
-          .on("transactionHash", console.log);
-      }
-    });
+    .setApprovalForAll(config[chainId].migration_address, true)
+    .send({ from: address })
+    .on("receipt", () => {
+      const approveBtn = document.getElementById("approveBtn");
+      approveBtn.textContent = "Approved";
+      approveBtn.disabled = true;
+      approveBtn.classList = "nes-btn is-success is-disabled";
+      renderItems(address);
+    })
+    .on("transactionHash", hash=>{
+      const container = document.getElementById("approvalContainer");
+      const viewTx = document.createElement("a");
+      viewTx.classList = "nes-btn";
+      viewTx.href = `https://etherscan.io/tx/${hash}`;
+      viewTx.target = "_blank";
+      viewTx.text = "View Transaction";
+      container.appendChild(viewTx);
 
-  return;
+      const approveBtn = document.getElementById("approveBtn");
+      approveBtn.textContent = "Approving...";
+      approveBtn.disabled = true;
+      approveBtn.classList = "nes-btn is-primary";
+    });
 }
 
-async function addToken(web3) {
-  const tokenAddress = ta;
+async function migrate(id, btn) {
+  const web3 = loadWeb3();
+  const address = await web3Address(web3);
+  const chainId = await web3.eth.getChainId();
+  const tokenId = web3.utils.toBN(id);
+
+  const c = new web3.eth.Contract(ct.abi, config[chainId].migration_address);
+  c.methods.migrate(tokenId)
+           .send({ from: address })
+           .on("receipt", ()=>{
+              btn.disabled = true;
+              btn.classList = "nes-btn is-success";
+              btn.textContent = "Migrated";
+           })
+           .on("transactionHash", hash=>{
+             btn.textContent = "Migrating...";
+             btn.addEventListener('click', ()=>{
+                window.open(`https://etherscan.io/tx/${hash}`, '_blank').focus();
+             });
+           })
+           .on("error", ()=>{
+              btn.disabled = true;
+              btn.textContent = "Failed";
+              btn.classList = "nes-btn is-error";
+           })
+}
+
+async function addToken(eth) {
+  const web3 = loadWeb3();
+  const chainId = await web3.eth.getChainId();
+
+  const tokenAddress = config[chainId].token_address;
   const tokenSymbol = "FOSSIL";
   const tokenDecimals = 18;
   const tokenImage = "https://gateway.pinata.cloud/ipfs/QmZpPpnuASN7riY1UwVftSMowJAgMbf9x1k9pCaH5buSEQ";
 
   try {
     // wasAdded is a boolean. Like any RPC method, an error may be thrown.
-    const wasAdded = await web3.request({
+    await eth.request({
       method: "wallet_watchAsset",
       params: {
         type: "ERC20", // Initially only supports ERC20, but eventually more!
@@ -163,37 +188,58 @@ async function addToken(web3) {
         },
       },
     });
-
-    if (wasAdded) {
-      console.log("Thanks for your interest!");
-    } else {
-      console.log("Your loss!");
-    }
   } catch (error) {
     console.log(error);
   }
 }
 let itemIds = [];
 
-const opensea = process.env.OPENSEA;
-async function getV1Items(address) {
-  const url = `${opensea}/api/v1/assets?offset=0&limit=50&collection=cryptotrex&owner=${address}`;
+async function getV1Items(address, opensea, oldCollection) {
+  const url = `${opensea}/api/v1/assets?offset=0&limit=50&collection=${oldCollection}&owner=${address}`;
   const res = await fetch(url);
   const body = await res.json();
   return body.assets;
 }
 
-async function getV2Items(address) {
-  const url = `${opensea}/api/v1/assets?offset=0&limit=50&collection=cryptotrex-genesis&owner=${address}`;
+async function getV2Items(address, opensea, newCollection) {
+  const url = `${opensea}/api/v1/assets?offset=0&limit=50&collection=${newCollection}&owner=${address}`;
   const res = await fetch(url);
   const body = await res.json();
   return body.assets;
 }
+
+async function renderApprovalPrompt() {
+  const apprView = document.getElementById("approvalView");
+  const migrView = document.getElementById("migrationView");
+  apprView.hidden = false;
+  migrView.hidden = true;
+
+  const web3 = loadWeb3();
+  const address = await web3Address(web3);
+  const chainId = await web3.eth.getChainId();
+  const v1 = await getV1Items(address, config[chainId].opensea_api, config[chainId].old_collection);
+
+  if (v1.length < 1) {
+    const warning = document.getElementById("warningNoTrex");
+    warning.hidden = false;
+  }
+}
+
 async function renderItems(address) {
-  const v1 = await getV1Items(address);
-  const v2 = await getV2Items(address);
+  const apprView = document.getElementById("approvalView");
+  const migrView = document.getElementById("migrationView");
+  apprView.hidden = true;
+  migrView.hidden = false;
+  const web3 = loadWeb3();
+  const chainId = await web3.eth.getChainId();
+  const v1 = await getV1Items(address, config[chainId].opensea_api, config[chainId].old_collection);
+  const v2 = await getV2Items(address, config[chainId].opensea_api, config[chainId].new_collection);
 
   const list = document.querySelector("#card-list");
+  if(web3.currentProvider.isMetaMask) {
+    const addTokenBtn = document.getElementById("addTokenBtn");
+    addTokenBtn.hidden = false;
+  }
 
   if (v1.length < 1) {
     const batchMigrateBtn = document.getElementById("batchMigrateBtn");
@@ -203,15 +249,19 @@ async function renderItems(address) {
   }
 
   if (v1) {
-    v1.forEach((e) => {
+    const c = new web3.eth.Contract(os.abi, config[chainId].origin_address);
+    v1.forEach(async (e) => {
       itemIds.push(e.token_id);
-      list.appendChild(buildCard(e, false));
+      const balance = await c.methods.balanceOf(address, e.token_id)
+               .call({ from: address });
+      if(balance && balance > 0){
+        list.appendChild(buildCard(e, false));
+      }
     });
   }
 
   if (v2) {
     v2.forEach((e) => {
-      console.log(e);
       list.appendChild(buildCard(e, true));
     });
   }
@@ -237,6 +287,7 @@ function buildCard(e, migrated) {
   nameDiv.textContent = e.name;
   const migrateBtn = document.createElement("button");
   migrateBtn.type = "button";
+
   if (!migrated) {
     migrateBtn.classList = "nes-btn";
     migrateBtn.textContent = "Migrate";
@@ -246,7 +297,7 @@ function buildCard(e, migrated) {
     migrateBtn.textContent = "Migrated";
   }
   migrateBtn.style = "width: 100%";
-  migrateBtn.addEventListener("click", () => migrate(e.token_id));
+  migrateBtn.addEventListener("click", () => migrate(e.token_id, migrateBtn));
   card.appendChild(imageContainer);
   card.appendChild(nameDiv);
   card.appendChild(migrateBtn);
@@ -257,7 +308,6 @@ function buildCard(e, migrated) {
 
   return cardContainer;
 }
-// document.addEventListener('load', renderItems);
 
 const batchMigrateBtn = document.getElementById("batchMigrateBtn");
 batchMigrateBtn.addEventListener("click", async () => {
@@ -271,7 +321,12 @@ async function load() {
     return;
   }
   await switchChain(window.ethereum);
-  await renderItems(address);
+  const approved = await isApproved(web3, address);
+  if(approved) {
+    await renderItems(address);
+  } else {
+    await renderApprovalPrompt();
+  }
 }
 
 window.onload = load;
@@ -279,4 +334,9 @@ window.onload = load;
 const addTokenBtn = document.getElementById("addTokenBtn");
 addTokenBtn.addEventListener("click", async () => {
   await addToken(window.ethereum);
+});
+
+const approveBtn = document.getElementById("approveBtn");
+approveBtn.addEventListener("click", async () => {
+  await approve();
 });

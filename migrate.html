@@ -34,7 +34,7 @@
   <dialog class="nes-dialog" id="dialog-connect">
     <form method="dialog">
       <p class="title">Not connected</p>
-      <p>Please connect your metamask account.</p>
+      <p>Please connect your Web3 wallet.</p>
       <menu class="dialog-menu">
         <button class="nes-btn">Back</button>
         <button class="nes-btn is-primary">Connect</button>
@@ -58,7 +58,35 @@
           <a href="https://www.instagram.com/cryptotrexnft/" target="_blank"><i class="nes-icon instagram"></i></a>
         </div>
       </nav>
-      <div class="container">
+
+      <div class="container" id="approvalView" hidden>
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="nes-container is-rounded">
+              <p>
+                Before we begin, you need to approve your CryptoTrex collection before migrating, which requires a one-time gas fee.
+              </p>
+              <p>
+                <i style="font-size: xx-small; color: #727272;">Please note that this approval transaction is Ethereum's built-in security mechanism, which can't and shouldn't be bypassed.</i>
+              </p>
+              <p style="margin-top: 4vh">
+                After the transaction is successful you will be redirected to the migration page.
+              </p>
+              <div id="approvalContainer" style="display:flex; margin-bottom: 6vh; margin-top: 4vh;">
+                <button type="button" class="nes-btn is-primary" id="approveBtn" style="margin-right: 10px;">Approve</button>
+              </div>
+              <p hidden style="font-size: xx-small;color: red" id="warningNoTrex">
+                You don't have any CryptoTrex to migrate. Are you sure you want to proceed?
+              </p>
+              <p style="font-size: xx-small;color: #727272">
+                Stuck in this page? Click <a><u onclick="javascript:window.location.reload();" style="color: #489ce7;">here</u></a> to reload.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container" id="migrationView" hidden>
         <div class="row">
           <div class="col-xs-12">
             <div class="nes-container is-rounded">
@@ -68,32 +96,20 @@
               <ul class="nes-list is-disc">
                 <li>Change your duplicate T-rex into a whole new T-rex.</li>
                 <li>Assign correct properties to your T-rexes.</li>
-                <li>Send you free 10 $FOSSIL tokens for each T-rex migrated.</li>
+                <li>Rewards you 10 $FOSSIL tokens for each T-rex migrated.</li>
               </ul>
-              <p>Follow this 3 basic steps to migrate your CryptoTrexes</p>
-              <ol>
-                <li><strong>Sign In</strong>, metamask will prompt you to sign and connect the CryptoTrex website to
-                  your address.
-                </li>
-                <li>
-                  <strong>Approve</strong>, before we begin migrating, we would need to approve the migration action.
-                  This is Ethereum's security measure to make sure that the next transaction is not malicious.
-                </li>
-                <li><strong>Migrate</strong>, finally migrate your CryptoTrex by migrating one-by-one or by pressing the
-                  "Migrate All" button to save gas if you have multiple Rexes.
-                </li>
-              </ol>
             </div>
           </div>
         </div>
         <div class="row pt-1">
           <div class="col-xs-12 justify-content-between d-flex">
             <button type="button" class="nes-btn" id="batchMigrateBtn" style="margin-right: 10px;">Migrate All</button>
-            <button type="button" class="nes-btn" id="addTokenBtn">Add $FOSSIL token to metamask</button>
+            <button type="button" class="nes-btn" id="addTokenBtn" hidden>Add $FOSSIL token</button>
           </div>
         </div>
         <div class="row pt-1" id="card-list">
         </div>
+
         <div class="row pb-1">
           <div class="col-xs-12">
             <div class="nes-container is-rounded">
