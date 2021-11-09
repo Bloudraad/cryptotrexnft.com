@@ -1,7 +1,7 @@
-import Web3 from "web3";
-import os from "./contracts/ERC1155Test.json";
-import ct from "./contracts/CryptoTrex.json";
-import {config} from "./config";
+import Web3 from 'web3';
+import os from './contracts/ERC1155Test.json';
+import ct from './contracts/CryptoTrex.json';
+import { config } from './config';
 
 function loadWeb3() {
   const eth = window.ethereum;
@@ -9,29 +9,29 @@ function loadWeb3() {
     const web3 = new Web3(eth);
     try {
       eth
-        .request({ method: "eth_requestAccounts" })
+        .request({ method: 'eth_requestAccounts' })
         .then((result) => {
           console.log(result);
         })
         .catch((error) => {
-          const d = document.getElementById("dialog-connect");
-          d.addEventListener("click", load);
+          const d = document.getElementById('dialog-connect');
+          d.addEventListener('click', load);
           d.showModal();
         });
-      eth.on("accountsChanged", async (accounts) => {
+      eth.on('accountsChanged', async (accounts) => {
         // if account changed from metamask, or first time logging in
         if (accounts.length < 1) {
           return;
         }
         const address = accounts[0];
         const approved = await isApproved(web3, address);
-        if(approved) {
+        if (approved) {
           await renderItems(address);
         } else {
           await renderApprovalPrompt();
         }
       });
-      eth.on("chainChanged", () => {
+      eth.on('chainChanged', () => {
         window.location.reload();
       });
     } catch (err) {
@@ -40,17 +40,17 @@ function loadWeb3() {
 
     return web3;
   }
-  return new Web3(Web3.givenProvider || "ws://localhost:7545");
+  return new Web3(Web3.givenProvider || 'ws://localhost:7545');
 }
 
 async function switchChain(web3) {
   try {
     // wasAdded is a boolean. Like any RPC method, an error may be thrown.
     const wasAdded = await web3.request({
-      method: "wallet_switchEthereumChain",
+      method: 'wallet_switchEthereumChain',
       params: [
         {
-          chainId: "0x1",
+          chainId: '0x1',
         },
       ],
     });
@@ -75,28 +75,29 @@ async function batchMigrate(ids) {
   ids.forEach((id) => {
     tokenIds.push(web3.utils.toBN(id));
   });
-  if(tokenIds.length < 1) return;
+  if (tokenIds.length < 1) return;
   const c = new web3.eth.Contract(ct.abi, config[chainId].migration_address);
-  const batchMigrateBtn = document.getElementById("batchMigrateBtn");
-  c.methods.migrateBatch(tokenIds)
-           .send({ from: address })
-           .on("receipt", ()=>{
-              batchMigrateBtn.disabled = true;
-              batchMigrateBtn.textContent = "Migrated";
-              batchMigrateBtn.classList = "nes-btn is-success";
-           })
-           .on("transactionHash", hash=>{
-              batchMigrateBtn.textContent = "Migrating...";
-              batchMigrateBtn.classList = "nes-btn";
-              batchMigrateBtn.addEventListener('click', ()=>{
-                 window.open(`https://etherscan.io/tx/${hash}`, '_blank').focus();
-              });
-           })
-           .on("error", ()=>{
-              batchMigrateBtn.disabled = true;
-              batchMigrateBtn.textContent = "Failed";
-              batchMigrateBtn.classList = "nes-btn is-error";
-           })
+  const batchMigrateBtn = document.getElementById('batchMigrateBtn');
+  c.methods
+    .migrateBatch(tokenIds)
+    .send({ from: address })
+    .on('receipt', () => {
+      batchMigrateBtn.disabled = true;
+      batchMigrateBtn.textContent = 'Migrated';
+      batchMigrateBtn.classList = 'nes-btn is-success';
+    })
+    .on('transactionHash', (hash) => {
+      batchMigrateBtn.textContent = 'Migrating...';
+      batchMigrateBtn.classList = 'nes-btn';
+      batchMigrateBtn.addEventListener('click', () => {
+        window.open(`https://etherscan.io/tx/${hash}`, '_blank').focus();
+      });
+    })
+    .on('error', () => {
+      batchMigrateBtn.disabled = true;
+      batchMigrateBtn.textContent = 'Failed';
+      batchMigrateBtn.classList = 'nes-btn is-error';
+    });
 }
 
 async function isApproved(web3, address) {
@@ -115,26 +116,26 @@ async function approve() {
   osc.methods
     .setApprovalForAll(config[chainId].migration_address, true)
     .send({ from: address })
-    .on("receipt", () => {
-      const approveBtn = document.getElementById("approveBtn");
-      approveBtn.textContent = "Approved";
+    .on('receipt', () => {
+      const approveBtn = document.getElementById('approveBtn');
+      approveBtn.textContent = 'Approved';
       approveBtn.disabled = true;
-      approveBtn.classList = "nes-btn is-success is-disabled";
+      approveBtn.classList = 'nes-btn is-success is-disabled';
       renderItems(address);
     })
-    .on("transactionHash", hash=>{
-      const container = document.getElementById("approvalContainer");
-      const viewTx = document.createElement("a");
-      viewTx.classList = "nes-btn";
+    .on('transactionHash', (hash) => {
+      const container = document.getElementById('approvalContainer');
+      const viewTx = document.createElement('a');
+      viewTx.classList = 'nes-btn';
       viewTx.href = `https://etherscan.io/tx/${hash}`;
-      viewTx.target = "_blank";
-      viewTx.text = "View Transaction";
+      viewTx.target = '_blank';
+      viewTx.text = 'View Transaction';
       container.appendChild(viewTx);
 
-      const approveBtn = document.getElementById("approveBtn");
-      approveBtn.textContent = "Approving...";
+      const approveBtn = document.getElementById('approveBtn');
+      approveBtn.textContent = 'Approving...';
       approveBtn.disabled = true;
-      approveBtn.classList = "nes-btn is-primary";
+      approveBtn.classList = 'nes-btn is-primary';
     });
 }
 
@@ -145,24 +146,25 @@ async function migrate(id, btn) {
   const tokenId = web3.utils.toBN(id);
 
   const c = new web3.eth.Contract(ct.abi, config[chainId].migration_address);
-  c.methods.migrate(tokenId)
-           .send({ from: address })
-           .on("receipt", ()=>{
-              btn.disabled = true;
-              btn.classList = "nes-btn is-success";
-              btn.textContent = "Migrated";
-           })
-           .on("transactionHash", hash=>{
-             btn.textContent = "Migrating...";
-             btn.addEventListener('click', ()=>{
-                window.open(`https://etherscan.io/tx/${hash}`, '_blank').focus();
-             });
-           })
-           .on("error", ()=>{
-              btn.disabled = true;
-              btn.textContent = "Failed";
-              btn.classList = "nes-btn is-error";
-           })
+  c.methods
+    .migrate(tokenId)
+    .send({ from: address })
+    .on('receipt', () => {
+      btn.disabled = true;
+      btn.classList = 'nes-btn is-success';
+      btn.textContent = 'Migrated';
+    })
+    .on('transactionHash', (hash) => {
+      btn.textContent = 'Migrating...';
+      btn.addEventListener('click', () => {
+        window.open(`https://etherscan.io/tx/${hash}`, '_blank').focus();
+      });
+    })
+    .on('error', () => {
+      btn.disabled = true;
+      btn.textContent = 'Failed';
+      btn.classList = 'nes-btn is-error';
+    });
 }
 
 async function addToken(eth) {
@@ -170,16 +172,17 @@ async function addToken(eth) {
   const chainId = await web3.eth.getChainId();
 
   const tokenAddress = config[chainId].token_address;
-  const tokenSymbol = "FOSSIL";
+  const tokenSymbol = 'FOSSIL';
   const tokenDecimals = 18;
-  const tokenImage = "https://gateway.pinata.cloud/ipfs/QmZpPpnuASN7riY1UwVftSMowJAgMbf9x1k9pCaH5buSEQ";
+  const tokenImage =
+    'https://gateway.pinata.cloud/ipfs/QmZpPpnuASN7riY1UwVftSMowJAgMbf9x1k9pCaH5buSEQ';
 
   try {
     // wasAdded is a boolean. Like any RPC method, an error may be thrown.
     await eth.request({
-      method: "wallet_watchAsset",
+      method: 'wallet_watchAsset',
       params: {
-        type: "ERC20", // Initially only supports ERC20, but eventually more!
+        type: 'ERC20', // Initially only supports ERC20, but eventually more!
         options: {
           address: tokenAddress, // The address that the token is at.
           symbol: tokenSymbol, // A ticker symbol or shorthand, up to 5 chars.
@@ -209,42 +212,54 @@ async function getV2Items(address, opensea, newCollection) {
 }
 
 async function renderApprovalPrompt() {
-  const apprView = document.getElementById("approvalView");
-  const migrView = document.getElementById("migrationView");
+  const apprView = document.getElementById('approvalView');
+  const migrView = document.getElementById('migrationView');
   apprView.hidden = false;
   migrView.hidden = true;
 
   const web3 = loadWeb3();
   const address = await web3Address(web3);
   const chainId = await web3.eth.getChainId();
-  const v1 = await getV1Items(address, config[chainId].opensea_api, config[chainId].old_collection);
+  const v1 = await getV1Items(
+    address,
+    config[chainId].opensea_api,
+    config[chainId].old_collection,
+  );
 
   if (v1.length < 1) {
-    const warning = document.getElementById("warningNoTrex");
+    const warning = document.getElementById('warningNoTrex');
     warning.hidden = false;
   }
 }
 
 async function renderItems(address) {
-  const apprView = document.getElementById("approvalView");
-  const migrView = document.getElementById("migrationView");
+  const apprView = document.getElementById('approvalView');
+  const migrView = document.getElementById('migrationView');
   apprView.hidden = true;
   migrView.hidden = false;
   const web3 = loadWeb3();
   const chainId = await web3.eth.getChainId();
-  const v1 = await getV1Items(address, config[chainId].opensea_api, config[chainId].old_collection);
-  const v2 = await getV2Items(address, config[chainId].opensea_api, config[chainId].new_collection);
+  const v1 = await getV1Items(
+    address,
+    config[chainId].opensea_api,
+    config[chainId].old_collection,
+  );
+  const v2 = await getV2Items(
+    address,
+    config[chainId].opensea_api,
+    config[chainId].new_collection,
+  );
 
-  const list = document.querySelector("#card-list");
-  if(web3.currentProvider.isMetaMask) {
-    const addTokenBtn = document.getElementById("addTokenBtn");
+  const list = document.querySelector('#card-list');
+  if (web3.currentProvider.isMetaMask) {
+    const addTokenBtn = document.getElementById('addTokenBtn');
     addTokenBtn.hidden = false;
   }
 
   if (v1.length < 1) {
-    const batchMigrateBtn = document.getElementById("batchMigrateBtn");
-    batchMigrateBtn.textContent = "Nothing to migrate";
-    batchMigrateBtn.classList = "nes-btn is-disabled";
+    const batchMigrateBtn = document.getElementById('batchMigrateBtn');
+    batchMigrateBtn.textContent = 'Nothing to migrate';
+    batchMigrateBtn.classList = 'nes-btn is-disabled';
     batchMigrateBtn.disabled = true;
   }
 
@@ -252,9 +267,10 @@ async function renderItems(address) {
     const c = new web3.eth.Contract(os.abi, config[chainId].origin_address);
     v1.forEach(async (e) => {
       itemIds.push(e.token_id);
-      const balance = await c.methods.balanceOf(address, e.token_id)
-               .call({ from: address });
-      if(balance && balance > 0){
+      const balance = await c.methods
+        .balanceOf(address, e.token_id)
+        .call({ from: address });
+      if (balance && balance > 0) {
         list.appendChild(buildCard(e, false));
       }
     });
@@ -268,49 +284,49 @@ async function renderItems(address) {
 }
 
 function buildCard(e, migrated) {
-  const card = document.createElement("div");
-  card.classList = "nes-container item-card is-rounded";
-  card.style = "background-color: white; display: block;";
-  const imageContainer = document.createElement("a");
-  imageContainer.classList = "nes-container is-rounded";
+  const card = document.createElement('div');
+  card.classList = 'nes-container item-card is-rounded';
+  card.style = 'background-color: white; display: block;';
+  const imageContainer = document.createElement('a');
+  imageContainer.classList = 'nes-container is-rounded';
   imageContainer.href = e.permalink;
-  imageContainer.target = "_blank";
+  imageContainer.target = '_blank';
   imageContainer.style =
-    "background-color: white; padding: 0px !important; display: flex; justify-content: center";
-  const image = document.createElement("img");
+    'background-color: white; padding: 0px !important; display: flex; justify-content: center';
+  const image = document.createElement('img');
   image.src = e.image_thumbnail_url;
-  image.crossOrigin = "anonymous";
-  image.style.width = "100%";
+  image.crossOrigin = 'anonymous';
+  image.style.width = '100%';
   imageContainer.appendChild(image);
-  const nameDiv = document.createElement("p");
-  nameDiv.classList.add("pt-1");
+  const nameDiv = document.createElement('p');
+  nameDiv.classList.add('pt-1');
   nameDiv.textContent = e.name;
-  const migrateBtn = document.createElement("button");
-  migrateBtn.type = "button";
+  const migrateBtn = document.createElement('button');
+  migrateBtn.type = 'button';
 
   if (!migrated) {
-    migrateBtn.classList = "nes-btn";
-    migrateBtn.textContent = "Migrate";
+    migrateBtn.classList = 'nes-btn';
+    migrateBtn.textContent = 'Migrate';
   } else {
-    migrateBtn.classList = "nes-btn is-disabled";
+    migrateBtn.classList = 'nes-btn is-disabled';
     migrateBtn.disabled = true;
-    migrateBtn.textContent = "Migrated";
+    migrateBtn.textContent = 'Migrated';
   }
-  migrateBtn.style = "width: 100%";
-  migrateBtn.addEventListener("click", () => migrate(e.token_id, migrateBtn));
+  migrateBtn.style = 'width: 100%';
+  migrateBtn.addEventListener('click', () => migrate(e.token_id, migrateBtn));
   card.appendChild(imageContainer);
   card.appendChild(nameDiv);
   card.appendChild(migrateBtn);
 
-  const cardContainer = document.createElement("div");
-  cardContainer.classList.add("col-md-3", "col-xs-6", "pb-1");
+  const cardContainer = document.createElement('div');
+  cardContainer.classList.add('col-md-3', 'col-xs-6', 'pb-1');
   cardContainer.appendChild(card);
 
   return cardContainer;
 }
 
-const batchMigrateBtn = document.getElementById("batchMigrateBtn");
-batchMigrateBtn.addEventListener("click", async () => {
+const batchMigrateBtn = document.getElementById('batchMigrateBtn');
+batchMigrateBtn.addEventListener('click', async () => {
   await batchMigrate(itemIds);
 });
 
@@ -322,7 +338,7 @@ async function load() {
   }
   await switchChain(window.ethereum);
   const approved = await isApproved(web3, address);
-  if(approved) {
+  if (approved) {
     await renderItems(address);
   } else {
     await renderApprovalPrompt();
@@ -331,12 +347,12 @@ async function load() {
 
 window.onload = load;
 
-const addTokenBtn = document.getElementById("addTokenBtn");
-addTokenBtn.addEventListener("click", async () => {
+const addTokenBtn = document.getElementById('addTokenBtn');
+addTokenBtn.addEventListener('click', async () => {
   await addToken(window.ethereum);
 });
 
-const approveBtn = document.getElementById("approveBtn");
-approveBtn.addEventListener("click", async () => {
+const approveBtn = document.getElementById('approveBtn');
+approveBtn.addEventListener('click', async () => {
   await approve();
 });
