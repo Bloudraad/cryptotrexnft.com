@@ -1,7 +1,7 @@
 import os from './contracts/ERC1155Test.json';
 import ct from './contracts/CryptoTrex.json';
 import { config } from './config';
-import { loadWeb3, web3Address } from './web3.js';
+import { loadWeb3, web3Address, switchChain } from './web3.js';
 
 function showModal() {
   const d = document.getElementById('dialog-connect');
@@ -294,6 +294,7 @@ window.onload = async ()=>{
   try {
     const web3 = await loadWeb3();
     const address = await web3Address(web3);
+    switchChain(window.ethereum);
     render(address, web3);
   } catch(err) {
     console.log(err)

@@ -24,10 +24,7 @@ export async function initWalletConnect() {
 
 export async function initWeb3(eth) {
   const web3 = new Web3(eth);
-  const res = await eth.request({ method: 'eth_requestAccounts' })
-  console.log(res);
-
-  await switchChain(eth);
+  await eth.request({ method: 'eth_requestAccounts' })
   eth.on('accountsChanged', async (accounts) => {
       console.log(accounts)
   });
