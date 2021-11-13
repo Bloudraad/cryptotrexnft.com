@@ -22,82 +22,42 @@ export async function initWalletConnect() {
   return web3;
 }
 
-export async function initWeb3() {
+export async function initWeb3(eth) {
   const web3 = new Web3(eth);
-  await eth.request({ method: 'eth_requestAccounts' })
-  providerCallback(eth, web3);
-  return web3;
-}
+  const res = await eth.request({ method: 'eth_requestAccounts' })
+  console.log(res);
 
-export function providerCallback(provider, web3) {
-  provider.on("accountsChanged", async (accounts) => {
-    if (accounts.length < 1) {
-      return;
-    }
-    const address = accounts[0];
-    const approved = await isApproved(web3, address);
-    if (approved) {
-      await renderItems(address, web3);
-    } else {
-      await renderApprovalPrompt();
-    }
+  await switchChain(eth);
+  eth.on('accountsChanged', async (accounts) => {
+      console.log(accounts)
   });
-
-  provider.onConnect = async () => {
-    console.log('connected');
-    const address = await web3Address(web3);
-    if (!address) {
-      return;
-    }
-    const approved = await isApproved(web3, address);
-    if (approved) {
-      await renderItems(address, web3);
-    } else {
-      await renderApprovalPrompt();
-    }
-  }
-
-  provider.on("chainChanged", (chainId) => {
+  eth.on('chainChanged', () => {
     window.location.reload();
   });
-
-  provider.on("connect", async () => {
-    console.log('connected');
-    const address = await web3Address(web3);
-    if (!address) {
-      return;
-    }
-    const approved = await isApproved(web3, address);
-    if (approved) {
-      await renderItems(address, web3);
-    } else {
-      await renderApprovalPrompt();
-    }
-  });
-
-  provider.on("disconnect", (code, reason) => {
-    callback();
-  });
+  return web3;
 }
 
 export async function loadWeb3() {
   const eth = window.ethereum;
   if (eth) {
-    await switchChain(eth);
-    return initWeb3();
+    return await initWeb3(eth);
   }
   return await initWalletConnect();
 }
 
-export async function switchChain(web3) {
-    const wasAdded = await web3.request({
-        method: 'wallet_switchEthereumChain',
-        params: [
-        {
-            chainId: '0x1',
-        },
-        ],
-    });
+export async function switchChain(eth) {
+    try {
+        await eth.request({
+             method: 'wallet_switchEthereumChain',
+             params: [
+             {
+                 chainId: '0x1',
+             },
+             ],
+         });
+    } catch (err) {
+        console.error(err)
+    }
 }
 
 export async function web3Address(web3) {

@@ -296,6 +296,7 @@ window.onload = async ()=>{
     const address = await web3Address(web3);
     render(address, web3);
   } catch(err) {
+    console.log(err)
     showModal();
   }
 };
