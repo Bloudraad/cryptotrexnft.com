@@ -14,7 +14,7 @@ function showModal() {
       render(address, web3);
     } catch(err) {
       console.log(err);
-      showModal();
+      window.reload();
     }
   });
 }
