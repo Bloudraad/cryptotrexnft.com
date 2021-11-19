@@ -3,22 +3,6 @@ import ct from './contracts/CryptoTrex.json';
 import { config } from './config';
 import { loadWeb3, web3Address, switchChain } from './web3.js';
 
-function showModal() {
-  const d = document.getElementById('dialog-connect');
-  const wc = document.getElementById('wc-connect');
-  d.showModal();
-  wc.addEventListener('click', async ()=>{
-    try {
-      const web3 = await loadWeb3();
-      const address = await web3Address(web3);
-      render(address, web3);
-    } catch(err) {
-      console.log(err);
-      window.reload();
-    }
-  });
-}
-
 async function render(address, web3) {
   const approved = await isApproved(web3, address);
   if (approved) {
@@ -297,8 +281,7 @@ window.onload = async ()=>{
     switchChain(window.ethereum);
     render(address, web3);
   } catch(err) {
-    console.log(err)
-    showModal();
+    console.log(err);
   }
 };
 
