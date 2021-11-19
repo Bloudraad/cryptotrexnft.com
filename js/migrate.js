@@ -1,74 +1,19 @@
-import Web3 from 'web3';
 import os from './contracts/ERC1155Test.json';
 import ct from './contracts/CryptoTrex.json';
 import { config } from './config';
+import { loadWeb3, web3Address, switchChain } from './web3.js';
 
-function loadWeb3() {
-  const eth = window.ethereum;
-  if (eth) {
-    const web3 = new Web3(eth);
-    try {
-      eth
-        .request({ method: 'eth_requestAccounts' })
-        .then((result) => {
-          console.log(result);
-        })
-        .catch((error) => {
-          const d = document.getElementById('dialog-connect');
-          d.addEventListener('click', load);
-          d.showModal();
-        });
-      eth.on('accountsChanged', async (accounts) => {
-        // if account changed from metamask, or first time logging in
-        if (accounts.length < 1) {
-          return;
-        }
-        const address = accounts[0];
-        const approved = await isApproved(web3, address);
-        if (approved) {
-          await renderItems(address);
-        } else {
-          await renderApprovalPrompt();
-        }
-      });
-      eth.on('chainChanged', () => {
-        window.location.reload();
-      });
-    } catch (err) {
-      console.log(err);
-    }
-
-    return web3;
+async function render(address, web3) {
+  const approved = await isApproved(web3, address);
+  if (approved) {
+    await renderItems(address, web3);
+  } else {
+    await renderApprovalPrompt();
   }
-  return new Web3(Web3.givenProvider || 'ws://localhost:7545');
-}
-
-async function switchChain(web3) {
-  try {
-    // wasAdded is a boolean. Like any RPC method, an error may be thrown.
-    const wasAdded = await web3.request({
-      method: 'wallet_switchEthereumChain',
-      params: [
-        {
-          chainId: '0x1',
-        },
-      ],
-    });
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-async function web3Address(web3) {
-  const addr = await web3.eth.getAccounts();
-  if (addr.length < 1) {
-    return;
-  }
-  return addr[0];
 }
 
 async function batchMigrate(ids) {
-  const web3 = loadWeb3();
+  const web3 = await loadWeb3();
   const address = await web3Address(web3);
   const chainId = await web3.eth.getChainId();
   let tokenIds = [];
@@ -109,7 +54,7 @@ async function isApproved(web3, address) {
 }
 
 async function approve() {
-  const web3 = loadWeb3();
+  const web3 = await loadWeb3();
   const address = await web3Address(web3);
   const chainId = await web3.eth.getChainId();
   const osc = new web3.eth.Contract(os.abi, config[chainId].origin_address);
@@ -121,7 +66,7 @@ async function approve() {
       approveBtn.textContent = 'Approved';
       approveBtn.disabled = true;
       approveBtn.classList = 'nes-btn is-success is-disabled';
-      renderItems(address);
+      renderItems(address, web3);
     })
     .on('transactionHash', (hash) => {
       const container = document.getElementById('approvalContainer');
@@ -140,7 +85,7 @@ async function approve() {
 }
 
 async function migrate(id, btn) {
-  const web3 = loadWeb3();
+  const web3 = await loadWeb3();
   const address = await web3Address(web3);
   const chainId = await web3.eth.getChainId();
   const tokenId = web3.utils.toBN(id);
@@ -168,7 +113,7 @@ async function migrate(id, btn) {
 }
 
 async function addToken(eth) {
-  const web3 = loadWeb3();
+  const web3 = await loadWeb3();
   const chainId = await web3.eth.getChainId();
 
   const tokenAddress = config[chainId].token_address;
@@ -217,7 +162,7 @@ async function renderApprovalPrompt() {
   apprView.hidden = false;
   migrView.hidden = true;
 
-  const web3 = loadWeb3();
+  const web3 = await loadWeb3();
   const address = await web3Address(web3);
   const chainId = await web3.eth.getChainId();
   const v1 = await getV1Items(
@@ -232,12 +177,11 @@ async function renderApprovalPrompt() {
   }
 }
 
-async function renderItems(address) {
+async function renderItems(address, web3) {
   const apprView = document.getElementById('approvalView');
   const migrView = document.getElementById('migrationView');
   apprView.hidden = true;
   migrView.hidden = false;
-  const web3 = loadWeb3();
   const chainId = await web3.eth.getChainId();
   const v1 = await getV1Items(
     address,
@@ -330,22 +274,16 @@ batchMigrateBtn.addEventListener('click', async () => {
   await batchMigrate(itemIds);
 });
 
-async function load() {
-  const web3 = loadWeb3();
-  const address = await web3Address(web3);
-  if (!address) {
-    return;
+window.onload = async ()=>{
+  try {
+    const web3 = await loadWeb3();
+    const address = await web3Address(web3);
+    switchChain(window.ethereum);
+    render(address, web3);
+  } catch(err) {
+    console.log(err);
   }
-  await switchChain(window.ethereum);
-  const approved = await isApproved(web3, address);
-  if (approved) {
-    await renderItems(address);
-  } else {
-    await renderApprovalPrompt();
-  }
-}
-
-window.onload = load;
+};
 
 const addTokenBtn = document.getElementById('addTokenBtn');
 addTokenBtn.addEventListener('click', async () => {
