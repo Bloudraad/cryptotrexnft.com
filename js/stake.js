@@ -122,6 +122,9 @@ async function stake(id, btn) {
       btn.classList = 'nes-btn is-success';
       btn.textContent = 'Staked';
       setTimeout(function () {
+        btn.disabled = false;
+        btn.classList = 'nes-btn';
+        btn.textContent = 'Unstake';
         renderItems(address, web3);
       }, 1000);
     })
@@ -158,6 +161,9 @@ async function unstake(id, btn) {
       btn.classList = 'nes-btn is-success';
       btn.textContent = 'Unstaked';
       setTimeout(function () {
+        btn.disabled = false;
+        btn.classList = 'nes-btn';
+        btn.textContent = 'Stake';
         renderItems(address, web3);
       }, 1000);
     })
@@ -240,8 +246,13 @@ async function renderItems(address, web3) {
   try {
     const apprView = document.getElementById('approvalView');
     const stkView = document.getElementById('stakingView');
+    const loader = document.getElementById('loading');
+    const list = document.getElementById('card-list');
+    list.children = '';
+    list.innerHTML = '';
     apprView.hidden = true;
     stkView.hidden = false;
+    loader.hidden = false;
 
     const chainId = await web3.eth.getChainId();
     const rexes = await getStakedRexes(config[chainId].subgraph_api, address);
@@ -257,8 +268,8 @@ async function renderItems(address, web3) {
       'ether',
     )} $FOSSIL`;
 
-    const list = document.querySelector('#card-list');
-    list.children = '';
+    loader.hidden = true;
+
     if (web3.currentProvider.isMetaMask) {
       const addTokenBtn = document.getElementById('addTokenBtn');
       addTokenBtn.hidden = false;

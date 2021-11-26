@@ -17,6 +17,6 @@ export const config = {
     old_collection: 'unidentified-contract-i5yykj3vuu',
     new_collection: 'cryptotrex-6fl9h8uqll',
     subgraph_api:
-      'https://api.studio.thegraph.com/query/15322/cryptotrex/v0.0.15',
+      'https://gateway.testnet.thegraph.com/api/46a475d9887cf3ba4fc59cdf9a4c2af2/subgraphs/id/0xb427f2b5734a6fec2c6e9b7a60218e3ddc53eeba-0',
   },
 };
