@@ -43,15 +43,18 @@ async function getStakedRexes(api, address) {
 async function getClaimableRewards(web3, address, stakedRexes, unstakedRexes) {
   const chainId = await web3.eth.getChainId();
   const ids = [];
-  stakedRexes.tokens.map((e) => {
-    if (e.owner.id === config[chainId].staking_address.toLowerCase()) {
+  if (stakedRexes[0]) {
+    stakedRexes[0].tokens.map((e) => {
+      if (e.owner.id === config[chainId].staking_address.toLowerCase()) {
+        ids.push(e.id);
+      }
+    });
+  }
+  if (unstakedRexes[0]) {
+    unstakedRexes[0].tokens.map((e) => {
       ids.push(e.id);
-    }
-  });
-  unstakedRexes.tokens.map((e) => {
-    ids.push(e.id);
-  });
-  console.log(ids);
+    });
+  }
   const osc = new web3.eth.Contract(
     staking.abi,
     config[chainId].staking_address,
@@ -118,6 +121,9 @@ async function stake(id, btn) {
       btn.disabled = true;
       btn.classList = 'nes-btn is-success';
       btn.textContent = 'Staked';
+      setTimeout(function () {
+        renderItems(address, web3);
+      }, 1000);
     })
     .on('transactionHash', (hash) => {
       btn.textContent = 'Staking...';
@@ -129,6 +135,11 @@ async function stake(id, btn) {
       btn.disabled = true;
       btn.textContent = 'Failed';
       btn.classList = 'nes-btn is-error';
+      setTimeout(function () {
+        btn.disabled = false;
+        btn.textContent = 'Stake';
+        btn.classList = 'nes-btn';
+      }, 3000);
     });
 }
 
@@ -146,6 +157,9 @@ async function unstake(id, btn) {
       btn.disabled = true;
       btn.classList = 'nes-btn is-success';
       btn.textContent = 'Unstaked';
+      setTimeout(function () {
+        renderItems(address, web3);
+      }, 1000);
     })
     .on('transactionHash', (hash) => {
       btn.textContent = 'Unstaking...';
@@ -157,6 +171,11 @@ async function unstake(id, btn) {
       btn.disabled = true;
       btn.textContent = 'Failed';
       btn.classList = 'nes-btn is-error';
+      setTimeout(function () {
+        btn.disabled = false;
+        btn.textContent = 'Unstake';
+        btn.classList = 'nes-btn';
+      }, 3000);
     });
 }
 
@@ -188,7 +207,6 @@ async function addToken(eth) {
     console.log(error);
   }
 }
-let itemIds = [];
 
 async function getV2Items(address, opensea, newCollection) {
   const url = `${opensea}/api/v1/assets?offset=0&limit=50&collection=${newCollection}&owner=${address}`;
@@ -230,8 +248,8 @@ async function renderItems(address, web3) {
     const rewards = await getClaimableRewards(
       web3,
       address,
-      rexes.data.previousOwners[0],
-      rexes.data.users[0],
+      rexes.data.previousOwners,
+      rexes.data.users,
     );
     const claimableRewardsTxt = document.getElementById('claimableRewardsTxt');
     claimableRewardsTxt.textContent = `${web3.utils.fromWei(
@@ -240,12 +258,13 @@ async function renderItems(address, web3) {
     )} $FOSSIL`;
 
     const list = document.querySelector('#card-list');
+    list.children = '';
     if (web3.currentProvider.isMetaMask) {
       const addTokenBtn = document.getElementById('addTokenBtn');
       addTokenBtn.hidden = false;
     }
 
-    if (rexes.data.users) {
+    if (rexes.data.users[0]) {
       rexes.data.users[0].tokens.forEach((e) => {
         list.appendChild(
           buildCard(
@@ -257,13 +276,8 @@ async function renderItems(address, web3) {
         );
       });
     }
-    if (rexes.data.previousOwners) {
+    if (rexes.data.previousOwners[0]) {
       rexes.data.previousOwners[0].tokens.forEach((e) => {
-        console.log(
-          e.owner.id,
-          config[chainId].staking_address.toLowerCase(),
-          e.owner.id === config[chainId].staking_address.toLowerCase(),
-        );
         if (e.owner.id === config[chainId].staking_address.toLowerCase()) {
           list.appendChild(
             buildCard(
