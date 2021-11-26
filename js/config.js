@@ -3,6 +3,7 @@ export const config = {
     migration_address: '0x01FAd58CC2f0d3282724bE1DA34b90709Bf04e37',
     origin_address: '0x495f947276749Ce646f68AC8c248420045cb7b5e',
     token_address: '0x9b805ad1425b17e39870dfe7d1d48ec7fc53690b',
+    staking_address: '',
     opensea_api: 'https://api.opensea.io',
     old_collection: 'cryptotrexold',
     new_collection: 'cryptotrex',
@@ -11,8 +12,11 @@ export const config = {
     migration_address: '0x89332FaDe7d03e1E21Ec3ca1be46E157C1f73647',
     origin_address: '0xe229fB41Ff60Bb2B5C47Cb1E43C9e4d0D507A27E',
     token_address: '0x99eE7Dc7E959B32817e3DeD51cfEeE4c9836d174',
+    staking_address: '0xd17D7BD1e7EF937B30FD6C5dFEeFF68cbbb4401B',
     opensea_api: 'https://testnets-api.opensea.io',
     old_collection: 'unidentified-contract-i5yykj3vuu',
     new_collection: 'cryptotrex-6fl9h8uqll',
+    subgraph_api:
+      'https://api.studio.thegraph.com/query/15322/cryptotrex/v0.0.15',
   },
 };
