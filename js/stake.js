@@ -249,7 +249,6 @@ async function renderItems(address, web3) {
     const loader = document.getElementById('loading');
     const list = document.getElementById('card-list');
     list.children = '';
-    list.innerHTML = '';
     apprView.hidden = true;
     stkView.hidden = false;
     loader.hidden = false;
