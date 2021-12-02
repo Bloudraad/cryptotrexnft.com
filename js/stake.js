@@ -2,6 +2,10 @@ import os from './contracts/ERC1155Test.json';
 import ct from './contracts/CryptoTrex.json';
 import { config } from './config';
 import { loadWeb3, web3Address, switchChain } from './web3.js';
+import Web3 from 'web3';
+
+const formatEther = (value) =>
+  new Number(Web3.utils.fromWei(value, 'ether')).toFixed(4).toString();
 
 async function addToken(eth) {
   const web3 = await loadWeb3();
@@ -33,21 +37,14 @@ async function addToken(eth) {
 }
 let itemIds = [];
 
-async function getClaimableRewards() {
-  const web3 = await loadWeb3();
-  const address = await web3Address(web3);
-  const chainId = await web3.eth.getChainId();
-
-  const c = new web3.eth.Contract(ct.abi, config[chainId].migration_address);
+async function getClaimableRewards(address, c) {
   return await c.methods.rewards(itemIds).call({ from: address });
 }
 
-async function claimRewards(btn) {
-  const web3 = await loadWeb3();
-  const address = await web3Address(web3);
-  const chainId = await web3.eth.getChainId();
-
-  const c = new web3.eth.Contract(ct.abi, config[chainId].migration_address);
+async function claimRewards(btn, address, c) {
+  btn.disabled = true;
+  btn.textContent = 'Claiming...';
+  btn.classList = 'nes-btn is-disabled';
   c.methods
     .claim(itemIds)
     .send({ from: address })
@@ -56,17 +53,18 @@ async function claimRewards(btn) {
       btn.classList = 'nes-btn is-success';
       btn.textContent = 'Claimed';
       const rewardsView = document.getElementById('claimableRewardsTxt');
-      const rewards = await getClaimableRewards();
-      rewardsView.textContent = `${web3.utils.fromWei(
-        rewards,
-        'ether',
-      )} $FOSSIL`;
-      btn.disabled = false;
-      btn.classList = 'nes-btn is-primary';
-      btn.textContent = 'Claim';
+      const rewards = await getClaimableRewards(address, c);
+      rewardsView.textContent = `${formatEther(rewards)} $FOSSIL`;
+      setTimeout(() => {
+        btn.disabled = false;
+        btn.classList = 'nes-btn is-primary';
+        btn.textContent = 'Claim';
+      }, 3000);
     })
     .on('transactionHash', (hash) => {
+      btn.disabled = false;
       btn.textContent = 'Claiming...';
+      btn.classList = 'nes-btn';
       btn.addEventListener('click', () => {
         window.open(`https://etherscan.io/tx/${hash}`, '_blank').focus();
       });
@@ -75,6 +73,11 @@ async function claimRewards(btn) {
       btn.disabled = true;
       btn.textContent = 'Failed';
       btn.classList = 'nes-btn is-error';
+      setTimeout(() => {
+        btn.disabled = false;
+        btn.classList = 'nes-btn is-primary';
+        btn.textContent = 'Claim';
+      }, 3000);
     });
 }
 
@@ -85,7 +88,7 @@ async function getV2Items(address, opensea, newCollection) {
   return body.assets;
 }
 
-async function renderItems(address, web3) {
+async function renderItems(address, web3, c) {
   const chainId = await web3.eth.getChainId();
   const v2 = await getV2Items(
     address,
@@ -107,8 +110,8 @@ async function renderItems(address, web3) {
   }
 
   const rewardsView = document.getElementById('claimableRewardsTxt');
-  const rewards = await getClaimableRewards();
-  rewardsView.textContent = `${web3.utils.fromWei(rewards, 'ether')} $FOSSIL`;
+  const rewards = await getClaimableRewards(address, c);
+  rewardsView.textContent = `${formatEther(rewards)} $FOSSIL`;
 }
 
 function buildCard(e) {
@@ -143,8 +146,16 @@ window.onload = async () => {
   try {
     const web3 = await loadWeb3();
     const address = await web3Address(web3);
-    switchChain(window.ethereum);
-    renderItems(address, web3);
+    const chainId = await web3.eth.getChainId();
+    const c = new web3.eth.Contract(ct.abi, config[chainId].migration_address);
+    await switchChain(window.ethereum);
+    await renderItems(address, web3, c);
+
+    const claimBtn = document.getElementById('claimBtn');
+    claimBtn.addEventListener(
+      'click',
+      async () => await claimRewards(claimBtn, address, c),
+    );
   } catch (err) {
     console.log(err);
   }
@@ -154,6 +165,3 @@ const addTokenBtn = document.getElementById('addTokenBtn');
 addTokenBtn.addEventListener('click', async () => {
   await addToken(window.ethereum);
 });
-
-const claimBtn = document.getElementById('claimBtn');
-claimBtn.addEventListener('click', async () => await claimRewards(claimBtn));
