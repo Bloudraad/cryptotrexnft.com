@@ -86,77 +86,15 @@
         </div>
       </nav>
 
-      <div class="container" id="approvalView" hidden>
-        <div class="row">
-          <div class="col-xs-12">
-            <div class="nes-container is-rounded">
-              <p>
-                Before we begin, you need to approve your CryptoTrex collection
-                before staking, which requires a one-time gas fee.
-              </p>
-              <p>
-                <i style="font-size: xx-small; color: #727272"
-                  >Please note that this approval transaction is Ethereum's
-                  built-in security mechanism, which can't and shouldn't be
-                  bypassed.</i
-                >
-              </p>
-              <p>
-                <i style="font-size: xx-small; color: #727272"
-                  >Also this transaction is a one-time transaction, please only
-                  approve it <strong>once</strong> so you don't waste your
-                  precious ETH on gas fees</i
-                >
-              </p>
-              <p style="margin-top: 4vh">
-                After the transaction is successful you will be redirected to
-                the staking page.
-              </p>
-              <div
-                id="approvalContainer"
-                style="display: flex; margin-bottom: 6vh; margin-top: 4vh"
-              >
-                <button
-                  type="button"
-                  class="nes-btn is-primary"
-                  id="approveBtn"
-                  style="margin-right: 10px"
-                >
-                  Approve
-                </button>
-              </div>
-              <p
-                hidden
-                style="font-size: xx-small; color: red"
-                id="warningNoTrex"
-              >
-                You don't have any CryptoTrex to migrate. Are you sure you want
-                to proceed?
-              </p>
-              <p style="font-size: xx-small; color: #727272">
-                Stuck in this page? Click
-                <a
-                  ><u
-                    onclick="javascript:window.location.reload();"
-                    style="color: #489ce7"
-                    >here</u
-                  ></a
-                >
-                to reload.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="container" id="stakingView" hidden>
+      <div class="container" id="stakingView">
         <div class="row">
           <div class="col-xs-12">
             <div class="nes-container is-rounded">
               <h2>Claimable Rewards</h2>
-              <p id="claimableRewardsTxt">0 $FOSSIL</p>
+              <p id="claimableRewardsTxt">- $FOSSIL</p>
               <div class="col-xs-12 justify-content-between d-flex">
                 <button
+                  id="claimBtn"
                   type="button"
                   class="nes-btn is-primary"
                   style="margin-right: 10px"
@@ -167,17 +105,6 @@
                   Add $FOSSIL token
                 </button>
               </div>
-            </div>
-          </div>
-        </div>
-
-        <div id="loading" class="col-xs-12">
-          <div class="loading-center">
-            <div class="lds-ellipsis">
-              <div></div>
-              <div></div>
-              <div></div>
-              <div></div>
             </div>
           </div>
         </div>

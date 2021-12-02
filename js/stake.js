@@ -1,189 +1,7 @@
-import cryptotrex from './contracts/CryptoTrex.json';
-import staking from './contracts/Staking.json';
+import os from './contracts/ERC1155Test.json';
+import ct from './contracts/CryptoTrex.json';
 import { config } from './config';
 import { loadWeb3, web3Address, switchChain } from './web3.js';
-import { createClient } from 'urql';
-
-async function render(address, web3) {
-  const approved = await isApproved(web3, address);
-  if (approved) {
-    await renderItems(address, web3);
-  } else {
-    await renderApprovalPrompt();
-  }
-}
-
-async function getStakedRexes(api, address) {
-  const client = createClient({
-    url: api,
-  });
-  return await client
-    .query(
-      `query {
-    users(where: {id: "${address.toLowerCase()}"}) {
-        id
-        tokens {
-            id
-        }
-    }
-    previousOwners(where: {id: "${address.toLowerCase()}"}) {
-        id
-        tokens {
-            id
-            owner {
-              id
-            }
-        }
-    }
-  }`,
-    )
-    .toPromise();
-}
-
-async function getClaimableRewards(web3, address, stakedRexes, unstakedRexes) {
-  const chainId = await web3.eth.getChainId();
-  const ids = [];
-  if (stakedRexes[0]) {
-    stakedRexes[0].tokens.map((e) => {
-      if (e.owner.id === config[chainId].staking_address.toLowerCase()) {
-        ids.push(e.id);
-      }
-    });
-  }
-  if (unstakedRexes[0]) {
-    unstakedRexes[0].tokens.map((e) => {
-      ids.push(e.id);
-    });
-  }
-  const osc = new web3.eth.Contract(
-    staking.abi,
-    config[chainId].staking_address,
-  );
-  return await osc.methods.rewards(ids).call({ from: address });
-}
-
-async function isApproved(web3, address) {
-  const chainId = await web3.eth.getChainId();
-  const osc = new web3.eth.Contract(
-    cryptotrex.abi,
-    config[chainId].migration_address,
-  );
-  return await osc.methods
-    .isApprovedForAll(address, config[chainId].staking_address)
-    .call({ from: address });
-}
-
-async function approve() {
-  const web3 = await loadWeb3();
-  const address = await web3Address(web3);
-  const chainId = await web3.eth.getChainId();
-  const osc = new web3.eth.Contract(
-    cryptotrex.abi,
-    config[chainId].migration_address,
-  );
-  osc.methods
-    .setApprovalForAll(config[chainId].staking_address, true)
-    .send({ from: address })
-    .on('receipt', () => {
-      const approveBtn = document.getElementById('approveBtn');
-      approveBtn.textContent = 'Approved';
-      approveBtn.disabled = true;
-      approveBtn.classList = 'nes-btn is-success is-disabled';
-      renderItems(address, web3);
-    })
-    .on('transactionHash', (hash) => {
-      const container = document.getElementById('approvalContainer');
-      const viewTx = document.createElement('a');
-      viewTx.classList = 'nes-btn';
-      viewTx.href = `https://etherscan.io/tx/${hash}`;
-      viewTx.target = '_blank';
-      viewTx.text = 'View Transaction';
-      container.appendChild(viewTx);
-
-      const approveBtn = document.getElementById('approveBtn');
-      approveBtn.textContent = 'Approving...';
-      approveBtn.disabled = true;
-      approveBtn.classList = 'nes-btn is-primary';
-    });
-}
-
-async function stake(id, btn) {
-  const web3 = await loadWeb3();
-  const address = await web3Address(web3);
-  const chainId = await web3.eth.getChainId();
-  const tokenId = web3.utils.toBN(id);
-
-  const c = new web3.eth.Contract(staking.abi, config[chainId].staking_address);
-  c.methods
-    .stake(tokenId)
-    .send({ from: address })
-    .on('receipt', () => {
-      btn.disabled = true;
-      btn.classList = 'nes-btn is-success';
-      btn.textContent = 'Staked';
-      setTimeout(function () {
-        btn.disabled = false;
-        btn.classList = 'nes-btn';
-        btn.textContent = 'Unstake';
-        renderItems(address, web3);
-      }, 1000);
-    })
-    .on('transactionHash', (hash) => {
-      btn.textContent = 'Staking...';
-      btn.addEventListener('click', () => {
-        window.open(`https://etherscan.io/tx/${hash}`, '_blank').focus();
-      });
-    })
-    .on('error', () => {
-      btn.disabled = true;
-      btn.textContent = 'Failed';
-      btn.classList = 'nes-btn is-error';
-      setTimeout(function () {
-        btn.disabled = false;
-        btn.textContent = 'Stake';
-        btn.classList = 'nes-btn';
-      }, 3000);
-    });
-}
-
-async function unstake(id, btn) {
-  const web3 = await loadWeb3();
-  const address = await web3Address(web3);
-  const chainId = await web3.eth.getChainId();
-  const tokenId = web3.utils.toBN(id);
-
-  const c = new web3.eth.Contract(staking.abi, config[chainId].staking_address);
-  c.methods
-    .unstake(tokenId)
-    .send({ from: address })
-    .on('receipt', () => {
-      btn.disabled = true;
-      btn.classList = 'nes-btn is-success';
-      btn.textContent = 'Unstaked';
-      setTimeout(function () {
-        btn.disabled = false;
-        btn.classList = 'nes-btn';
-        btn.textContent = 'Stake';
-        renderItems(address, web3);
-      }, 1000);
-    })
-    .on('transactionHash', (hash) => {
-      btn.textContent = 'Unstaking...';
-      btn.addEventListener('click', () => {
-        window.open(`https://etherscan.io/tx/${hash}`, '_blank').focus();
-      });
-    })
-    .on('error', () => {
-      btn.disabled = true;
-      btn.textContent = 'Failed';
-      btn.classList = 'nes-btn is-error';
-      setTimeout(function () {
-        btn.disabled = false;
-        btn.textContent = 'Unstake';
-        btn.classList = 'nes-btn';
-      }, 3000);
-    });
-}
 
 async function addToken(eth) {
   const web3 = await loadWeb3();
@@ -213,6 +31,52 @@ async function addToken(eth) {
     console.log(error);
   }
 }
+let itemIds = [];
+
+async function getClaimableRewards() {
+  const web3 = await loadWeb3();
+  const address = await web3Address(web3);
+  const chainId = await web3.eth.getChainId();
+
+  const c = new web3.eth.Contract(ct.abi, config[chainId].migration_address);
+  return await c.methods.rewards(itemIds).call({ from: address });
+}
+
+async function claimRewards(btn) {
+  const web3 = await loadWeb3();
+  const address = await web3Address(web3);
+  const chainId = await web3.eth.getChainId();
+
+  const c = new web3.eth.Contract(ct.abi, config[chainId].migration_address);
+  c.methods
+    .claim(itemIds)
+    .send({ from: address })
+    .on('receipt', async () => {
+      btn.disabled = true;
+      btn.classList = 'nes-btn is-success';
+      btn.textContent = 'Claimed';
+      const rewardsView = document.getElementById('claimableRewardsTxt');
+      const rewards = await getClaimableRewards();
+      rewardsView.textContent = `${web3.utils.fromWei(
+        rewards,
+        'ether',
+      )} $FOSSIL`;
+      btn.disabled = false;
+      btn.classList = 'nes-btn is-primary';
+      btn.textContent = 'Claim';
+    })
+    .on('transactionHash', (hash) => {
+      btn.textContent = 'Claiming...';
+      btn.addEventListener('click', () => {
+        window.open(`https://etherscan.io/tx/${hash}`, '_blank').focus();
+      });
+    })
+    .on('error', () => {
+      btn.disabled = true;
+      btn.textContent = 'Failed';
+      btn.classList = 'nes-btn is-error';
+    });
+}
 
 async function getV2Items(address, opensea, newCollection) {
   const url = `${opensea}/api/v1/assets?offset=0&limit=50&collection=${newCollection}&owner=${address}`;
@@ -221,91 +85,33 @@ async function getV2Items(address, opensea, newCollection) {
   return body.assets;
 }
 
-async function renderApprovalPrompt() {
-  const apprView = document.getElementById('approvalView');
-  const migrView = document.getElementById('migrationView');
-  apprView.hidden = false;
-  migrView.hidden = true;
-
-  const web3 = await loadWeb3();
-  const address = await web3Address(web3);
+async function renderItems(address, web3) {
   const chainId = await web3.eth.getChainId();
   const v2 = await getV2Items(
     address,
     config[chainId].opensea_api,
-    config[chainId].old_collection,
+    config[chainId].new_collection,
   );
 
-  if (v2.length < 1) {
-    const warning = document.getElementById('warningNoTrex');
-    warning.hidden = false;
+  const list = document.getElementById('card-list');
+  if (web3.currentProvider.isMetaMask) {
+    const addTokenBtn = document.getElementById('addTokenBtn');
+    addTokenBtn.hidden = false;
   }
+
+  if (v2) {
+    v2.forEach((e) => {
+      itemIds.push(e.token_id);
+      list.appendChild(buildCard(e));
+    });
+  }
+
+  const rewardsView = document.getElementById('claimableRewardsTxt');
+  const rewards = await getClaimableRewards();
+  rewardsView.textContent = `${web3.utils.fromWei(rewards, 'ether')} $FOSSIL`;
 }
 
-async function renderItems(address, web3) {
-  try {
-    const apprView = document.getElementById('approvalView');
-    const stkView = document.getElementById('stakingView');
-    const loader = document.getElementById('loading');
-    const list = document.getElementById('card-list');
-    list.children = '';
-    apprView.hidden = true;
-    stkView.hidden = false;
-    loader.hidden = false;
-
-    const chainId = await web3.eth.getChainId();
-    const rexes = await getStakedRexes(config[chainId].subgraph_api, address);
-    const rewards = await getClaimableRewards(
-      web3,
-      address,
-      rexes.data.previousOwners,
-      rexes.data.users,
-    );
-    const claimableRewardsTxt = document.getElementById('claimableRewardsTxt');
-    claimableRewardsTxt.textContent = `${web3.utils.fromWei(
-      rewards,
-      'ether',
-    )} $FOSSIL`;
-
-    loader.hidden = true;
-
-    if (web3.currentProvider.isMetaMask) {
-      const addTokenBtn = document.getElementById('addTokenBtn');
-      addTokenBtn.hidden = false;
-    }
-
-    if (rexes.data.users[0]) {
-      rexes.data.users[0].tokens.forEach((e) => {
-        list.appendChild(
-          buildCard(
-            {
-              token_id: e.id,
-            },
-            false,
-          ),
-        );
-      });
-    }
-    if (rexes.data.previousOwners[0]) {
-      rexes.data.previousOwners[0].tokens.forEach((e) => {
-        if (e.owner.id === config[chainId].staking_address.toLowerCase()) {
-          list.appendChild(
-            buildCard(
-              {
-                token_id: e.id,
-              },
-              true,
-            ),
-          );
-        }
-      });
-    }
-  } catch (err) {
-    console.log(err);
-  }
-}
-
-function buildCard(e, staked) {
+function buildCard(e) {
   const card = document.createElement('div');
   card.classList = 'nes-container item-card is-rounded';
   card.style = 'background-color: white; display: block;';
@@ -323,22 +129,8 @@ function buildCard(e, staked) {
   const nameDiv = document.createElement('p');
   nameDiv.classList.add('pt-1');
   nameDiv.textContent = e.name;
-  const migrateBtn = document.createElement('button');
-  migrateBtn.type = 'button';
-
-  if (!staked) {
-    migrateBtn.classList = 'nes-btn';
-    migrateBtn.textContent = 'Stake';
-    migrateBtn.addEventListener('click', () => stake(e.token_id, migrateBtn));
-  } else {
-    migrateBtn.classList = 'nes-btn';
-    migrateBtn.textContent = 'Unstake';
-    migrateBtn.addEventListener('click', () => unstake(e.token_id, migrateBtn));
-  }
-  migrateBtn.style = 'width: 100%';
   card.appendChild(imageContainer);
   card.appendChild(nameDiv);
-  card.appendChild(migrateBtn);
 
   const cardContainer = document.createElement('div');
   cardContainer.classList.add('col-md-3', 'col-xs-6', 'pb-1');
@@ -351,8 +143,8 @@ window.onload = async () => {
   try {
     const web3 = await loadWeb3();
     const address = await web3Address(web3);
-    // switchChain(window.ethereum);
-    render(address, web3);
+    switchChain(window.ethereum);
+    renderItems(address, web3);
   } catch (err) {
     console.log(err);
   }
@@ -363,7 +155,5 @@ addTokenBtn.addEventListener('click', async () => {
   await addToken(window.ethereum);
 });
 
-const approveBtn = document.getElementById('approveBtn');
-approveBtn.addEventListener('click', async () => {
-  await approve();
-});
+const claimBtn = document.getElementById('claimBtn');
+claimBtn.addEventListener('click', async () => await claimRewards(claimBtn));
