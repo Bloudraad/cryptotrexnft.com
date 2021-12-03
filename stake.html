@@ -1,0 +1,117 @@
+<head>
+  <!-- Primary Meta Tags -->
+  <title>CryptoTrex 🦖</title>
+  <meta name="title" content="CryptoTrex 🦖" />
+  <meta
+    name="description"
+    content="The dinosaurs are back! (in the metaverse)"
+  />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://cryptotrexnft.com/" />
+  <meta property="og:title" content="CryptoTrex 🦖" />
+  <meta
+    property="og:description"
+    content="The dinosaurs are back! (in the metaverse)"
+  />
+  <meta
+    property="og:image"
+    content="https://cryptotrexnft.com/img/meta-banner.jpeg"
+  />
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:url" content="https://cryptotrexnft.com/" />
+  <meta property="twitter:title" content="CryptoTrex 🦖" />
+  <meta
+    property="twitter:description"
+    content="The dinosaurs are back! (in the metaverse)"
+  />
+  <meta
+    property="twitter:image"
+    content="https://cryptotrexnft.com/img/meta-banner.jpeg"
+  />
+
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/flexboxgrid/6.3.1/flexboxgrid.min.css"
+    type="text/css"
+  />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+    rel="stylesheet"
+  />
+  <link href="css/nes.css" rel="stylesheet" />
+  <link href="css/migrate.css" rel="stylesheet" />
+</head>
+
+<body>
+  <div class="outer-wrapper">
+    <div class="wrapper" style="display: block">
+      <nav
+        class="container-fluid"
+        style="
+          display: flex;
+          align-items: center;
+          padding: 20px;
+          justify-content: space-between;
+          width: 100vw;
+        "
+      >
+        <div class="nav-brand">
+          <a href="/" style="color: #fff; text-decoration: none">
+            <h2 style="margin-bottom: 0">CryptoTrex</h2>
+          </a>
+        </div>
+        <div>
+          <a href="https://opensea.io/collection/cryptotrex" target="_blank"
+            ><i class="nes-icon opensea"></i
+          ></a>
+          <a href="https://discord.gg/ekk838XkbV" target="_blank"
+            ><i class="nes-icon discord"></i
+          ></a>
+          <a href="https://www.twitter.com/cryptotrexnft/" target="_blank"
+            ><i class="nes-icon twitter"></i
+          ></a>
+          <a href="https://www.instagram.com/cryptotrexnft/" target="_blank"
+            ><i class="nes-icon instagram"></i
+          ></a>
+        </div>
+      </nav>
+
+      <div class="container" id="stakingView">
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="nes-container is-rounded">
+              <h2>Claimable Rewards</h2>
+              <p id="claimableRewardsTxt">- $FOSSIL</p>
+              <div class="col-xs-12 justify-content-between d-flex">
+                <button
+                  id="claimBtn"
+                  type="button"
+                  class="nes-btn is-primary"
+                  style="margin-right: 10px"
+                >
+                  Claim
+                </button>
+                <button type="button" class="nes-btn" id="addTokenBtn" hidden>
+                  Add $FOSSIL token
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row pt-1" id="card-list"></div>
+      </div>
+    </div>
+  </div>
+  <script src="js/stake.js" type="module"></script>
+  <script src="js/faq.js"></script>
+</body>

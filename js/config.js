@@ -8,11 +8,11 @@ export const config = {
     new_collection: 'cryptotrex',
   },
   4: {
-    migration_address: '0x89332FaDe7d03e1E21Ec3ca1be46E157C1f73647',
+    migration_address: '0x3bC6b846E84bb51B477941F9328d6Cb265A7a517',
     origin_address: '0xe229fB41Ff60Bb2B5C47Cb1E43C9e4d0D507A27E',
     token_address: '0x99eE7Dc7E959B32817e3DeD51cfEeE4c9836d174',
     opensea_api: 'https://testnets-api.opensea.io',
     old_collection: 'unidentified-contract-i5yykj3vuu',
-    new_collection: 'cryptotrex-6fl9h8uqll',
+    new_collection: 'cryptotrex-vkgog8evuw',
   },
 };
