@@ -1,50 +1,92 @@
-@import url('https://fonts.googleapis.com/css2?family=Londrina+Solid&display=swap');
+@font-face {
+  font-family: 'Vermin Vibes 1989';
+  src: url('//db.onlinewebfonts.com/t/e9a92ef234e726ff17913d77b956d3e0.eot');
+  src: url('//db.onlinewebfonts.com/t/e9a92ef234e726ff17913d77b956d3e0.eot?#iefix')
+      format('embedded-opentype'),
+    url('//db.onlinewebfonts.com/t/e9a92ef234e726ff17913d77b956d3e0.woff2')
+      format('woff2'),
+    url('//db.onlinewebfonts.com/t/e9a92ef234e726ff17913d77b956d3e0.woff')
+      format('woff'),
+    url('//db.onlinewebfonts.com/t/e9a92ef234e726ff17913d77b956d3e0.ttf')
+      format('truetype'),
+    url('//db.onlinewebfonts.com/t/e9a92ef234e726ff17913d77b956d3e0.svg#Vermin Vibes 1989')
+      format('svg');
+}
 
 body {
   margin: 0;
-  /* background-color: ; */
-  background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),
+  color: #fff;
+}
+
+.font-pixel {
+  font-family: 'Vermin Vibes 1989', cursive;
+}
+
+.social a {
+  margin-right: 0.5rem;
+  text-decoration: none;
+  color: #fff;
+}
+.social img {
+  height: 1.5rem;
+}
+
+header.container-fluid {
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 1)),
     url(../img/background.jpg);
   background-position: center;
   background-size: cover;
-  font-family: 'Londrina Solid', cursive;
-  color: #000;
-  -webkit-text-stroke: 0.5px black;
-  -webkit-text-fill-color: white;
-  letter-spacing: 1px;
+  min-height: 100vh;
 }
 
-.logo {
-  max-width: 70%;
-  margin-bottom: 2rem;
+#preview {
+  background: linear-gradient(
+    rgba(0, 0, 0, 1),
+    rgba(212, 102, 47, 1),
+    rgba(255, 255, 255, 1)
+  );
 }
 
-.container .row {
-  margin-left: 1rem;
-  margin-right: 1rem;
-  height: 100%;
-  display: flex;
-  align-items: center;
-}
-.container .row .col-xs-12 {
-  text-align: center;
+#preview .voxel-viewer {
+  width: 100%;
 }
 
-.container .row a {
-  text-decoration: none;
-  color: #000;
-  -webkit-text-stroke: 0.5px black;
-  -webkit-text-fill-color: white;
-  font-weight: bold;
-  font-size: 1.5rem;
+#roadmap {
+  background: linear-gradient(rgba(255, 255, 255, 1), rgba(0, 0, 0, 1));
+}
+#roadmap .alert .col-md-3 .img-fluid {
+  filter: drop-shadow(5px 5px 15px #fff);
 }
 
-.container .row .social a {
-  margin-right: 0.5rem;
+@media (min-width: 767.98px) {
+  #roadmap .alert.row {
+    margin-bottom: 5rem;
+  }
+  #roadmap .alert .col-md-3 .trex {
+    margin-top: -8rem;
+  }
+  #roadmap .alert .col-md-3 .shoes {
+    margin-top: -3.5rem;
+  }
+  #roadmap .alert .col-md-3 .token {
+    margin-top: -5rem;
+  }
 }
-.container .row .social img {
-  height: 1.5rem;
-  filter: drop-shadow(1px 1px 1px #000);
+
+#cta {
+  background: linear-gradient(
+      rgba(0, 0, 0, 1),
+      rgba(0, 0, 0, 0.4),
+      rgba(0, 0, 0, 1)
+    ),
+    url(../img/discord-cta.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+footer {
+  background-color: #000;
 }
 
 .nes-icon.discord::before {

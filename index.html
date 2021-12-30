@@ -38,51 +38,294 @@
   <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
-  <link href="css/nes.css" rel="stylesheet" />
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/flexboxgrid/6.3.1/flexboxgrid.min.css"
-    type="text/css"
-  />
+  <link href="css/lumen.css" rel="stylesheet" />
   <link rel="stylesheet" href="css/styles.css" />
+  <script type="module" src="js/model-viewer.js"></script>
 </head>
 
 <body>
-  <div class="container">
-    <div class="row">
-      <div class="col-xs-12 col-sm-offset-6 col-sm-6 col-lg-offset-8 col-lg-4">
-        <img class="logo" src="img/logo.png" />
-        <h1>THE GROUND IS SHAKING...</h1>
-        <h2>SOMETHING IS BREWING?</h2>
-        <hr />
-        <a href="https://discord.gg/ekk838XkbV" target="_blank">WHITELIST</a>
-        <hr />
-        <a href="/migrate.html">MIGRATE</a>
-        <hr />
-        <a href="/stake.html">STAKING</a>
-        <hr />
-        <a href="/jumpy-trex.html">ARCADE GAME</a>
-        <hr />
-        <a href="https://whitepaper.cryptotrexnft.com"
-          >AGE OF DINOS - WHITEPAPER</a
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="#">
+        <img height="24" src="img/logo.png" />
+      </a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" href="#">My Trexes</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Claim</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="navbarDropdown"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              Games
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li>
+                <a class="dropdown-item" href="/jumpy-trex.html">Jumpy Trex</a>
+              </li>
+              <li>
+                <a
+                  class="dropdown-item"
+                  href="https://whitepaper.cryptotrexnft.com"
+                  target="_blank"
+                  >Age of Dinos Whitepaper</a
+                >
+              </li>
+            </ul>
+          </li>
+        </ul>
+        <ul class="navbar-nav mb-2 mb-lg-0">
+          <li class="nav-item">
+            <div class="social">
+              <a href="https://discord.gg/ekk838XkbV" target="_blank">
+                <img src="img/socials/discord.svg" alt="Discord" />
+              </a>
+              <a href="https://www.twitter.com/cryptotrexnft" target="_blank">
+                <img src="img/socials/twitter.svg" alt="Twitter" />
+              </a>
+              <a
+                href="https://opensea.io/collection/cryptotrex"
+                target="_blank"
+              >
+                <img src="img/socials/opensea.svg" alt="Opensea" />
+              </a>
+              <a href="https://www.instagram.com/cryptotrexnft" target="_blank">
+                <img src="img/socials/ig.svg" alt="Instagram" />
+              </a>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <header class="container-fluid h-100">
+    <div class="container h-100">
+      <div class="row h-100">
+        <div
+          class="
+            offset-md-3
+            col-md-6 col-12
+            h-100
+            d-flex
+            flex-column
+            justify-content-center
+            align-items-center
+          "
         >
-        <hr />
-        <div class="social">
-          <a href="https://discord.gg/ekk838XkbV" target="_blank">
-            <img src="img/socials/discord.svg" alt="Discord" />
-          </a>
-          <a href="https://www.twitter.com/cryptotrexnft" target="_blank">
-            <img src="img/socials/twitter.svg" alt="Twitter" />
-          </a>
-          <a href="https://opensea.io/collection/cryptotrex" target="_blank">
-            <img src="img/socials/opensea.svg" alt="Opensea" />
-          </a>
-          <a href="https://www.instagram.com/cryptotrexnft" target="_blank">
-            <img src="img/socials/ig.svg" alt="Instagram" />
-          </a>
+          <img
+            class="img-fluid w-50 mb-3"
+            src="img/logo.png"
+            alt="CryptoTrex Logo"
+          />
+          <h1 class="text-center font-pixel">CryptoTrex</h1>
+          <p class="text-center mb-5">
+            The CryptoTrex collection is a limited series of 1,111 unique
+            T-Rexes living on the Ethereum Blockchain. Each CryptoTrex is
+            algorithmically generated and a part of the Genesis collection for
+            the CryptoTrex metaverse. Each piece possesses its own combination
+            of accessories, features, and most importantly its own personality
+          </p>
         </div>
       </div>
     </div>
-  </div>
-  <script src="js/main.js" type="module"></script>
+  </header>
+  <section id="preview">
+    <div class="container py-5">
+      <div class="row">
+        <h1 class="text-center font-pixel mb-5">CryptoTrex Forms</h1>
+        <div class="offset-lg-2 col-lg-4 col-md-6 col-12">
+          <div class="alert alert-dark">
+            <h4>Genesis Collection (2D)</h4>
+            <img
+              class="img-fluid mb-2"
+              src="./img/genesis-logo.png"
+              alt="Genesis collection logo"
+            />
+            <p>
+              The OG Kongz, these were the first 1000 to drop, 10 of which are
+              Legendary. Not only are these the sweetest profile pics around but
+              they are also the only CyberKongz to yield $BANANA daily. Each
+              Genesis Kong produces 10 $BANANA every day for the next 10 years.
+            </p>
+            <a class="btn btn-primary">View on OpenSea</a>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6 col-12">
+          <div class="alert alert-dark">
+            <h4>Voxel Collection (3D)</h4>
+            <iframe
+              class="voxel-viewer mb-2"
+              src="https://vxviewer.cryptotrexnft.com"
+              title="Voxel Viewer"
+            ></iframe>
+            <p>
+              Not content with taking over the 2d NFT space, the continued
+              evolution thrusts CyberKongz into the metaverse in the form of
+              voxel-based avatars built to be used in online metaverse
+              environments such as The Sandbox.
+            </p>
+            <!-- <a class="btn btn-primary" disabled>View on OpenSea</a> -->
+            <a class="btn btn-success" disabled>Mint soon</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="roadmap">
+    <div class="container py-5">
+      <h1 class="text-center font-pixel mb-5 text-black">Roadmap</h1>
+      <div class="alert alert-dark row">
+        <div class="col-md-9 col-12">
+          <h3>Phase 1</h3>
+          <ul>
+            <li>
+              Release the first 1,111 CryptoTrex VX as a FREE mint for our
+              current Genesis CryptoTrex holders.
+            </li>
+            <li>
+              Release a 10,000 public mint of the CryptoTrex VX collection to
+              the public at 0.08 ETH. Genesis holders will be able to purchase 2
+              extra CryptoTrex VX using $FOSSIL token.
+            </li>
+            <li>
+              The CryptoTrex team will buy up a massive amount of digital land
+              in the Sandbox and NFTWorld platform for future projects.
+            </li>
+            <li>
+              CryptoTrex and CryptoTrex VX will formally apply to Rarity Tools,
+              so the community can view the rarity.
+            </li>
+            <li>
+              The CryptoTrex DAO will be created with voting power for holders
+              of the CryptoTrex Genesis and Voxel collection.
+            </li>
+          </ul>
+        </div>
+        <div class="col-md-3 col-12 d-flex justify-content-center">
+          <img class="img-fluid trex" src="img/vox-preview.png" />
+        </div>
+      </div>
+      <div class="alert alert-dark row">
+        <div class="col-md-9 col-12 order-md-2">
+          <h3>Phase 2</h3>
+          <ul>
+            <li>
+              The CryptoTrex Merch shop will be set up. This includes
+              purchasable apparel with your unique CryptoTrex Genesis
+              NFT&quot;s; in addition, to the CryptoTrex limited brand apparel.
+            </li>
+            <li>
+              CryptoTrex Genesis holders will receive metaverse sneakers that
+              match their current CryptoTrex. This shoe will be compatible with
+              Sandbox and other Metaverse platforms.
+            </li>
+            <li>
+              A variety of metaverse equipment&quot;s will be created to support
+              the CryptoTrex VX project. This includes weapons, armors,
+              vehicles, and buildings purchasable with $FOSSIL.
+            </li>
+            <li>
+              Building the Jurassic Island in Sandbox with gaming and social
+              experience.
+            </li>
+          </ul>
+        </div>
+        <div class="col-md-3 col-12 d-flex justify-content-center order-md-1">
+          <img class="img-fluid shoes" src="img/vox-shoes.png" />
+        </div>
+      </div>
+      <div class="alert alert-dark row">
+        <div class="col-md-9 col-12">
+          <h3>Phase 3</h3>
+          <ul>
+            <li>
+              &ldquo;Age of Dinos&rdquo; will be launched. This is web and
+              mobile based Play To Earn game. Whitepaper
+              <a href="https://whitepaper.cryptotrexnft.com" target="_blank"
+                >here</a
+              >.
+            </li>
+            <li>
+              In Real Life CryptoTrex shoes available to holders of CryptoTrex
+              Shoe VX drop
+            </li>
+            <li>
+              Real life community events and brand collaborations for the
+              CryptoTrex collection.
+            </li>
+          </ul>
+        </div>
+        <div class="col-md-3 col-12 d-flex justify-content-center">
+          <img class="img-fluid token" src="img/token.png" />
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="cta">
+    <div class="container">
+      <div class="row py-5">
+        <div class="col-md-8 offset-md-2 col-12 text-center">
+          <h2>
+            Join our Discord community to travel back to Jurassic Age and
+            (possibly) be a voxel Trex
+          </h2>
+          <a
+            href="https://discord.gg/ekk838XkbV"
+            target="_blank"
+            class="btn btn-primary"
+            >Join our Discord</a
+          >
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer>
+    <div class="container">
+      <div class="row py-5">
+        <div class="col-12 d-flex justify-content-between align-items-center">
+          <img height="24" src="img/logo-invert.png" />
+          <div class="social ms-auto">
+            <a href="https://discord.gg/ekk838XkbV" target="_blank">
+              <img src="img/socials/discord.svg" alt="Discord" />
+            </a>
+            <a href="https://www.twitter.com/cryptotrexnft" target="_blank">
+              <img src="img/socials/twitter.svg" alt="Twitter" />
+            </a>
+            <a href="https://opensea.io/collection/cryptotrex" target="_blank">
+              <img src="img/socials/opensea.svg" alt="Opensea" />
+            </a>
+            <a href="https://www.instagram.com/cryptotrexnft" target="_blank">
+              <img src="img/socials/ig.svg" alt="Instagram" />
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"
+  ></script>
+  <script src="js/main.js"></script>
 </body>
