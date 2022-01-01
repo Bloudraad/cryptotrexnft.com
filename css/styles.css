@@ -1,12 +1,17 @@
-@import url('https://fonts.googleapis.com/css2?family=Londrina+Outline&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Londrina+Solid&display=swap');
 
 body {
   margin: 0;
-  background-image: url(../img/background.jpg);
+  /* background-color: ; */
+  background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),
+    url(../img/background.jpg);
   background-position: center;
   background-size: cover;
-  font-family: 'Londrina Outline', cursive;
-  color: #fff;
+  font-family: 'Londrina Solid', cursive;
+  color: #000;
+  -webkit-text-stroke: 0.5px black;
+  -webkit-text-fill-color: white;
+  letter-spacing: 1px;
 }
 
 .logo {
@@ -27,7 +32,9 @@ body {
 
 .container .row a {
   text-decoration: none;
-  color: #fff;
+  color: #000;
+  -webkit-text-stroke: 0.5px black;
+  -webkit-text-fill-color: white;
   font-weight: bold;
   font-size: 1.5rem;
 }
@@ -37,6 +44,7 @@ body {
 }
 .container .row .social img {
   height: 1.5rem;
+  filter: drop-shadow(1px 1px 1px #000);
 }
 
 .nes-icon.discord::before {
