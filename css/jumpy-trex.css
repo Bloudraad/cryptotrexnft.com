@@ -1,50 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Londrina+Solid&display=swap');
-
 body {
   margin: 0;
-  /* background-color: ; */
-  background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),
-    url(../img/background.jpg);
-  background-position: center;
-  background-size: cover;
-  font-family: 'Londrina Solid', cursive;
-  color: #000;
-  -webkit-text-stroke: 0.5px black;
-  -webkit-text-fill-color: white;
-  letter-spacing: 1px;
-}
-
-.logo {
-  max-width: 70%;
-  margin-bottom: 2rem;
-}
-
-.container .row {
-  margin-left: 1rem;
-  margin-right: 1rem;
-  height: 100%;
-  display: flex;
-  align-items: center;
-}
-.container .row .col-xs-12 {
-  text-align: center;
-}
-
-.container .row a {
-  text-decoration: none;
-  color: #000;
-  -webkit-text-stroke: 0.5px black;
-  -webkit-text-fill-color: white;
-  font-weight: bold;
-  font-size: 1.5rem;
-}
-
-.container .row .social a {
-  margin-right: 0.5rem;
-}
-.container .row .social img {
-  height: 1.5rem;
-  filter: drop-shadow(1px 1px 1px #000);
 }
 
 .nes-icon.discord::before {
@@ -302,5 +257,141 @@ body {
       7px 16px 0 0.02em, 8px 16px 0 0.02em, 9px 16px 0 0.02em,
       10px 16px 0 0.02em, 11px 16px 0 0.02em, 12px 16px 0 0.02em,
       13px 16px 0 0.02em, 14px 16px 0 0.02em, 15px 16px 0 0.02em;
+  }
+}
+
+.slide {
+  width: 100vw;
+  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
+  background: url(../img/themes/desert/background.png) bottom/cover no-repeat;
+  clear: both;
+  z-index: -1;
+  position: relative;
+}
+.wrapper {
+  display: flex;
+  flex-direction: row;
+  width: 100vw;
+  transform: rotate(90deg) translateY(-100vh);
+  transform: rotate(90deg) translateY(calc(var(--vh, 1vh) * -100));
+  transform-origin: top left;
+}
+
+.outer-wrapper {
+  width: 100vh;
+  width: calc(var(--vh, 1vh) * 100);
+  height: 100vw;
+  transform: rotate(-90deg) translateX(-100vh);
+  transform: rotate(-90deg) translateX(calc(var(--vh, 1vh) * -100));
+  transform-origin: top left;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  position: absolute;
+}
+
+#dino {
+  position: fixed;
+  left: calc(50vw - 54.5px);
+  bottom: 15vh;
+  bottom: calc(var(--vh, 1vh) * 15);
+  transition: left 2s linear;
+}
+
+.hurdle {
+  left: -75px;
+  bottom: 15vh;
+  bottom: calc(var(--vh, 1vh) * 15);
+  position: absolute;
+  z-index: unset;
+}
+
+.outer-wrapper {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+::-webkit-scrollbar {
+  display: none;
+}
+
+.ground {
+  height: 26px;
+  width: 100vw;
+  background-image: url(../img/themes/desert/ground.png);
+  background-repeat: repeat-x;
+  background-size: auto 100%;
+  position: absolute;
+  bottom: calc(15vh - 26px);
+  bottom: calc(var(--vh, 1vh) * 15 - 26px);
+  z-index: -1;
+}
+
+.underground {
+  position: absolute;
+  bottom: 0;
+  background-image: url(../img/themes/desert/underground.png);
+  background-size: 263px auto;
+  background-repeat: repeat;
+  height: calc(15vh - 25px);
+  height: calc(var(--vh, 1vh) * 15 - 25px);
+  width: 100vw;
+  z-index: -1;
+}
+
+.slide .nes-balloon {
+  margin: 50px;
+  opacity: 0;
+  transform: rotate(45deg);
+  transform-origin: bottom left;
+  transition: transform 0.5s ease-in, opacity 1s ease-in;
+}
+
+.slide:first-child .nes-btn.is-primary {
+  position: absolute;
+  bottom: 5vh;
+  bottom: calc(var(--vh, 1vh) * 5);
+  left: calc(50vw - 52px);
+}
+
+.slide:first-child .nes-btn.is-success {
+  display: none;
+  position: absolute;
+  bottom: 5vh;
+  bottom: calc(var(--vh, 1vh) * 5);
+  left: calc(50vw - 296px);
+}
+
+.slide:first-child .nes-btn.is-error {
+  display: none;
+  position: absolute;
+  bottom: 5vh;
+  bottom: calc(var(--vh, 1vh) * 5);
+  left: calc(50vw + 100px);
+}
+
+@media (hover: hover) {
+  .slide .nes-balloon p {
+    font-size: small;
+  }
+}
+
+@media (pointer: coarse) {
+  .slide:first-child .nes-btn.is-success,
+  .slide:first-child .nes-btn.is-error {
+    display: inline-block;
+  }
+
+  .slide:first-child .nes-btn {
+    font-size: x-large;
+    height: 88px;
+    width: 196px;
+  }
+
+  .slide:first-child .nes-btn.is-primary {
+    left: calc(50vw - 98px);
+  }
+
+  .slide .nes-balloon p {
+    font-size: large;
   }
 }

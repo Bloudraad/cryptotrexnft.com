@@ -1,0 +1,95 @@
+<head>
+  <!-- Primary Meta Tags -->
+  <title>CryptoTrex 🦖</title>
+  <meta name="title" content="CryptoTrex 🦖" />
+  <meta
+    name="description"
+    content="The dinosaurs are back! (in the metaverse)"
+  />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://cryptotrexnft.com/" />
+  <meta property="og:title" content="CryptoTrex 🦖" />
+  <meta
+    property="og:description"
+    content="The dinosaurs are back! (in the metaverse)"
+  />
+  <meta
+    property="og:image"
+    content="https://cryptotrexnft.com/img/meta-banner.jpeg"
+  />
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:url" content="https://cryptotrexnft.com/" />
+  <meta property="twitter:title" content="CryptoTrex 🦖" />
+  <meta
+    property="twitter:description"
+    content="The dinosaurs are back! (in the metaverse)"
+  />
+  <meta
+    property="twitter:image"
+    content="https://cryptotrexnft.com/img/meta-banner.jpeg"
+  />
+
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+    rel="stylesheet"
+  />
+  <link href="css/nes.css" rel="stylesheet" />
+  <link rel="stylesheet" href="css/jumpy-trex.css" />
+  <link rel="stylesheet" href="css/preload.css" />
+  <script>
+    function adjustVhUnit() {
+      let vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    }
+    adjustVhUnit();
+    window.addEventListener('resize', adjustVhUnit);
+  </script>
+</head>
+
+<body>
+  <div id="loader">
+    <div id="spinner">
+      <div class="square" id="s0"></div>
+      <div class="square" id="s1"></div>
+      <div class="square" id="s2"></div>
+      <div class="square" id="s3"></div>
+      <div class="square" id="s4"></div>
+      <div class="square" id="s5"></div>
+      <div class="square" id="s6"></div>
+      <div class="square" id="s7"></div>
+      <div class="square" id="s8"></div>
+    </div>
+  </div>
+  <script src="js/preload.js" type="module"></script>
+  <div class="outer-wrapper">
+    <div class="wrapper">
+      <div class="slide">
+        <nav
+          class="container-fluid"
+          style="
+            display: flex;
+            align-items: center;
+            position: absolute;
+            padding: 20px;
+            justify-content: space-between;
+            width: 100vw;
+          "
+        >
+          <a class="nes-btn is-warning" href="/">&lt; Back to site</a>
+        </nav>
+        <div class="ground"></div>
+        <div class="underground"></div>
+        <button class="nes-btn is-primary" id="btn-play">Play!</button>
+      </div>
+    </div>
+  </div>
+  <img id="dino" src="img/dino/red/idle.png" />
+  <script src="js/jumpy-trex.js" type="module"></script>
+</body>
