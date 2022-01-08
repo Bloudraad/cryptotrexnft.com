@@ -41,10 +41,15 @@ async function getClaimableRewards(address, c) {
   return await c.methods.rewards(itemIds).call({ from: address });
 }
 
-async function claimRewards(btn, address, c) {
+async function claimRewards(btn, address, web3) {
   btn.disabled = true;
   btn.textContent = 'Claiming...';
   btn.classList = 'nes-btn is-disabled';
+
+  const chainId = await web3.eth.getChainId();
+  const c = new web3.eth.Contract(ct.abi, config[chainId].migration_address, {
+    gasLimit: (90000 + 15000 * itemIds.length).toString(),
+  });
   c.methods
     .claim(itemIds)
     .send({ from: address })
@@ -154,7 +159,7 @@ window.onload = async () => {
     const claimBtn = document.getElementById('claimBtn');
     claimBtn.addEventListener(
       'click',
-      async () => await claimRewards(claimBtn, address, c),
+      async () => await claimRewards(claimBtn, address, web3),
     );
   } catch (err) {
     console.log(err);
