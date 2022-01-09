@@ -48,7 +48,7 @@ async function claimRewards(btn, address, web3) {
 
   const chainId = await web3.eth.getChainId();
   const c = new web3.eth.Contract(ct.abi, config[chainId].migration_address, {
-    gasLimit: (90000 + 15000 * itemIds.length).toString(),
+    gasLimit: (90000 + 20000 * itemIds.length).toString(),
   });
   c.methods
     .claim(itemIds)
