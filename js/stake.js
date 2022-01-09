@@ -47,12 +47,13 @@ async function claimRewards(btn, address, web3) {
   btn.classList = 'nes-btn is-disabled';
 
   const chainId = await web3.eth.getChainId();
-  const c = new web3.eth.Contract(ct.abi, config[chainId].migration_address, {
-    gasLimit: (90000 + 20000 * itemIds.length).toString(),
+  const c = new web3.eth.Contract(ct.abi, config[chainId].migration_address);
+  const gas = await c.methods.claim(itemIds).estimateGas({
+    from: address,
   });
   c.methods
     .claim(itemIds)
-    .send({ from: address })
+    .send({ from: address, gas: gas })
     .on('receipt', async () => {
       btn.disabled = true;
       btn.classList = 'nes-btn is-success';
