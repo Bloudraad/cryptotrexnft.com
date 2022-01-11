@@ -22,6 +22,10 @@ body {
   font-family: 'Vermin Vibes 1989', cursive;
 }
 
+.navbar {
+  border-bottom: 1px solid #d56730;
+}
+
 .social a {
   margin-right: 0.5rem;
   text-decoration: none;
@@ -39,12 +43,16 @@ header.container-fluid {
   min-height: 100vh;
 }
 
+.alert-dark {
+  background-color: #373a3c;
+  color: #fff;
+  border: 1px solid;
+  border-image-slice: 1;
+  border-image-source: linear-gradient(180deg, #d56730, rgba(255, 0, 229, 0));
+}
+
 #preview {
-  background: linear-gradient(
-    rgba(0, 0, 0, 1),
-    rgba(212, 102, 47, 1),
-    rgba(255, 255, 255, 1)
-  );
+  background: linear-gradient(#000000, #d56730, #ffffff);
 }
 
 #preview .voxel-viewer {
