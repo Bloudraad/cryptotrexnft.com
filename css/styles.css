@@ -1,16 +1,11 @@
 @font-face {
   font-family: 'Vermin Vibes 1989';
-  src: url('//db.onlinewebfonts.com/t/e9a92ef234e726ff17913d77b956d3e0.eot');
-  src: url('//db.onlinewebfonts.com/t/e9a92ef234e726ff17913d77b956d3e0.eot?#iefix')
-      format('embedded-opentype'),
-    url('//db.onlinewebfonts.com/t/e9a92ef234e726ff17913d77b956d3e0.woff2')
-      format('woff2'),
-    url('//db.onlinewebfonts.com/t/e9a92ef234e726ff17913d77b956d3e0.woff')
-      format('woff'),
-    url('//db.onlinewebfonts.com/t/e9a92ef234e726ff17913d77b956d3e0.ttf')
-      format('truetype'),
-    url('//db.onlinewebfonts.com/t/e9a92ef234e726ff17913d77b956d3e0.svg#Vermin Vibes 1989')
-      format('svg');
+  src: url('../fonts/vermin.eot');
+  src: url('../fonts/vermin.eot') format('embedded-opentype'),
+    url('../fonts/vermin.woff2') format('woff2'),
+    url('../fonts/vermin.woff') format('woff'),
+    url('../fonts/vermin.ttf') format('truetype'),
+    url('../fonts/vermin.svg') format('svg');
 }
 
 body {
@@ -36,7 +31,7 @@ body {
 }
 
 header.container-fluid {
-  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 1)),
+  background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)),
     url(../img/background.jpg);
   background-position: center;
   background-size: cover;
@@ -52,7 +47,7 @@ header.container-fluid {
 }
 
 #preview {
-  background: linear-gradient(#000000, #d56730, #ffffff);
+  background: linear-gradient(#000, #d56730, #fff);
 }
 
 #preview .voxel-viewer {
