@@ -7,6 +7,7 @@
     url('../fonts/vermin.ttf') format('truetype'),
     url('../fonts/vermin.svg') format('svg');
 }
+
 body {
   margin: 0;
   color: #fff;
@@ -53,9 +54,72 @@ header.container-fluid {
   position: relative;
 }
 
+.header-font {
+  font-family: 'Vermin Vibes 1989';
+}
+
 .btn-secondary,
 .btn-secondary::after {
   width: 190px;
+  height: 43px;
+  font-size: 16px;
+  font-family: 'Vermin Vibes 1989';
+  background: linear-gradient(45deg, transparent 5%, #d56730 5%);
+  border: 0;
+  color: #fff;
+  letter-spacing: 3px;
+  line-height: 32px;
+  box-shadow: 6px 0px 0px #ad440f;
+  outline: transparent;
+  position: relative;
+}
+
+/* .nav-item {
+  margin-left: 16px;
+  margin-right: 16px;
+}
+.nav-item a:hover {
+  background-color: #d56730;
+} */
+
+.nav-link {
+  font-weight: bold;
+  font-size: 18px;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #d56730;
+  padding: 12px 0px;
+  margin-left: 16px;
+  margin-right: 16px;
+  display: inline-block;
+  position: relative;
+  opacity: 0.75;
+}
+
+.nav-link:hover {
+  opacity: 1;
+}
+
+.nav-link::before {
+  transition: 300ms;
+  height: 5px;
+  content: '';
+  position: absolute;
+  background-color: #d56730;
+}
+
+.nav-link-ltr::before {
+  width: 0%;
+  bottom: 0px;
+}
+
+.nav-link-ltr:hover::before {
+  width: 100%;
+}
+
+.btn-discord,
+.btn-discord::after {
+  width: 240px;
   height: 43px;
   font-size: 16px;
   font-family: 'Vermin Vibes 1989';

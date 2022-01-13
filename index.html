@@ -21,11 +21,14 @@
     property="og:image"
     content="https://cryptotrexnft.com/img/meta-banner.jpeg"
   />
+
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.gstatic.com" />
   <link
     href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap"
     rel="stylesheet"
   />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
 
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image" />
@@ -49,7 +52,10 @@
 </head>
 
 <body>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-black">
+  <nav
+    class="navbar navbar-expand-lg navbar-dark bg-black bg-opacity-75"
+    style="position: fixed; width: 100%; z-index: 9999"
+  >
     <div class="container">
       <a class="navbar-brand" href="#">
         <img height="24" src="img/logo.png" />
@@ -68,14 +74,27 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active" href="/migrate.html">My Trexes</a>
+            <a class="nav-link nav-link-ltr active header-font" href="/"
+              >Home</a
+            >
           </li>
           <li class="nav-item">
-            <a class="nav-link active" href="/claim.html">Claim</a>
-          </li>
-          <li class="nav-item dropdown">
             <a
-              class="nav-link active dropdown-toggle"
+              class="nav-link nav-link-ltr active header-font"
+              href="/migrate.html"
+              >My Trexes</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link nav-link-ltr active header-font"
+              href="/claim.html"
+              >Claim</a
+            >
+          </li>
+          <li class="nav-item nav-link-ltr dropdown">
+            <a
+              class="nav-link active dropdown-toggle header-font"
               href="#"
               id="navbarDropdown"
               role="button"
@@ -158,13 +177,15 @@
   <section id="preview">
     <div class="container py-5">
       <div class="row">
-        <h1 class="text-center font-pixel mb-5">CryptoTrex Forms</h1>
+        <h1 class="text-center font-pixel mb-5 header-font">
+          CryptoTrex Forms
+        </h1>
         <div class="col-md-4 col-12 mb-3">
           <div
             style="padding: 32px"
             class="alert alert-dark h-100 d-flex flex-column"
           >
-            <h4>Genesis Collection (2D)</h4>
+            <h4><strong>Genesis Collection (2D)</strong></h4>
             <img
               style="margin-top: 18px"
               class="img-fluid mb-2"
@@ -177,43 +198,61 @@
               is algorithmically generated and possesses its own combination of
               accessories, features, and most importantly its own personality.
             </p>
-            <a class="btn btn-primary mt-auto btn-secondary">View on OpenSea</a>
+            <a class="btn mt-auto btn-secondary">View on OpenSea</a>
           </div>
         </div>
         <div class="col-md-4 col-12 mb-3">
-          <div class="alert alert-dark h-100 d-flex flex-column">
-            <h4>Voxel Collection (3D)</h4>
+          <div
+            style="padding: 32px"
+            class="alert alert-dark h-100 d-flex flex-column"
+          >
+            <h4><strong>Voxel Collection (3D)</strong></h4>
             <iframe
+              style="margin-top: 24px"
               class="voxel-viewer mb-2"
               src="https://vxviewer.cryptotrexnft.com"
               title="Voxel Viewer"
             ></iframe>
-            <p>
+            <p style="margin-top: 24px">
               Cryptotrex VX is a series of 11,111 uniquely generated Trex Voxels
               on the metaverse. Each Cryptotrex VX grants you access to the
               metaverse on Sandbox, entry to the TrexDAO and provides additional
               benefits and utility.
             </p>
             <!-- <a class="btn btn-primary" disabled>View on OpenSea</a> -->
-            <a class="btn btn-success mt-auto" disabled>Mint soon</a>
+            <a
+              style="margin-top: 24px"
+              class="btn btn-secondary mt-auto"
+              disabled
+              >Mint soon</a
+            >
           </div>
         </div>
         <div class="col-md-4 col-12 mb-3">
-          <div class="alert alert-dark h-100 d-flex flex-column">
-            <h4>Merchandise</h4>
+          <div
+            style="padding: 32px"
+            class="alert alert-dark h-100 d-flex flex-column"
+          >
+            <h4><strong>Merchandise</strong></h4>
             <img
+              style="margin-top: 24px"
               class="img-fluid mb-2"
               src="./img/merch.png"
               alt="CryptoTrex Merchandise"
             />
-            <p>
+            <p style="margin-top: 24px">
               We&apos;re building a lifestyle brand beyond the metaverse.
               Cryptotrex will be introducing physical merchandise so that every
               member or trex fanatic can rep the project and gift physical items
               to your loved ones. Expect hats, caps and even shoes.
             </p>
             <!-- <a class="btn btn-primary" disabled>View on OpenSea</a> -->
-            <a class="btn btn-success mt-auto" disabled>Drop soon</a>
+            <a
+              style="margin-top: 24px"
+              class="btn btn-secondary mt-auto"
+              disabled
+              >Drop soon</a
+            >
           </div>
         </div>
       </div>
@@ -221,19 +260,21 @@
   </section>
   <section id="roadmap">
     <div class="container py-5">
-      <h1 class="text-center font-pixel mb-5 text-black">Roadmap</h1>
+      <h1 class="text-center font-pixel mb-5 text-white header-font">
+        Roadmap
+      </h1>
       <div class="alert alert-dark row">
         <div class="col-md-9 col-12">
-          <h3>Phase 1</h3>
-          <ul>
+          <h3><strong>Phase 1</strong></h3>
+          <ul style="margin-top: 24px">
             <li>
               Release the first 1,111 CryptoTrex VX as a FREE mint for our
               current Genesis CryptoTrex holders.
             </li>
             <li>
               Release a 10,000 public mint of the CryptoTrex VX collection to
-              the public at 0.08 ETH. Genesis holders will be able to purchase 2
-              extra CryptoTrex VX using $FOSSIL token.
+              the public at 0.08 ETH. Genesis holders will be able to purchase
+              up to 2 extra CryptoTrex VX using $FOSSIL token.
             </li>
             <li>
               The CryptoTrex team will buy up a massive amount of digital land
@@ -255,8 +296,8 @@
       </div>
       <div class="alert alert-dark row">
         <div class="col-md-9 col-12 order-md-2">
-          <h3>Phase 2</h3>
-          <ul>
+          <h3><strong>Phase 2</strong></h3>
+          <ul style="margin-top: 24px">
             <li>
               The CryptoTrex Merch shop will be set up. This includes
               purchasable apparel with your unique CryptoTrex Genesis
@@ -284,8 +325,8 @@
       </div>
       <div class="alert alert-dark row">
         <div class="col-md-9 col-12">
-          <h3>Phase 3</h3>
-          <ul>
+          <h3><strong>Phase 3</strong></h3>
+          <ul style="margin-top: 24px">
             <li>
               &ldquo;Age of Dinos&rdquo; will be launched. This is web and
               mobile based Play To Earn game. Whitepaper
@@ -320,7 +361,8 @@
           <a
             href="https://discord.gg/ekk838XkbV"
             target="_blank"
-            class="btn btn-primary"
+            class="btn btn-discord"
+            style="margin-top: 24px"
             >Join our Discord</a
           >
         </div>

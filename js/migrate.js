@@ -231,12 +231,13 @@ function buildCard(e, migrated) {
   const card = document.createElement('div');
   card.classList = 'card';
   card.style = `
-    background-color: #373a3c;
+    margin: 4px;
+    background-color: #0a0a0a;
     color: #fff;
     border: 1px solid;
+    padding: 24px;
     border-image-slice: 1;
-    border-image-source: linear-gradient(
-      180deg, #d56730, rgba(255, 0, 229, 0));`;
+    border-image-source: linear-gradient(180deg, #d56730, #d5673041);`;
   const imageContainer = document.createElement('a');
   imageContainer.href = e.permalink;
   imageContainer.target = '_blank';
@@ -254,7 +255,7 @@ function buildCard(e, migrated) {
   migrateBtn.type = 'button';
 
   if (!migrated) {
-    migrateBtn.classList = 'btn btn-primary';
+    migrateBtn.classList = 'btn btn-secondary';
     migrateBtn.textContent = 'Migrate';
   } else {
     migrateBtn.classList = 'btn btn-light disabled';

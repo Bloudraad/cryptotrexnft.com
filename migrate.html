@@ -44,7 +44,10 @@
 </head>
 
 <body>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-black">
+  <nav
+    class="navbar navbar-expand-lg navbar-dark bg-black bg-opacity-75"
+    style="width: 100%; z-index: 9999"
+  >
     <div class="container">
       <a class="navbar-brand" href="#">
         <img height="24" src="img/logo.png" />
@@ -63,14 +66,27 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active" href="/migrate.html">My Trexes</a>
+            <a class="nav-link nav-link-ltr active header-font" href="/"
+              >Home</a
+            >
           </li>
           <li class="nav-item">
-            <a class="nav-link active" href="/claim.html">Claim</a>
-          </li>
-          <li class="nav-item dropdown">
             <a
-              class="nav-link active dropdown-toggle"
+              class="nav-link nav-link-ltr active header-font"
+              href="/migrate.html"
+              >My Trexes</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link nav-link-ltr active header-font"
+              href="/claim.html"
+              >Claim</a
+            >
+          </li>
+          <li class="nav-item nav-link-ltr dropdown">
+            <a
+              class="nav-link active dropdown-toggle header-font"
               href="#"
               id="navbarDropdown"
               role="button"
@@ -195,11 +211,11 @@
           type="button"
           class="btn btn-primary"
           id="batchMigrateBtn"
-          style="margin-right: 10px"
+          style="margin-right: 10px; margin-bottom: 10px"
         >
           Migrate All
         </button>
-        <button type="button" class="btn btn-success" id="addTokenBtn" hidden>
+        <button type="button" class="btn btn-secondary" id="addTokenBtn" hidden>
           Add $FOSSIL token
         </button>
       </div>
