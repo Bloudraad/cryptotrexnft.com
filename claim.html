@@ -43,75 +43,149 @@
     href="https://cdnjs.cloudflare.com/ajax/libs/flexboxgrid/6.3.1/flexboxgrid.min.css"
     type="text/css"
   />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
-    rel="stylesheet"
-  />
-  <link href="css/nes.css" rel="stylesheet" />
+  <link href="css/cosmos.css" rel="stylesheet" />
   <link href="css/migrate.css" rel="stylesheet" />
 </head>
 
 <body>
-  <div class="outer-wrapper">
-    <div class="wrapper" style="display: block">
-      <nav
-        class="container-fluid"
-        style="
-          display: flex;
-          align-items: center;
-          padding: 20px;
-          justify-content: space-between;
-          width: 100vw;
-        "
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="#">
+        <img height="24" src="img/logo.png" />
+      </a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
       >
-        <div class="nav-brand">
-          <a href="/" style="color: #fff; text-decoration: none">
-            <h2 style="margin-bottom: 0">CryptoTrex</h2>
-          </a>
-        </div>
-        <div>
-          <a href="https://opensea.io/collection/cryptotrex" target="_blank"
-            ><i class="nes-icon opensea"></i
-          ></a>
-          <a href="https://discord.gg/ekk838XkbV" target="_blank"
-            ><i class="nes-icon discord"></i
-          ></a>
-          <a href="https://www.twitter.com/cryptotrexnft/" target="_blank"
-            ><i class="nes-icon twitter"></i
-          ></a>
-          <a href="https://www.instagram.com/cryptotrexnft/" target="_blank"
-            ><i class="nes-icon instagram"></i
-          ></a>
-        </div>
-      </nav>
-
-      <div class="container" id="stakingView">
-        <div class="row">
-          <div class="col-xs-12">
-            <div class="nes-container is-rounded">
-              <h2>Claimable Rewards</h2>
-              <p id="claimableRewardsTxt">- $FOSSIL</p>
-              <div class="col-xs-12 justify-content-between d-flex">
-                <button
-                  id="claimBtn"
-                  type="button"
-                  class="nes-btn is-primary"
-                  style="margin-right: 10px"
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" href="/migrate.html">My Trexes</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="/claim.html">Claim</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link active dropdown-toggle"
+              href="#"
+              id="navbarDropdown"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              Games
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li>
+                <a class="dropdown-item" href="/jumpy-trex.html">Jumpy Trex</a>
+              </li>
+              <li>
+                <a
+                  class="dropdown-item"
+                  href="https://whitepaper.cryptotrexnft.com"
+                  target="_blank"
+                  >Age of Dinos Whitepaper</a
                 >
-                  Claim
-                </button>
-                <button type="button" class="nes-btn" id="addTokenBtn" hidden>
-                  Add $FOSSIL token
-                </button>
-              </div>
+              </li>
+            </ul>
+          </li>
+        </ul>
+        <ul class="navbar-nav mb-2 mb-lg-0">
+          <li class="nav-item">
+            <div class="social">
+              <a href="https://discord.gg/ekk838XkbV" target="_blank">
+                <img src="img/socials/discord.svg" alt="Discord" />
+              </a>
+              <a href="https://www.twitter.com/cryptotrexnft" target="_blank">
+                <img src="img/socials/twitter.svg" alt="Twitter" />
+              </a>
+              <a
+                href="https://opensea.io/collection/cryptotrex"
+                target="_blank"
+              >
+                <img src="img/socials/opensea.svg" alt="Opensea" />
+              </a>
+              <a href="https://www.instagram.com/cryptotrexnft" target="_blank">
+                <img src="img/socials/ig.svg" alt="Instagram" />
+              </a>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-5" id="stakingView">
+    <div class="row">
+      <div class="col-12">
+        <div class="alert alert-dark">
+          <h2>Claimable Rewards</h2>
+          <p id="claimableRewardsTxt">- $FOSSIL</p>
+          <div class="row">
+            <div class="claim-btn col-md-8 col-12 mt-2">
+              <button id="claimBtn" type="button" class="btn btn-primary">
+                Claim $FOSSIL
+              </button>
+              <button id="claimVxBtn" type="button" class="btn btn-primary">
+                Claim All Voxel Trexes
+              </button>
+            </div>
+            <div class="col-md-4 col-12 mt-2 d-flex justify-content-md-end">
+              <button
+                type="button"
+                class="btn btn-success"
+                id="addTokenBtn"
+                hidden
+              >
+                Add $FOSSIL token
+              </button>
             </div>
           </div>
         </div>
+      </div>
+    </div>
 
-        <div class="row pt-1" id="card-list"></div>
+    <div class="row pt-1" id="card-list"></div>
+  </div>
+  <div class="container mt-5" id="claimChecker">
+    <div class="row">
+      <div class="col-12">
+        <div class="alert alert-dark">
+          <h2>Check Genesis CryptoTrex Rewards</h2>
+
+          <!-- TODO: listen to this form submission and check Trex claim/reward -->
+          <form>
+            <fieldset>
+              <label for="rexId" class="col-form-label">CryptoTrex ID</label>
+              <input
+                type="number"
+                step="1"
+                min="1"
+                max="1111"
+                class="form-control"
+                id="rexId"
+                placeholder="CryptoTrex #"
+              />
+            </fieldset>
+            <button type="submit" class="btn btn-info mt-3">Check</button>
+          </form>
+
+          <p id="checkerResult" class="mt-4">CryptoTrex #6 current rewards:</p>
+          <ul>
+            <li>2345 $FOSSIL</li>
+            <li>Voxel Form</li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
   <script src="js/stake.js" type="module"></script>
-  <script src="js/faq.js"></script>
 </body>

@@ -116,24 +116,40 @@ async function renderItems(address, web3, c) {
 
 function buildCard(e) {
   const card = document.createElement('div');
-  card.classList = 'nes-container item-card is-rounded';
-  card.style = 'background-color: white; display: block;';
+  card.classList = 'card';
+  card.style = `
+    background-color: #373a3c;
+    color: #fff;
+    border: 1px solid;
+    border-image-slice: 1;
+    border-image-source: linear-gradient(
+      180deg, #d56730, rgba(255, 0, 229, 0));`;
   const imageContainer = document.createElement('a');
-  imageContainer.classList = 'nes-container is-rounded';
   imageContainer.href = e.permalink;
   imageContainer.target = '_blank';
-  imageContainer.style =
-    'background-color: white; padding: 0px !important; display: flex; justify-content: center';
   const image = document.createElement('img');
   image.src = e.image_thumbnail_url;
   image.crossOrigin = 'anonymous';
   image.style.width = '100%';
+  image.classList = 'card-img-top';
   imageContainer.appendChild(image);
-  const nameDiv = document.createElement('p');
-  nameDiv.classList.add('pt-1');
+  const bodyDiv = document.createElement('div');
+  bodyDiv.classList = 'card-body';
+  const nameDiv = document.createElement('h5');
+  nameDiv.classList.add('card-title');
   nameDiv.textContent = e.name;
+
+  // TODO: implement individual claim VX button
+  const claimVxBtn = document.createElement('button');
+  claimVxBtn.type = 'button';
+  claimVxBtn.classList = 'btn btn-primary w-100';
+  claimVxBtn.textContent = 'Claim VX';
+  claimVxBtn.addEventListener('click', () => {});
+
   card.appendChild(imageContainer);
-  card.appendChild(nameDiv);
+  bodyDiv.appendChild(nameDiv);
+  bodyDiv.appendChild(claimVxBtn);
+  card.appendChild(bodyDiv);
 
   const cardContainer = document.createElement('div');
   cardContainer.classList.add('col-md-3', 'col-xs-6', 'pb-1');
