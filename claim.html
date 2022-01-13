@@ -43,15 +43,24 @@
     href="https://cdnjs.cloudflare.com/ajax/libs/flexboxgrid/6.3.1/flexboxgrid.min.css"
     type="text/css"
   />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@800&display=swap"
+    rel="stylesheet"
+  />
   <link href="css/cosmos.css" rel="stylesheet" />
   <link href="css/migrate.css" rel="stylesheet" />
 </head>
 
 <body>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <nav
+    class="navbar navbar-expand-lg navbar-dark bg-black bg-opacity-75"
+    style="width: 100%; z-index: 9999"
+  >
     <div class="container">
       <a class="navbar-brand" href="#">
-        <img height="24" src="img/logo.png" />
+        <img height="48" style="margin-bottom: -8px" src="img/logo.png" />
       </a>
       <button
         class="navbar-toggler"
@@ -67,14 +76,27 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active" href="/migrate.html">My Trexes</a>
+            <a class="nav-link nav-link-ltr active header-font" href="/"
+              >Home</a
+            >
           </li>
           <li class="nav-item">
-            <a class="nav-link active" href="/claim.html">Claim</a>
-          </li>
-          <li class="nav-item dropdown">
             <a
-              class="nav-link active dropdown-toggle"
+              class="nav-link nav-link-ltr active header-font"
+              href="/migrate.html"
+              >My Trexes</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link nav-link-ltr active header-font"
+              href="/claim.html"
+              >Claim</a
+            >
+          </li>
+          <li class="nav-item nav-link-ltr dropdown">
+            <a
+              class="nav-link active dropdown-toggle header-font"
               href="#"
               id="navbarDropdown"
               role="button"
@@ -126,23 +148,29 @@
   <div class="container mt-5" id="stakingView">
     <div class="row">
       <div class="col-12">
-        <div class="alert alert-dark">
-          <h2>Claimable Rewards</h2>
+        <div class="alert alert-dark" style="padding: 24px">
+          <h2><strong>Claimable Rewards</strong></h2>
           <p id="claimableRewardsTxt">- $FOSSIL</p>
           <div class="row">
             <div class="claim-btn col-md-8 col-12 mt-2">
-              <button id="claimBtn" type="button" class="btn btn-primary">
+              <button
+                id="claimBtn"
+                type="button"
+                class="btn btn-primary"
+                style="font-weight: 800"
+              >
                 Claim $FOSSIL
               </button>
-              <button id="claimVxBtn" type="button" class="btn btn-primary">
+              <!-- <button id="claimVxBtn" type="button" class="btn btn-primary" style="font-weight: 800; ">
                 Claim All Voxel Trexes
-              </button>
+              </button> -->
             </div>
             <div class="col-md-4 col-12 mt-2 d-flex justify-content-md-end">
               <button
                 type="button"
-                class="btn btn-success"
+                class="btn btn-secondary"
                 id="addTokenBtn"
+                style="font-weight: 800"
                 hidden
               >
                 Add $FOSSIL token
@@ -158,31 +186,33 @@
   <div class="container mt-5" id="claimChecker">
     <div class="row">
       <div class="col-12">
-        <div class="alert alert-dark">
-          <h2>Check Genesis CryptoTrex Rewards</h2>
+        <div class="alert alert-dark" style="padding: 24px">
+          <h2><strong>Check Genesis CryptoTrex Rewards</strong></h2>
 
           <!-- TODO: listen to this form submission and check Trex claim/reward -->
-          <form>
-            <fieldset>
-              <label for="rexId" class="col-form-label">CryptoTrex ID</label>
-              <input
-                type="number"
-                step="1"
-                min="1"
-                max="1111"
-                class="form-control"
-                id="rexId"
-                placeholder="CryptoTrex #"
-              />
-            </fieldset>
-            <button type="submit" class="btn btn-info mt-3">Check</button>
-          </form>
 
-          <p id="checkerResult" class="mt-4">CryptoTrex #6 current rewards:</p>
-          <ul>
-            <li>2345 $FOSSIL</li>
-            <li>Voxel Form</li>
-          </ul>
+          <label for="rexId" class="col-form-label">CryptoTrex ID</label>
+          <input
+            type="number"
+            step="1"
+            min="1"
+            max="1111"
+            class="form-control"
+            id="rexId"
+            placeholder="CryptoTrex #"
+          />
+          <button
+            type="submit"
+            id="btnCheck"
+            class="btn btn-primary mt-3"
+            style="font-weight: 800"
+          >
+            Check
+          </button>
+
+          <p id="checkerResult" class="mt-4">This Genesis CryptoTrex has</p>
+          <img width="24" height="24" src="img/token.png" />&nbsp;
+          <span id="tokenAmt">0</span> $FOSSIL
         </div>
       </div>
     </div>

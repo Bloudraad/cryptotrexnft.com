@@ -6,6 +6,8 @@
     url('../fonts/vermin.woff') format('woff'),
     url('../fonts/vermin.ttf') format('truetype'),
     url('../fonts/vermin.svg') format('svg');
+  font-family: 'Inconsolata', monospace;
+  font-family: 'Kanit', sans-serif;
 }
 
 body {

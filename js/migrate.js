@@ -256,13 +256,14 @@ function buildCard(e, migrated) {
 
   if (!migrated) {
     migrateBtn.classList = 'btn btn-secondary';
+    migrateBtn.style = 'font-weight: 800; width: 100%;';
     migrateBtn.textContent = 'Migrate';
   } else {
     migrateBtn.classList = 'btn btn-light disabled';
     migrateBtn.disabled = true;
+    migrateBtn.style = 'width: 100%';
     migrateBtn.textContent = 'Migrated';
   }
-  migrateBtn.style = 'width: 100%';
   migrateBtn.addEventListener('click', () => migrate(e.token_id, migrateBtn));
   card.appendChild(imageContainer);
   bodyDiv.appendChild(nameDiv);

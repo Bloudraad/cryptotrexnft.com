@@ -37,6 +37,12 @@
 
   <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@800&display=swap"
+    rel="stylesheet"
+  />
 
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   <link href="css/cosmos.css" rel="stylesheet" />
@@ -50,7 +56,7 @@
   >
     <div class="container">
       <a class="navbar-brand" href="#">
-        <img height="24" src="img/logo.png" />
+        <img height="48" src="img/logo.png" />
       </a>
       <button
         class="navbar-toggler"
@@ -195,8 +201,8 @@
   <div class="container" id="migrationView">
     <div class="row mt-5">
       <div class="col-xs-12">
-        <div class="alert alert-dark">
-          <p>Let's migrate!</p>
+        <div class="alert alert-dark" style="padding: 24px">
+          <h2><strong>Let's migrate!</strong></h2>
           <ul class="nes-list is-disc">
             <li>Change your duplicate T-rex into a whole new T-rex.</li>
             <li>Assign correct properties to your T-rexes.</li>
@@ -211,11 +217,17 @@
           type="button"
           class="btn btn-primary"
           id="batchMigrateBtn"
-          style="margin-right: 10px; margin-bottom: 10px"
+          style="margin-right: 10px; margin-bottom: 10px; font-weight: 800"
         >
           Migrate All
         </button>
-        <button type="button" class="btn btn-secondary" id="addTokenBtn" hidden>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          id="addTokenBtn"
+          hidden
+          style="font-weight: 800"
+        >
           Add $FOSSIL token
         </button>
       </div>
@@ -224,8 +236,10 @@
 
     <div class="row pb-1 mt-5">
       <div class="col-xs-12">
-        <div class="alert alert-dark">
-          <h2>Frequently Asked Questions</h2>
+        <div class="alert alert-dark" style="padding: 24px">
+          <h2 style="margin-bottom: 24px">
+            <strong>Frequently Asked Questions</strong>
+          </h2>
           <div class="accordion" id="faq">
             <div class="accordion-item">
               <h3 class="accordion-header" id="heading1">
