@@ -21,6 +21,11 @@
     property="og:image"
     content="https://cryptotrexnft.com/img/meta-banner.jpeg"
   />
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap"
+    rel="stylesheet"
+  />
 
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image" />
@@ -44,7 +49,7 @@
 </head>
 
 <body>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-black">
     <div class="container">
       <a class="navbar-brand" href="#">
         <img height="24" src="img/logo.png" />
@@ -138,13 +143,14 @@
             alt="CryptoTrex Logo"
           />
           <h1 class="text-center font-pixel">CryptoTrex</h1>
-          <p class="text-center mb-5">
+          <p style="font-style: italic" class="text-center mb-5">
             The CryptoTrex collection is a limited series of 1,111 unique
             T-Rexes living on the Ethereum Blockchain. Each CryptoTrex is
             algorithmically generated and a part of the Genesis collection for
             the CryptoTrex metaverse. Each piece possesses its own combination
             of accessories, features, and most importantly its own personality
           </p>
+          <a class="btn btn-cta" href="#preview" disabled>Learn more</a>
         </div>
       </div>
     </div>
@@ -154,20 +160,24 @@
       <div class="row">
         <h1 class="text-center font-pixel mb-5">CryptoTrex Forms</h1>
         <div class="col-md-4 col-12 mb-3">
-          <div class="alert alert-dark h-100 d-flex flex-column">
+          <div
+            style="padding: 32px"
+            class="alert alert-dark h-100 d-flex flex-column"
+          >
             <h4>Genesis Collection (2D)</h4>
             <img
+              style="margin-top: 18px"
               class="img-fluid mb-2"
               src="./img/genesis-logo.png"
               alt="Genesis collection logo"
             />
-            <p>
+            <p style="margin-top: 24px">
               The Genesis CryptoTrex collection is a limited series of 1,111
               unique T-Rexes living on the Ethereum Blockchain. Each CryptoTrex
               is algorithmically generated and possesses its own combination of
               accessories, features, and most importantly its own personality.
             </p>
-            <a class="btn btn-primary mt-auto">View on OpenSea</a>
+            <a class="btn btn-primary mt-auto btn-secondary">View on OpenSea</a>
           </div>
         </div>
         <div class="col-md-4 col-12 mb-3">
