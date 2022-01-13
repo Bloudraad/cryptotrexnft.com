@@ -9,7 +9,7 @@
 }
 
 body {
-  background: linear-gradient(#000, #d56730);
+  background: #0a0a0a;
 }
 
 .font-pixel {
@@ -30,11 +30,11 @@ body {
 }
 
 .alert-dark {
-  background-color: #373a3c;
+  background-color: #0a0a0a;
   color: #fff;
   border: 1px solid;
   border-image-slice: 1;
-  border-image-source: linear-gradient(180deg, #d56730, rgba(255, 0, 229, 0));
+  border-image-source: linear-gradient(180deg, #d56730, #d5673041);
 }
 
 .accordion-item {
