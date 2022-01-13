@@ -3,6 +3,7 @@ import ct from './contracts/CryptoTrex.json';
 import { config } from './config';
 import { loadWeb3, web3Address, switchChain } from './web3.js';
 import Web3 from 'web3';
+import { tokenIdMap } from './map';
 
 const formatEther = (value) =>
   new Number(Web3.utils.fromWei(value, 'ether')).toFixed(4).toString();
@@ -122,24 +123,41 @@ async function renderItems(address, web3, c) {
 
 function buildCard(e) {
   const card = document.createElement('div');
-  card.classList = 'nes-container item-card is-rounded';
-  card.style = 'background-color: white; display: block;';
+  card.classList = 'card';
+  card.style = `
+  margin: 4px;
+  background-color: #0a0a0a;
+  color: #fff;
+  border: 1px solid;
+  padding: 24px;
+  border-image-slice: 1;
+  border-image-source: linear-gradient(180deg, #d56730, #d5673041);`;
   const imageContainer = document.createElement('a');
-  imageContainer.classList = 'nes-container is-rounded';
   imageContainer.href = e.permalink;
   imageContainer.target = '_blank';
-  imageContainer.style =
-    'background-color: white; padding: 0px !important; display: flex; justify-content: center';
   const image = document.createElement('img');
   image.src = e.image_thumbnail_url;
   image.crossOrigin = 'anonymous';
   image.style.width = '100%';
+  image.classList = 'card-img-top';
   imageContainer.appendChild(image);
-  const nameDiv = document.createElement('p');
-  nameDiv.classList.add('pt-1');
+  const bodyDiv = document.createElement('div');
+  bodyDiv.classList = 'card-body';
+  const nameDiv = document.createElement('h5');
+  nameDiv.classList.add('card-title');
   nameDiv.textContent = e.name;
+
+  // TODO: implement individual claim VX button
+  // const claimVxBtn = document.createElement('button');
+  // claimVxBtn.type = 'button';
+  // claimVxBtn.classList = 'btn btn-primary w-100';
+  // claimVxBtn.textContent = 'Claim VX';
+  // claimVxBtn.addEventListener('click', () => {});
+
   card.appendChild(imageContainer);
-  card.appendChild(nameDiv);
+  bodyDiv.appendChild(nameDiv);
+  // bodyDiv.appendChild(claimVxBtn);
+  card.appendChild(bodyDiv);
 
   const cardContainer = document.createElement('div');
   cardContainer.classList.add('col-md-3', 'col-xs-6', 'pb-1');
@@ -154,7 +172,7 @@ window.onload = async () => {
     const address = await web3Address(web3);
     const chainId = await web3.eth.getChainId();
     const c = new web3.eth.Contract(ct.abi, config[chainId].migration_address);
-    await switchChain(window.ethereum);
+    // await switchChain(window.ethereum);
     await renderItems(address, web3, c);
 
     const claimBtn = document.getElementById('claimBtn');
@@ -171,3 +189,23 @@ const addTokenBtn = document.getElementById('addTokenBtn');
 addTokenBtn.addEventListener('click', async () => {
   await addToken(window.ethereum);
 });
+
+const btnCheck = document.getElementById('btnCheck');
+btnCheck.addEventListener('click', async () => {
+  const amt = await checkClaimableRewards();
+  console.log(amt);
+  const tokenAmt = document.getElementById('tokenAmt');
+  tokenAmt.textContent = formatEther(amt);
+});
+
+async function checkClaimableRewards() {
+  const web3 = await loadWeb3();
+  const address = await web3Address(web3);
+  const chainId = await web3.eth.getChainId();
+  const c = new web3.eth.Contract(ct.abi, config[chainId].migration_address);
+  const rexIdInput = document.getElementById('rexId');
+  const tokenId = tokenIdMap[rexIdInput.value];
+  console.log(tokenId, rexIdInput.value);
+
+  return await c.methods.rewards([tokenId]).call({ from: address });
+}

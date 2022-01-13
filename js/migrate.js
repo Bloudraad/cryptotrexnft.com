@@ -65,13 +65,13 @@ async function approve() {
       const approveBtn = document.getElementById('approveBtn');
       approveBtn.textContent = 'Approved';
       approveBtn.disabled = true;
-      approveBtn.classList = 'nes-btn is-success is-disabled';
+      approveBtn.classList = 'btn btn-success is-disabled';
       renderItems(address, web3);
     })
     .on('transactionHash', (hash) => {
       const container = document.getElementById('approvalContainer');
       const viewTx = document.createElement('a');
-      viewTx.classList = 'nes-btn';
+      viewTx.classList = 'btn btn-info';
       viewTx.href = `https://etherscan.io/tx/${hash}`;
       viewTx.target = '_blank';
       viewTx.text = 'View Transaction';
@@ -80,7 +80,7 @@ async function approve() {
       const approveBtn = document.getElementById('approveBtn');
       approveBtn.textContent = 'Approving...';
       approveBtn.disabled = true;
-      approveBtn.classList = 'nes-btn is-primary';
+      approveBtn.classList = 'btn btn-primary';
     });
 }
 
@@ -96,7 +96,7 @@ async function migrate(id, btn) {
     .send({ from: address })
     .on('receipt', () => {
       btn.disabled = true;
-      btn.classList = 'nes-btn is-success';
+      btn.classList = 'btn btn-success';
       btn.textContent = 'Migrated';
     })
     .on('transactionHash', (hash) => {
@@ -108,7 +108,7 @@ async function migrate(id, btn) {
     .on('error', () => {
       btn.disabled = true;
       btn.textContent = 'Failed';
-      btn.classList = 'nes-btn is-error';
+      btn.classList = 'btn btn-danger';
     });
 }
 
@@ -203,7 +203,7 @@ async function renderItems(address, web3) {
   if (v1.length < 1) {
     const batchMigrateBtn = document.getElementById('batchMigrateBtn');
     batchMigrateBtn.textContent = 'Nothing to migrate';
-    batchMigrateBtn.classList = 'nes-btn is-disabled';
+    batchMigrateBtn.classList = 'btn btn-light is-disabled';
     batchMigrateBtn.disabled = true;
   }
 
@@ -229,38 +229,46 @@ async function renderItems(address, web3) {
 
 function buildCard(e, migrated) {
   const card = document.createElement('div');
-  card.classList = 'nes-container item-card is-rounded';
-  card.style = 'background-color: white; display: block;';
+  card.classList = 'card';
+  card.style = `
+    margin: 4px;
+    background-color: #0a0a0a;
+    color: #fff;
+    border: 1px solid;
+    padding: 24px;
+    border-image-slice: 1;
+    border-image-source: linear-gradient(180deg, #d56730, #d5673041);`;
   const imageContainer = document.createElement('a');
-  imageContainer.classList = 'nes-container is-rounded';
   imageContainer.href = e.permalink;
   imageContainer.target = '_blank';
-  imageContainer.style =
-    'background-color: white; padding: 0px !important; display: flex; justify-content: center';
   const image = document.createElement('img');
   image.src = e.image_thumbnail_url;
   image.crossOrigin = 'anonymous';
-  image.style.width = '100%';
+  image.classList = 'card-img-top';
   imageContainer.appendChild(image);
-  const nameDiv = document.createElement('p');
-  nameDiv.classList.add('pt-1');
+  const bodyDiv = document.createElement('div');
+  bodyDiv.classList = 'card-body';
+  const nameDiv = document.createElement('h5');
+  nameDiv.classList.add('card-title');
   nameDiv.textContent = e.name;
   const migrateBtn = document.createElement('button');
   migrateBtn.type = 'button';
 
   if (!migrated) {
-    migrateBtn.classList = 'nes-btn';
+    migrateBtn.classList = 'btn btn-secondary';
+    migrateBtn.style = 'font-weight: 800; width: 100%;';
     migrateBtn.textContent = 'Migrate';
   } else {
-    migrateBtn.classList = 'nes-btn is-disabled';
+    migrateBtn.classList = 'btn btn-light disabled';
     migrateBtn.disabled = true;
+    migrateBtn.style = 'width: 100%';
     migrateBtn.textContent = 'Migrated';
   }
-  migrateBtn.style = 'width: 100%';
   migrateBtn.addEventListener('click', () => migrate(e.token_id, migrateBtn));
   card.appendChild(imageContainer);
-  card.appendChild(nameDiv);
-  card.appendChild(migrateBtn);
+  bodyDiv.appendChild(nameDiv);
+  bodyDiv.appendChild(migrateBtn);
+  card.appendChild(bodyDiv);
 
   const cardContainer = document.createElement('div');
   cardContainer.classList.add('col-md-3', 'col-xs-6', 'pb-1');
@@ -274,13 +282,13 @@ batchMigrateBtn.addEventListener('click', async () => {
   await batchMigrate(itemIds);
 });
 
-window.onload = async ()=>{
+window.onload = async () => {
   try {
     const web3 = await loadWeb3();
     const address = await web3Address(web3);
     switchChain(window.ethereum);
     render(address, web3);
-  } catch(err) {
+  } catch (err) {
     console.log(err);
   }
 };

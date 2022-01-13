@@ -1,50 +1,182 @@
-@import url('https://fonts.googleapis.com/css2?family=Londrina+Solid&display=swap');
+@font-face {
+  font-family: 'Vermin Vibes 1989';
+  src: url('../fonts/vermin.eot');
+  src: url('../fonts/vermin.eot') format('embedded-opentype'),
+    url('../fonts/vermin.woff2') format('woff2'),
+    url('../fonts/vermin.woff') format('woff'),
+    url('../fonts/vermin.ttf') format('truetype'),
+    url('../fonts/vermin.svg') format('svg');
+}
 
 body {
   margin: 0;
-  /* background-color: ; */
-  background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),
+  color: #fff;
+}
+
+.font-pixel {
+  font-family: 'Vermin Vibes 1989', cursive;
+}
+
+.navbar {
+  border-bottom: 1px solid #d56730;
+}
+
+.social a {
+  margin-right: 0.5rem;
+  text-decoration: none;
+  color: #fff;
+}
+.social img {
+  height: 1.5rem;
+}
+
+header.container-fluid {
+  background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)),
     url(../img/background.jpg);
   background-position: center;
   background-size: cover;
-  font-family: 'Londrina Solid', cursive;
-  color: #000;
-  -webkit-text-stroke: 0.5px black;
-  -webkit-text-fill-color: white;
-  letter-spacing: 1px;
+  min-height: 100vh;
 }
 
-.logo {
-  max-width: 70%;
-  margin-bottom: 2rem;
+.btn-cta,
+.btn-cta::after {
+  width: 190px;
+  height: 43px;
+  font-size: 16px;
+  font-family: 'Vermin Vibes 1989';
+  background: linear-gradient(45deg, transparent 5%, #d56730 5%);
+  border: 0;
+  color: #fff;
+  letter-spacing: 3px;
+  line-height: 32px;
+  box-shadow: 6px 0px 0px #ad440f;
+  outline: transparent;
+  position: relative;
 }
 
-.container .row {
-  margin-left: 1rem;
-  margin-right: 1rem;
-  height: 100%;
-  display: flex;
-  align-items: center;
-}
-.container .row .col-xs-12 {
-  text-align: center;
+.header-font {
+  font-family: 'Vermin Vibes 1989';
 }
 
-.container .row a {
-  text-decoration: none;
-  color: #000;
-  -webkit-text-stroke: 0.5px black;
-  -webkit-text-fill-color: white;
+.btn-secondary,
+.btn-secondary::after {
+  width: 190px;
+  height: 43px;
+  font-size: 16px;
+  font-family: 'Vermin Vibes 1989';
+  background: linear-gradient(45deg, transparent 5%, #d56730 5%);
+  border: 0;
+  color: #fff;
+  letter-spacing: 3px;
+  line-height: 32px;
+  box-shadow: 6px 0px 0px #ad440f;
+  outline: transparent;
+  position: relative;
+}
+
+.nav-link {
   font-weight: bold;
-  font-size: 1.5rem;
+  font-size: 18px;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #d56730;
+  padding: 12px 0px;
+  margin-left: 16px;
+  margin-right: 16px;
+  display: inline-block;
+  position: relative;
+  opacity: 0.75;
 }
 
-.container .row .social a {
-  margin-right: 0.5rem;
+.nav-link:hover {
+  opacity: 1;
 }
-.container .row .social img {
-  height: 1.5rem;
-  filter: drop-shadow(1px 1px 1px #000);
+
+.nav-link::before {
+  transition: 300ms;
+  height: 5px;
+  content: '';
+  position: absolute;
+  background-color: #d56730;
+}
+
+.nav-link-ltr::before {
+  width: 0%;
+  bottom: 0px;
+}
+
+.nav-link-ltr:hover::before {
+  width: 100%;
+}
+
+.btn-discord,
+.btn-discord::after {
+  width: 240px;
+  height: 43px;
+  font-size: 16px;
+  font-family: 'Vermin Vibes 1989';
+  background: linear-gradient(45deg, transparent 5%, #d56730 5%);
+  border: 0;
+  color: #fff;
+  letter-spacing: 3px;
+  line-height: 32px;
+  box-shadow: 6px 0px 0px #ad440f;
+  outline: transparent;
+  position: relative;
+}
+
+.alert-dark {
+  background-color: #0a0a0a;
+  color: #fff;
+  border: 1px solid;
+  border-image-slice: 1;
+  border-image-source: linear-gradient(180deg, #d56730, #d5673041);
+}
+
+#preview {
+  background: #0a0a0a;
+}
+
+#preview .voxel-viewer {
+  width: 100%;
+}
+
+#roadmap {
+  background: #0a0a0a;
+}
+#roadmap .alert .col-md-3 .img-fluid {
+  filter: drop-shadow(5px 5px 15px #fff);
+}
+
+@media (min-width: 767.98px) {
+  #roadmap .alert.row {
+    margin-bottom: 5rem;
+  }
+  #roadmap .alert .col-md-3 .trex {
+    margin-top: -8rem;
+  }
+  #roadmap .alert .col-md-3 .shoes {
+    margin-top: -3.5rem;
+  }
+  #roadmap .alert .col-md-3 .token {
+    margin-top: -5rem;
+  }
+}
+
+#cta {
+  background: linear-gradient(
+      rgba(0, 0, 0, 1),
+      rgba(0, 0, 0, 0.4),
+      rgba(0, 0, 0, 1)
+    ),
+    url(../img/discord-cta.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+footer {
+  background-color: #000;
 }
 
 .nes-icon.discord::before {
