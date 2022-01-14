@@ -200,12 +200,11 @@ btnCheck.addEventListener('click', async () => {
 
 async function checkClaimableRewards() {
   const web3 = await loadWeb3();
-  const address = await web3Address(web3);
   const chainId = await web3.eth.getChainId();
   const c = new web3.eth.Contract(ct.abi, config[chainId].migration_address);
   const rexIdInput = document.getElementById('rexId');
   const tokenId = tokenIdMap[rexIdInput.value];
   console.log(tokenId, rexIdInput.value);
 
-  return await c.methods.rewards([tokenId]).call({ from: address });
+  return await c.methods.rewards([tokenId]).call({});
 }
