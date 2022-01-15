@@ -16,68 +16,74 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 let currencyToggle = false;
-let needApproval = false;
 const btnAdd = document.getElementById('btnAdd');
 const btnMinus = document.getElementById('btnMinus');
 const inputMint = document.getElementById('inputMint');
 const btnMax = document.getElementById('btnMax');
 const txtMint = document.getElementById('txtMint');
-inputMint.addEventListener('input', (event) => {
+inputMint.addEventListener('input', async (event) => {
+  if (event.target.value <= 0) inputMint.value = 1;
+  if (event.target.value >= 20) inputMint.value = 20;
   let price = 0.08;
   if (currencyToggle) {
     price = 70;
+    if (await allowanceIsInsufficient()) {
+      txtMint.textContent = 'Approve FOSSIL token usage';
+      txtCurrency.textContent = '';
+      return;
+    }
   }
-  if (event.target.value <= 0) inputMint.value = 1;
-  if (event.target.value >= 20) inputMint.value = 20;
   txtMint.textContent = `Mint ${Number.parseInt(inputMint.value)} for ${
     inputMint.value * price
   }`;
-  if (needApproval && currencyToggle) {
-    txtMint.textContent = 'Approve FOSSIL token usage';
-    txtCurrency.textContent = '';
-  }
 });
-btnAdd.addEventListener('click', () => {
+btnAdd.addEventListener('click', async () => {
   if (inputMint.value >= 20) return;
   inputMint.value++;
   let price = 0.08;
   if (currencyToggle) {
     price = 70;
+    if (await allowanceIsInsufficient()) {
+      txtMint.textContent = 'Approve FOSSIL token usage';
+      txtCurrency.textContent = '';
+      return;
+    }
   }
   txtMint.textContent = `Mint ${inputMint.value} for ${
     inputMint.value * price
   }`;
-  if (needApproval && currencyToggle) {
-    txtMint.textContent = 'Approve FOSSIL token usage';
-    txtCurrency.textContent = '';
-  }
 });
-btnMinus.addEventListener('click', () => {
+btnMinus.addEventListener('click', async () => {
   if (inputMint.value <= 1) return;
   inputMint.value--;
   let price = 0.08;
+  txtMint.textContent = `Mint ${inputMint.value} for ${
+    inputMint.value * price
+  }`;
   if (currencyToggle) {
     price = 70;
+    if (await allowanceIsInsufficient()) {
+      txtMint.textContent = 'Approve FOSSIL token usage';
+      txtCurrency.textContent = '';
+      return;
+    }
   }
   txtMint.textContent = `Mint ${inputMint.value} for ${
     inputMint.value * price
   }`;
-  if (needApproval && currencyToggle) {
-    txtMint.textContent = 'Approve FOSSIL token usage';
-    txtCurrency.textContent = '';
-  }
 });
-btnMax.addEventListener('click', () => {
+btnMax.addEventListener('click', async () => {
   inputMint.value = 20;
   let price = 0.08;
   if (currencyToggle) {
     price = 70;
+    if (await allowanceIsInsufficient()) {
+      txtMint.textContent = 'Approve FOSSIL token usage';
+      txtCurrency.textContent = '';
+      return;
+    }
   }
   txtMint.textContent = `Mint 20 for ${20 * price}`;
-  if (needApproval && currencyToggle) {
-    txtMint.textContent = 'Approve FOSSIL token usage';
-    txtCurrency.textContent = '';
-  }
 });
 
 const btnFossilToggle = document.getElementById('btnFossilToggle');
@@ -92,33 +98,35 @@ btnFossilToggle.addEventListener('click', async () => {
       inputMint.value * price
     }`;
   } else {
-    const web3 = await loadWeb3();
-    const address = await web3Address(web3);
-    const chainId = await web3.eth.getChainId();
-    const vxc = new web3.eth.Contract(vx.abi, config[chainId].vx_address);
-    const tc = new web3.eth.Contract(t.abi, config[chainId].token_address);
-    const allowance = await tc.methods
-      .allowance(address, config[chainId].vx_address)
-      .call({});
-    price = 70;
-    if (
-      Web3.utils.fromDecimal(Number.parseInt(inputMint.value) * price) <
-      Web3.utils.fromDecimal(allowance)
-    ) {
+    if (await allowanceIsInsufficient()) {
+      txtMint.textContent = 'Approve FOSSIL token usage';
+      txtCurrency.textContent = '';
+    } else {
+      price = 70;
       txtMint.textContent = `Mint ${inputMint.value} for ${
         inputMint.value * price
       }`;
       txtCurrency.textContent = 'FOSSIL';
-      needApproval = false;
-    } else {
-      txtMint.textContent = 'Approve FOSSIL token usage';
-      txtCurrency.textContent = '';
-      needApproval = true;
     }
     btnFossilToggle.textContent = 'Mint with $ETH';
   }
   currencyToggle = !currencyToggle;
 });
+
+async function allowanceIsInsufficient() {
+  const web3 = await loadWeb3();
+  const address = await web3Address(web3);
+  const chainId = await web3.eth.getChainId();
+  const tc = new web3.eth.Contract(t.abi, config[chainId].token_address);
+  const allowance = await tc.methods
+    .allowance(address, config[chainId].vx_address)
+    .call({});
+  price = 70;
+  return (
+    Web3.utils.fromDecimal(Number.parseInt(inputMint.value) * price) >=
+    Number.parseInt(Web3.utils.fromWei(allowance, 'ether'))
+  );
+}
 
 const btnMint = document.getElementById('btnMint');
 btnMint.addEventListener('click', async () => {
@@ -143,7 +151,7 @@ btnMint.addEventListener('click', async () => {
       })
       .on('receipt', () => {});
   } else {
-    if (needApproval) {
+    if (await allowanceIsInsufficient()) {
       const value = amount * Web3.utils.fromDecimal(70);
       const v = Web3.utils.toWei(value.toString(), 'ether');
       const gas = await tc.methods
