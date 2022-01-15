@@ -37,10 +37,81 @@ header.container-fluid {
   background-size: cover;
   min-height: 100vh;
 }
+input[type='number'] {
+  -webkit-appearance: textfield;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}
+.input-mint-container,
+.input-mint-container::after {
+  width: 220px;
+  height: 43px;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+}
+.input-mint,
+.input-mint::after {
+  width: 60%;
+  height: 43px;
+  /* font-weight: 800; */
+  font-size: 16px;
+  font-family: 'Vermin Vibes 1989';
+  background: #fff;
+  border: 2px solid #d56730;
+  color: #0a0a0a;
+  letter-spacing: 3px;
+  line-height: 32px;
+
+  outline: transparent;
+  position: relative;
+  padding: 20px;
+  margin-left: -4px;
+  margin-right: -4px;
+}
+.btn-input {
+  margin: 0;
+  font-weight: 800;
+  font-size: 18px;
+  font-family: 'Vermin Vibes 1989';
+  background: #d56730;
+  border: 2px solid #d56730;
+  text-align: center;
+  color: #fff;
+  /* letter-spacing: 3px; */
+  line-height: 32px;
+  outline: transparent;
+  position: relative;
+  padding: 4px;
+}
+
+.input-mint-input {
+  width: 60%;
+}
+.btn-max {
+  width: 40%;
+  margin: 0;
+  font-weight: 800;
+  font-size: 18px;
+  font-family: 'Vermin Vibes 1989';
+  background: linear-gradient(225deg, transparent 5%, #d56730 5%);
+  border: 0;
+  text-align: center;
+  color: #fff;
+  /* letter-spacing: 3px; */
+  line-height: 32px;
+  outline: transparent;
+  position: relative;
+  padding: 8px;
+}
 
 .btn-cta,
 .btn-cta::after {
-  width: 190px;
+  width: 220px;
   height: 43px;
   font-size: 16px;
   font-family: 'Vermin Vibes 1989';
@@ -48,8 +119,8 @@ header.container-fluid {
   border: 0;
   color: #fff;
   letter-spacing: 3px;
-  line-height: 32px;
-  box-shadow: 6px 0px 0px #ad440f;
+  line-height: 16px;
+  /* box-shadow: 6px 0px 0px #ad440f; */
   outline: transparent;
   position: relative;
 }
@@ -58,20 +129,14 @@ header.container-fluid {
   font-family: 'Vermin Vibes 1989';
 }
 
-.btn-secondary,
-.btn-secondary::after {
-  width: 190px;
-  height: 43px;
-  font-size: 16px;
-  font-family: 'Vermin Vibes 1989';
-  background: linear-gradient(45deg, transparent 5%, #d56730 5%);
-  border: 0;
-  color: #fff;
-  letter-spacing: 3px;
-  line-height: 32px;
-  box-shadow: 6px 0px 0px #ad440f;
-  outline: transparent;
-  position: relative;
+.btn-secondary {
+  background-color: transparent;
+  border: 2px solid #d56730;
+}
+
+.btn-secondary:hover {
+  background-color: #d56730;
+  border: 2px solid #d56730;
 }
 
 .nav-link {

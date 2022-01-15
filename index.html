@@ -165,7 +165,41 @@
             the CryptoTrex metaverse. Each piece possesses its own combination
             of accessories, features, and most importantly its own personality
           </p>
-          <a class="btn btn-cta" href="#preview" disabled>Learn more</a>
+          <div class="input-mint-container">
+            <div class="input-mint-input">
+              <button id="btnMinus" class="btn-input">-</button>
+              <input
+                id="inputMint"
+                value="1"
+                max="20"
+                step="1"
+                class="input-mint"
+                type="number"
+              />
+              <button id="btnAdd" class="btn-input">+</button>
+            </div>
+            <button id="btnMax" class="btn-max">MAX</button>
+          </div>
+
+          <button id="btnMint" class="btn btn-cta">
+            <span id="txtMint">Mint 1 for 0.08</span>
+            <span id="txtCurrency">ETH</span>
+          </button>
+          <p
+            style="font-style: italic; margin-top: 18px"
+            class="text-center mb-5"
+          >
+            <span id="txtMinted">0</span> / 11,111 Minted
+          </p>
+
+          <button
+            type="button"
+            class="btn btn-secondary"
+            id="btnFossilToggle"
+            style="font-weight: 800"
+          >
+            Mint with $FOSSIL
+          </button>
         </div>
       </div>
     </div>
@@ -398,5 +432,5 @@
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
     crossorigin="anonymous"
   ></script>
-  <script src="js/main.js"></script>
+  <script type="module" src="js/main.js"></script>
 </body>
