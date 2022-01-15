@@ -38,6 +38,7 @@ async function addToken(eth) {
   }
 }
 let itemIds = [];
+let unclaimedVXs = [];
 
 async function getClaimableRewards(address, c) {
   return await c.methods.rewards(itemIds).call({ from: address });
@@ -153,9 +154,7 @@ async function buildCard(e) {
   const chainId = await web3.eth.getChainId();
   const c = new web3.eth.Contract(ct.abi, config[chainId].migration_address);
   const vxc = new web3.eth.Contract(vx.abi, config[chainId].vx_address);
-  // TODO: implement individual claim VX button
   const isClaimed = await vxc.methods.isGenesisMinted([e.token_id]).call({});
-  console.log(e.token_id, isClaimed);
   const claimVxBtn = document.createElement('button');
   claimVxBtn.type = 'button';
   if (isClaimed[0]) {
@@ -166,6 +165,7 @@ async function buildCard(e) {
     claimVxBtn.classList = 'btn btn-secondary w-100';
     claimVxBtn.textContent = 'Claim Voxel';
     claimVxBtn.disabled = false;
+    unclaimedVXs.push(e.token_id);
   }
   claimVxBtn.style = 'margin-bottom: 12px';
   claimVxBtn.addEventListener('click', async () => {
@@ -252,11 +252,11 @@ btnClaimAllVX.addEventListener('click', async () => {
   const chainId = await web3.eth.getChainId();
   const vxc = new web3.eth.Contract(vx.abi, config[chainId].vx_address);
   const address = await web3Address(web3);
-  const gas = await vxc.methods.genesisMint(itemIds).estimateGas({
+  const gas = await vxc.methods.genesisMint(unclaimedVXs).estimateGas({
     from: address,
   });
   vxc.methods
-    .genesisMint(itemIds)
+    .genesisMint(unclaimedVXs)
     .send({ from: address, gas: gas })
     .on('receipt', async () => {})
     .on('transactionHash', (hash) => {})
