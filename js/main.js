@@ -1,5 +1,11 @@
-import ethicon from '../img/eth.png';
-import fslicon from '../img/token.png';
+import os from './contracts/ERC1155Test.json';
+import ct from './contracts/CryptoTrex.json';
+import vx from './contracts/CryptoTrexVX.json';
+import t from './contracts/Fossil.json';
+import { config } from './config';
+import { loadWeb3, web3Address, switchChain } from './web3.js';
+import Web3 from 'web3';
+import { tokenIdMap } from './map';
 
 document.addEventListener('DOMContentLoaded', () => {
   const vxViewer = document.querySelector('#preview .voxel-viewer');
@@ -9,18 +15,8 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-{
-  /* <div class="input-mint-container">
-<div class="input-mint-input">
-  <button id="btnAdd" class="btn-input">-</button>
-  <input id="inputMint" value="1" max="20" step="1" class="input-mint" type="number"/>
-  <button id="btnMinus" class="btn-input">+</button>
-</div>
-<button id="btnMax" class="btn-max">MAX</button>
-</div> */
-}
-
 let currencyToggle = false;
+let needApproval = false;
 const btnAdd = document.getElementById('btnAdd');
 const btnMinus = document.getElementById('btnMinus');
 const inputMint = document.getElementById('inputMint');
@@ -36,6 +32,10 @@ inputMint.addEventListener('input', (event) => {
   txtMint.textContent = `Mint ${Number.parseInt(inputMint.value)} for ${
     inputMint.value * price
   }`;
+  if (needApproval && currencyToggle) {
+    txtMint.textContent = 'Approve FOSSIL token usage';
+    txtCurrency.textContent = '';
+  }
 });
 btnAdd.addEventListener('click', () => {
   if (inputMint.value >= 20) return;
@@ -47,6 +47,10 @@ btnAdd.addEventListener('click', () => {
   txtMint.textContent = `Mint ${inputMint.value} for ${
     inputMint.value * price
   }`;
+  if (needApproval && currencyToggle) {
+    txtMint.textContent = 'Approve FOSSIL token usage';
+    txtCurrency.textContent = '';
+  }
 });
 btnMinus.addEventListener('click', () => {
   if (inputMint.value <= 1) return;
@@ -58,6 +62,10 @@ btnMinus.addEventListener('click', () => {
   txtMint.textContent = `Mint ${inputMint.value} for ${
     inputMint.value * price
   }`;
+  if (needApproval && currencyToggle) {
+    txtMint.textContent = 'Approve FOSSIL token usage';
+    txtCurrency.textContent = '';
+  }
 });
 btnMax.addEventListener('click', () => {
   inputMint.value = 20;
@@ -66,23 +74,114 @@ btnMax.addEventListener('click', () => {
     price = 70;
   }
   txtMint.textContent = `Mint 20 for ${20 * price}`;
+  if (needApproval && currencyToggle) {
+    txtMint.textContent = 'Approve FOSSIL token usage';
+    txtCurrency.textContent = '';
+  }
 });
 
 const btnFossilToggle = document.getElementById('btnFossilToggle');
 const txtCurrency = document.getElementById('txtCurrency');
-btnFossilToggle.addEventListener('click', () => {
+btnFossilToggle.addEventListener('click', async () => {
   let price;
   if (currencyToggle) {
     btnFossilToggle.textContent = 'Mint with $FOSSIL';
     txtCurrency.textContent = 'ETH';
     price = 0.08;
+    txtMint.textContent = `Mint ${inputMint.value} for ${
+      inputMint.value * price
+    }`;
   } else {
-    btnFossilToggle.textContent = 'Mint with $ETH';
-    txtCurrency.textContent = 'FOSSIL';
+    const web3 = await loadWeb3();
+    const address = await web3Address(web3);
+    const chainId = await web3.eth.getChainId();
+    const vxc = new web3.eth.Contract(vx.abi, config[chainId].vx_address);
+    const tc = new web3.eth.Contract(t.abi, config[chainId].token_address);
+    const allowance = await tc.methods
+      .allowance(address, config[chainId].vx_address)
+      .call({});
     price = 70;
+    if (
+      Web3.utils.fromDecimal(Number.parseInt(inputMint.value) * price) <
+      Web3.utils.fromDecimal(allowance)
+    ) {
+      txtMint.textContent = `Mint ${inputMint.value} for ${
+        inputMint.value * price
+      }`;
+      txtCurrency.textContent = 'FOSSIL';
+      needApproval = false;
+    } else {
+      txtMint.textContent = 'Approve FOSSIL token usage';
+      txtCurrency.textContent = '';
+      needApproval = true;
+    }
+    btnFossilToggle.textContent = 'Mint with $ETH';
   }
-  txtMint.textContent = `Mint ${inputMint.value} for ${
-    inputMint.value * price
-  }`;
   currencyToggle = !currencyToggle;
 });
+
+const btnMint = document.getElementById('btnMint');
+btnMint.addEventListener('click', async () => {
+  const web3 = await loadWeb3();
+  const address = await web3Address(web3);
+  const chainId = await web3.eth.getChainId();
+  const vxc = new web3.eth.Contract(vx.abi, config[chainId].vx_address);
+  const tc = new web3.eth.Contract(t.abi, config[chainId].token_address);
+  const amount = Web3.utils.fromDecimal(inputMint.value);
+  if (!currencyToggle) {
+    const price = await vxc.methods.etherPrice().call({});
+    const gas = await vxc.methods.mint(amount).estimateGas({
+      from: address,
+      value: price * amount,
+    });
+    vxc.methods
+      .mint(amount)
+      .send({
+        from: address,
+        gas: gas,
+        value: price * amount,
+      })
+      .on('receipt', () => {});
+  } else {
+    if (needApproval) {
+      const value = amount * Web3.utils.fromDecimal(70);
+      const v = Web3.utils.toWei(value.toString(), 'ether');
+      const gas = await tc.methods
+        .approve(config[chainId].vx_address, v)
+        .estimateGas({
+          from: address,
+        });
+      tc.methods
+        .approve(config[chainId].vx_address, v)
+        .send({
+          from: address,
+          gas: gas,
+        })
+        .on('receipt', () => {});
+    } else {
+      const gas = await vxc.methods.fossilMint(amount).estimateGas({
+        from: address,
+      });
+      vxc.methods
+        .fossilMint(amount)
+        .send({
+          from: address,
+          gas: gas,
+        })
+        .on('receipt', () => {});
+    }
+  }
+});
+
+window.onload = async () => {
+  const txtMinted = document.getElementById('txtMinted');
+  const web3 = await loadWeb3();
+  const chainId = await web3.eth.getChainId();
+  const vxc = new web3.eth.Contract(vx.abi, config[chainId].vx_address);
+  const supply = await vxc.methods.totalSupply().call({});
+  console.log(supply);
+  if (supply - 1112 > 11111) {
+    txtMinted.textContent = `Sold out!`;
+  }
+  txtMinted.textContent = `${supply - 1112} / 11,111 Minted`;
+};
