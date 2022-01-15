@@ -94,6 +94,14 @@ body {
   border-image-source: linear-gradient(180deg, #d56730, #d5673041);
 }
 
+.alert-tabs {
+  background-color: #0a0a0a;
+  color: #fff;
+  border: 1px solid;
+  border-image-slice: 1;
+  border-image-source: linear-gradient(180deg, #0a0a0a, #d56730);
+}
+
 .accordion-item {
   background: transparent;
   border: 1px solid #d56730;

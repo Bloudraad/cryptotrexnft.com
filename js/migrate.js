@@ -286,7 +286,7 @@ window.onload = async () => {
   try {
     const web3 = await loadWeb3();
     const address = await web3Address(web3);
-    switchChain(window.ethereum);
+    // switchChain(window.ethereum);
     render(address, web3);
   } catch (err) {
     console.log(err);
