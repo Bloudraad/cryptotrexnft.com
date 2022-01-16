@@ -31,6 +31,8 @@ inputMint.addEventListener('input', async (event) => {
       txtMint.textContent = 'Approve FOSSIL';
       txtCurrency.textContent = '';
       return;
+    } else {
+      txtCurrency.textContent = 'FOSSIL';
     }
   }
   txtMint.textContent = `Mint ${Number.parseInt(inputMint.value)} for ${
@@ -47,6 +49,8 @@ btnAdd.addEventListener('click', async () => {
       txtMint.textContent = 'Approve FOSSIL token usage';
       txtCurrency.textContent = '';
       return;
+    } else {
+      txtCurrency.textContent = 'FOSSIL';
     }
   }
   txtMint.textContent = `Mint ${inputMint.value} for ${
@@ -66,6 +70,8 @@ btnMinus.addEventListener('click', async () => {
       txtMint.textContent = 'Approve FOSSIL token usage';
       txtCurrency.textContent = '';
       return;
+    } else {
+      txtCurrency.textContent = 'FOSSIL';
     }
   }
   txtMint.textContent = `Mint ${inputMint.value} for ${
@@ -81,6 +87,8 @@ btnMax.addEventListener('click', async () => {
       txtMint.textContent = 'Approve FOSSIL token usage';
       txtCurrency.textContent = '';
       return;
+    } else {
+      txtCurrency.textContent = 'FOSSIL';
     }
   }
   txtMint.textContent = `Mint 20 for ${20 * price}`;
