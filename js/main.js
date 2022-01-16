@@ -129,9 +129,8 @@ async function allowanceIsInsufficient() {
   const allowance = await tc.methods
     .allowance(address, config[chainId].vx_address)
     .call({});
-  price = 70;
   return (
-    Web3.utils.fromDecimal(Number.parseInt(inputMint.value) * price) >=
+    Web3.utils.fromDecimal(Number.parseInt(inputMint.value) * 70) >=
     Number.parseInt(Web3.utils.fromWei(allowance, 'ether'))
   );
 }
