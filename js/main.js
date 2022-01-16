@@ -46,7 +46,7 @@ btnAdd.addEventListener('click', async () => {
   if (currencyToggle) {
     price = 70;
     if (await allowanceIsInsufficient()) {
-      txtMint.textContent = 'Approve FOSSIL token usage';
+      txtMint.textContent = 'Approve FOSSIL';
       txtCurrency.textContent = '';
       return;
     } else {
@@ -67,7 +67,7 @@ btnMinus.addEventListener('click', async () => {
   if (currencyToggle) {
     price = 70;
     if (await allowanceIsInsufficient()) {
-      txtMint.textContent = 'Approve FOSSIL token usage';
+      txtMint.textContent = 'Approve FOSSIL';
       txtCurrency.textContent = '';
       return;
     } else {
@@ -84,7 +84,7 @@ btnMax.addEventListener('click', async () => {
   if (currencyToggle) {
     price = 70;
     if (await allowanceIsInsufficient()) {
-      txtMint.textContent = 'Approve FOSSIL token usage';
+      txtMint.textContent = 'Approve FOSSIL';
       txtCurrency.textContent = '';
       return;
     } else {
@@ -107,7 +107,7 @@ btnFossilToggle.addEventListener('click', async () => {
     }`;
   } else {
     if (await allowanceIsInsufficient()) {
-      txtMint.textContent = 'Approve FOSSIL token usage';
+      txtMint.textContent = 'Approve FOSSIL';
       txtCurrency.textContent = '';
     } else {
       price = 70;
