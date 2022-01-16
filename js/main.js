@@ -156,7 +156,7 @@ btnMint.addEventListener('click', async () => {
   const vxc = new web3.eth.Contract(vx.abi, config[chainId].vx_address);
   const tc = new web3.eth.Contract(t.abi, config[chainId].token_address);
   const amount = Web3.utils.fromDecimal(inputMint.value);
-  btnList.children = '';
+  btnList.replaceChild();
   if (!currencyToggle) {
     try {
       const price = await vxc.methods.etherPrice().call({});
