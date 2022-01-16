@@ -266,6 +266,7 @@ let vxaddress;
 window.onload = async () => {
   const txtMinted = document.getElementById('txtMinted');
   const web3 = await loadWeb3();
+  const address = await web3Address(web3);
   const chainId = await web3.eth.getChainId();
   const vxc = new web3.eth.Contract(vx.abi, config[chainId].vx_address);
   vxaddress = config[chainId].vx_address;
@@ -276,6 +277,9 @@ window.onload = async () => {
     btnFossilToggle.hidden = true;
   }
   txtMinted.textContent = `${supply - 1112} / 11,111 Minted`;
+  const ctc = new web3.eth.Contract(ct.abi, config[chainId].migration_address);
+  const balance = await ctc.methods.balanceOf(address).call({});
+  btnFossilToggle.hidden = balance == 0;
 };
 
 // Get the modal
