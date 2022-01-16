@@ -1,9 +1,11 @@
 import os from './contracts/ERC1155Test.json';
 import ct from './contracts/CryptoTrex.json';
+import vx from './contracts/CryptoTrexVX.json';
 import { config } from './config';
 import { loadWeb3, web3Address, switchChain } from './web3.js';
 import Web3 from 'web3';
 import { tokenIdMap } from './map';
+import imgLoader from '../img/loader.svg';
 
 const formatEther = (value) =>
   new Number(Web3.utils.fromWei(value, 'ether')).toFixed(4).toString();
@@ -37,15 +39,18 @@ async function addToken(eth) {
   }
 }
 let itemIds = [];
+let unclaimedVXs = [];
 
 async function getClaimableRewards(address, c) {
   return await c.methods.rewards(itemIds).call({ from: address });
 }
 
+const contentClaimFossil = document.getElementById('contentClaimFossil');
+const loaderClaimFossil = document.getElementById('loaderClaimFossil');
 async function claimRewards(btn, address, web3) {
+  loaderClaimFossil.hidden = false;
+  contentClaimFossil.hidden = true;
   btn.disabled = true;
-  btn.textContent = 'Claiming...';
-  btn.classList = 'nes-btn is-disabled';
 
   const chainId = await web3.eth.getChainId();
   const c = new web3.eth.Contract(ct.abi, config[chainId].migration_address);
@@ -54,11 +59,11 @@ async function claimRewards(btn, address, web3) {
   });
   c.methods
     .claim(itemIds)
-    .send({ from: address, gas: gas })
+    .send({ from: address, gas: Math.floor(gas * 1.1) })
     .on('receipt', async () => {
-      btn.disabled = true;
-      btn.classList = 'nes-btn is-success';
-      btn.textContent = 'Claimed';
+      loaderClaimFossil.hidden = true;
+      contentClaimFossil.hidden = false;
+      btn.disabled = false;
       const rewardsView = document.getElementById('claimableRewardsTxt');
       const rewards = await getClaimableRewards(address, c);
       rewardsView.textContent = `${formatEther(rewards)} $FOSSIL`;
@@ -69,22 +74,17 @@ async function claimRewards(btn, address, web3) {
       }, 3000);
     })
     .on('transactionHash', (hash) => {
+      loaderClaimFossil.hidden = true;
+      contentClaimFossil.hidden = false;
       btn.disabled = false;
-      btn.textContent = 'Claiming...';
-      btn.classList = 'nes-btn';
       btn.addEventListener('click', () => {
         window.open(`https://etherscan.io/tx/${hash}`, '_blank').focus();
       });
     })
     .on('error', () => {
-      btn.disabled = true;
-      btn.textContent = 'Failed';
-      btn.classList = 'nes-btn is-error';
-      setTimeout(() => {
-        btn.disabled = false;
-        btn.classList = 'nes-btn is-primary';
-        btn.textContent = 'Claim';
-      }, 3000);
+      loaderClaimFossil.hidden = true;
+      contentClaimFossil.hidden = false;
+      btn.disabled = false;
     });
 }
 
@@ -110,9 +110,10 @@ async function renderItems(address, web3, c) {
   }
 
   if (v2) {
-    v2.forEach((e) => {
+    v2.forEach(async (e) => {
       itemIds.push(e.token_id);
-      list.appendChild(buildCard(e));
+      const card = await buildCard(e);
+      list.appendChild(card);
     });
   }
 
@@ -121,7 +122,7 @@ async function renderItems(address, web3, c) {
   rewardsView.textContent = `${formatEther(rewards)} $FOSSIL`;
 }
 
-function buildCard(e) {
+async function buildCard(e) {
   const card = document.createElement('div');
   card.classList = 'card';
   card.style = `
@@ -147,16 +148,77 @@ function buildCard(e) {
   nameDiv.classList.add('card-title');
   nameDiv.textContent = e.name;
 
-  // TODO: implement individual claim VX button
-  // const claimVxBtn = document.createElement('button');
-  // claimVxBtn.type = 'button';
-  // claimVxBtn.classList = 'btn btn-primary w-100';
-  // claimVxBtn.textContent = 'Claim VX';
-  // claimVxBtn.addEventListener('click', () => {});
+  const web3 = await loadWeb3();
+  const chainId = await web3.eth.getChainId();
+  const c = new web3.eth.Contract(ct.abi, config[chainId].migration_address);
+  const vxc = new web3.eth.Contract(vx.abi, config[chainId].vx_address);
+  const isClaimed = await vxc.methods.isGenesisMinted([e.token_id]).call({});
+  const claimVxBtn = document.createElement('button');
+  const contentClaimVx = document.createElement('span');
+  const loaderClaimVx = document.createElement('img');
+  loaderClaimVx.width = '24';
+  loaderClaimVx.height = '24';
+  loaderClaimVx.src = imgLoader;
+  loaderClaimVx.hidden = true;
+  claimVxBtn.type = 'button';
+  contentClaimVx.textContent = 'Claim Voxel';
+  claimVxBtn.appendChild(loaderClaimVx);
+  claimVxBtn.appendChild(contentClaimVx);
+  if (isClaimed[0]) {
+    claimVxBtn.classList = 'btn btn-disabled w-100';
+    claimVxBtn.disabled = true;
+    contentClaimVx.textContent = 'Claimed';
+  } else {
+    claimVxBtn.classList = 'btn btn-secondary w-100';
+    contentClaimVx.textContent = 'Claim Voxel';
+    claimVxBtn.disabled = false;
+    unclaimedVXs.push(e.token_id);
+  }
+  claimVxBtn.style = 'margin-bottom: 12px';
+  claimVxBtn.addEventListener('click', async () => {
+    loaderClaimVx.hidden = false;
+    contentClaimVx.hidden = true;
+    claimVxBtn.disabled = true;
+    const address = await web3Address(web3);
+    const gas = await vxc.methods.genesisMint([e.token_id]).estimateGas({
+      from: address,
+    });
+    vxc.methods
+      .genesisMint([e.token_id])
+      .send({ from: address, gas: Math.floor(gas * 1.1) })
+      .on('receipt', async () => {
+        claimVxBtn.classList = 'btn btn-disabled w-100';
+        claimVxBtn.disabled = true;
+        contentClaimVx.textContent = 'Claimed';
+        loaderClaimVx.hidden = true;
+        contentClaimVx.hidden = false;
+      })
+      .on('transactionHash', (hash) => {
+        contentClaimVx.textContent = 'Claiming...';
+        claimVxBtn.classList = 'btn btn-disabled w-100';
+        claimVxBtn.disabled = true;
+      })
+      .on('error', () => {
+        loaderClaimVx.hidden = true;
+        contentClaimVx.hidden = false;
+        contentClaimVx.textContent = 'Claim VX';
+        claimVxBtn.classList = 'btn btn-secondary w-100';
+        claimVxBtn.disabled = false;
+      });
+  });
+
+  // const claimFossilBtn = document.createElement('button');
+  // claimFossilBtn.type = 'button';
+  // claimFossilBtn.classList = 'btn btn-secondary w-100';
+  // const fossilAmount = await c.methods.rewards([e.token_id]).call({});
+  // claimFossilBtn.textContent = `Claim Fossil (${formatEther(fossilAmount)})`;
+
+  // claimFossilBtn.addEventListener('click', () => {});
 
   card.appendChild(imageContainer);
   bodyDiv.appendChild(nameDiv);
-  // bodyDiv.appendChild(claimVxBtn);
+  bodyDiv.appendChild(claimVxBtn);
+  // bodyDiv.appendChild(claimFossilBtn);
   card.appendChild(bodyDiv);
 
   const cardContainer = document.createElement('div');
@@ -198,13 +260,55 @@ btnCheck.addEventListener('click', async () => {
   tokenAmt.textContent = formatEther(amt);
 });
 
+const btnClaimAllVX = document.getElementById('claimAllVxBtn');
+const contentClaimAllVx = document.getElementById('contentClaimAllVx');
+const loaderClaimAllVx = document.getElementById('loaderClaimAllVx');
+btnClaimAllVX.addEventListener('click', async () => {
+  contentClaimAllVx.hidden = true;
+  loaderClaimAllVx.hidden = false;
+  btnClaimAllVX.disabled = true;
+  const web3 = await loadWeb3();
+  const chainId = await web3.eth.getChainId();
+  const vxc = new web3.eth.Contract(vx.abi, config[chainId].vx_address);
+  const address = await web3Address(web3);
+  const gas = await vxc.methods.genesisMint(unclaimedVXs).estimateGas({
+    from: address,
+  });
+  vxc.methods
+    .genesisMint(unclaimedVXs)
+    .send({ from: address, gas: Math.floor(gas * 1.1) })
+    .on('receipt', async () => {
+      contentClaimAllVx.hidden = false;
+      loaderClaimAllVx.hidden = true;
+      btnClaimAllVX.disabled = false;
+    })
+    .on('transactionHash', (hash) => {
+      contentClaimAllVx.hidden = false;
+      loaderClaimAllVx.hidden = true;
+      btnClaimAllVX.disabled = false;
+    })
+    .on('error', () => {
+      contentClaimAllVx.hidden = false;
+      loaderClaimAllVx.hidden = true;
+      btnClaimAllVX.disabled = false;
+    });
+});
+
 async function checkClaimableRewards() {
   const web3 = await loadWeb3();
   const chainId = await web3.eth.getChainId();
   const c = new web3.eth.Contract(ct.abi, config[chainId].migration_address);
+  const vxc = new web3.eth.Contract(vx.abi, config[chainId].vx_address);
   const rexIdInput = document.getElementById('rexId');
   const tokenId = tokenIdMap[rexIdInput.value];
-  console.log(tokenId, rexIdInput.value);
+  const isMinted = await vxc.methods.isGenesisMinted([tokenId]).call({});
+  const txtIsVXClaimed = document.getElementById('txtIsVXClaimed');
+  const containerIsVXClaimed = document.getElementById('containerIsVXClaimed');
+  if (isMinted[0]) {
+    txtIsVXClaimed.textContent = 'Voxel Claimed';
+  } else {
+    txtIsVXClaimed.textContent = 'Voxel Unclaimed';
+  }
 
   return await c.methods.rewards([tokenId]).call({});
 }

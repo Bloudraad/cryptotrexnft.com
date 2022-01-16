@@ -154,11 +154,32 @@
                 class="btn btn-primary"
                 style="font-weight: 800"
               >
-                Claim $FOSSIL
+                <div id="contentClaimFossil">Claim $FOSSIL</div>
+                <div id="loaderClaimFossil" hidden>
+                  <img
+                    width="24"
+                    height="24"
+                    src="img/loader.svg"
+                    alt="loading"
+                  />
+                </div>
               </button>
-              <!-- <button id="claimVxBtn" type="button" class="btn btn-primary" style="font-weight: 800; ">
-                Claim All Voxel Trexes
-              </button> -->
+              <button
+                id="claimAllVxBtn"
+                type="button"
+                class="btn btn-primary"
+                style="font-weight: 800"
+              >
+                <div id="contentClaimAllVx">Claim All Voxels</div>
+                <div id="loaderClaimAllVx" hidden>
+                  <img
+                    width="24"
+                    height="24"
+                    src="img/loader.svg"
+                    alt="loading"
+                  />
+                </div>
+              </button>
             </div>
             <div class="col-md-4 col-12 mt-2 d-flex justify-content-md-end">
               <button
@@ -208,6 +229,11 @@
           <p id="checkerResult" class="mt-4">This Genesis CryptoTrex has</p>
           <img width="24" height="24" src="img/token.png" />&nbsp;
           <span id="tokenAmt">0</span> $FOSSIL
+          <br />
+          <div id="containerIsVXClaimed">
+            <img width="24" height="24" src="img/genesis-logo.png" />&nbsp;
+            <span id="txtIsVXClaimed">?</span>
+          </div>
         </div>
       </div>
     </div>

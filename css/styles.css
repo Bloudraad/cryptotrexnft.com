@@ -37,10 +37,81 @@ header.container-fluid {
   background-size: cover;
   min-height: 100vh;
 }
+input[type='number'] {
+  -webkit-appearance: textfield;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}
+.input-mint-container,
+.input-mint-container::after {
+  width: 220px;
+  height: 43px;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+}
+.input-mint,
+.input-mint::after {
+  width: 60%;
+  height: 43px;
+  /* font-weight: 800; */
+  font-size: 16px;
+  font-family: 'Vermin Vibes 1989';
+  background: #fff;
+  border: 2px solid #d56730;
+  color: #0a0a0a;
+  letter-spacing: 3px;
+  line-height: 32px;
 
-.btn-cta,
+  outline: transparent;
+  position: relative;
+  padding: 20px;
+  margin-left: -4px;
+  margin-right: -4px;
+}
+.btn-input {
+  margin: 0;
+  font-weight: 800;
+  font-size: 18px;
+  font-family: 'Vermin Vibes 1989';
+  background: #d56730;
+  border: 2px solid #d56730;
+  text-align: center;
+  color: #fff;
+  /* letter-spacing: 3px; */
+  line-height: 32px;
+  outline: transparent;
+  position: relative;
+  padding: 4px;
+}
+
+.input-mint-input {
+  width: 60%;
+}
+.btn-max {
+  width: 40%;
+  margin: 0;
+  font-weight: 800;
+  font-size: 18px;
+  font-family: 'Vermin Vibes 1989';
+  background: linear-gradient(225deg, transparent 5%, #d56730 5%);
+  border: 0;
+  text-align: center;
+  color: #fff;
+  /* letter-spacing: 3px; */
+  line-height: 32px;
+  outline: transparent;
+  position: relative;
+  padding: 8px;
+}
+
+/* .btn-cta,
 .btn-cta::after {
-  width: 190px;
+  width: 220px;
   height: 43px;
   font-size: 16px;
   font-family: 'Vermin Vibes 1989';
@@ -48,30 +119,197 @@ header.container-fluid {
   border: 0;
   color: #fff;
   letter-spacing: 3px;
-  line-height: 32px;
-  box-shadow: 6px 0px 0px #ad440f;
-  outline: transparent;
+  line-height: 16px;
+  /* box-shadow: 6px 0px 0px #ad440f; */
+/* outline: transparent;
   position: relative;
+} */
+
+/* .btn-cta:hover {
+
+} */
+
+/* CSS */
+.btn-cta {
+  appearance: none;
+  /* font-family: 'Vermin Vibes 1989'; */
+  background: linear-gradient(45deg, transparent 5%, #d56730 5%);
+  border-width: 0;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 3px;
+  line-height: 16px;
+  margin: 0;
+  opacity: 1;
+  outline: 0;
+  /* padding: 1.5em 2.2em; */
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  text-rendering: geometricprecision;
+  text-transform: uppercase;
+  transition: opacity 300ms cubic-bezier(0.694, 0, 0.335, 1),
+    background-color 100ms cubic-bezier(0.694, 0, 0.335, 1),
+    color 100ms cubic-bezier(0.694, 0, 0.335, 1);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: baseline;
+  white-space: nowrap;
+  width: 220px;
+  height: 43px;
+}
+
+.btn-cta:before {
+  animation: opacityFallbackOut 0.5s step-end forwards;
+  backface-visibility: hidden;
+  background-color: #9c4417;
+  clip-path: polygon(100% 0, 100% 100%, 97% 100%, 97% 65%, 97% 0);
+  content: '';
+  height: 43px;
+  left: 0;
+  position: absolute;
+  top: 0;
+  transform: translateZ(0);
+  transition: clip-path 0.5s cubic-bezier(0.165, 0.84, 0.44, 1),
+    -webkit-clip-path 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+  width: 220px;
+}
+
+.btn-cta:hover:before {
+  animation: opacityFallbackIn 0s step-start forwards;
+  clip-path: polygon(100% 0, 100% 100%, 6% 100%, 0 69%, 0 0);
+}
+
+.btn-cta:after {
+  background-color: #9c4417;
+}
+
+.btn-cta span {
+  /* z-index: 1; */
+  position: relative;
+}
+
+.btn-max {
+  appearance: none;
+  font-family: 'Vermin Vibes 1989';
+  background: linear-gradient(225deg, transparent 5%, #d56730 5%);
+  border-width: 0;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 3px;
+  line-height: 16px;
+  margin: 0;
+  opacity: 1;
+  outline: 0;
+  /* padding: 1.5em 2.2em; */
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  text-rendering: geometricprecision;
+  text-transform: uppercase;
+  transition: opacity 300ms cubic-bezier(0.694, 0, 0.335, 1),
+    background-color 100ms cubic-bezier(0.694, 0, 0.335, 1),
+    color 100ms cubic-bezier(0.694, 0, 0.335, 1);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: baseline;
+  white-space: nowrap;
+  width: 40%;
+  height: 43px;
+}
+
+.btn-max:before {
+  animation: opacityFallbackOut 0.5s step-end forwards;
+  backface-visibility: hidden;
+  background-color: #9c4417;
+  clip-path: polygon(10% 30%, 10% 100%, 0% 100%, 0 0, 10% 0);
+  content: '';
+  height: 43px;
+  left: 0;
+  position: absolute;
+  top: 0;
+  transform: translateZ(0);
+  transition: clip-path 0.5s cubic-bezier(0.165, 0.84, 0.44, 1),
+    -webkit-clip-path 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+  width: 100%;
+}
+
+.btn-max:hover:before {
+  animation: opacityFallbackIn 0s step-start forwards;
+  clip-path: polygon(100% 16%, 100% 100%, 0 100%, 0 0, 92% 0);
+  /* z-index: 1; */
+}
+
+.btn-max:after {
+  background-color: #9c4417;
+}
+
+.btn-max span {
+  /* z-index: 9999; */
+  position: relative;
+}
+
+.xmodal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.xmodal-content {
+  background-color: #0a0a0a;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid;
+  border-image-slice: 1;
+  border-image-source: linear-gradient(180deg, #d56730, #d5673041);
+  width: 30%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.xclose {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.xclose:hover,
+.xclose:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .header-font {
   font-family: 'Vermin Vibes 1989';
 }
 
-.btn-secondary,
-.btn-secondary::after {
-  width: 190px;
-  height: 43px;
-  font-size: 16px;
-  font-family: 'Vermin Vibes 1989';
-  background: linear-gradient(45deg, transparent 5%, #d56730 5%);
-  border: 0;
-  color: #fff;
-  letter-spacing: 3px;
-  line-height: 32px;
-  box-shadow: 6px 0px 0px #ad440f;
-  outline: transparent;
-  position: relative;
+.btn-secondary {
+  background-color: transparent;
+  border: 2px solid #d56730;
+}
+
+.btn-secondary:hover {
+  background-color: #d56730;
+  border: 2px solid #d56730;
 }
 
 .nav-link {
@@ -131,6 +369,14 @@ header.container-fluid {
   border: 1px solid;
   border-image-slice: 1;
   border-image-source: linear-gradient(180deg, #d56730, #d5673041);
+}
+
+.alert-tabs {
+  background-color: #0a0a0a;
+  color: #fff;
+  border: 1px solid;
+  border-image-slice: 1;
+  border-image-source: linear-gradient(180deg, #0a0a0a, #d56730);
 }
 
 #preview {

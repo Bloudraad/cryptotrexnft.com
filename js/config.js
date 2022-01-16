@@ -6,6 +6,7 @@ export const config = {
     opensea_api: 'https://api.opensea.io',
     old_collection: 'cryptotrexold',
     new_collection: 'cryptotrex',
+    vx_address: '0x321E9378Cca218A8Fd4A77A439AA6639A0Ea2C19',
   },
   4: {
     migration_address: '0x3bC6b846E84bb51B477941F9328d6Cb265A7a517',
@@ -14,5 +15,6 @@ export const config = {
     opensea_api: 'https://testnets-api.opensea.io',
     old_collection: 'unidentified-contract-i5yykj3vuu',
     new_collection: 'cryptotrex-vkgog8evuw',
+    vx_address: '0xCd43d0b7bF483dBDD08834b86Fd009dCFBA67ad6',
   },
 };
