@@ -150,23 +150,43 @@ btnMint.addEventListener('click', async () => {
   const tc = new web3.eth.Contract(t.abi, config[chainId].token_address);
   const amount = Web3.utils.fromDecimal(inputMint.value);
   if (!currencyToggle) {
-    const price = await vxc.methods.etherPrice().call({});
-    const gas = await vxc.methods.mint(amount).estimateGas({
-      from: address,
-      value: price * amount,
-    });
-    vxc.methods
-      .mint(amount)
-      .send({
-        from: address,
-        gas: gas,
-        value: price * amount,
-      })
-      .on('receipt', enableBtnMint)
-      .on('transactionHash', (hash) => {
+    try {
+      const price = await vxc.methods.etherPrice().call({});
+      const balance = await web3.eth.getBalance(address);
+      console.log(balance, price * amount);
+      if (balance < price * amount) {
         enableBtnMint();
-      })
-      .on('error', enableBtnMint);
+        txtMint.textContent = 'Insufficient ETH';
+        txtCurrency.textContent = '';
+        return;
+      }
+      const gas = await vxc.methods.mint(amount).estimateGas({
+        from: address,
+        value: price * amount,
+      });
+      vxc.methods
+        .mint(amount)
+        .send({
+          from: address,
+          gas: gas,
+          value: price * amount,
+        })
+        .on('receipt', (receipt) => {
+          enableBtnMint();
+          modalMinted(receipt);
+        })
+        .on('transactionHash', (hash) => {
+          enableBtnMint();
+          showModal(`https://etherscan.io/tx/${hash}`);
+        })
+        .on('error', (error) => {
+          enableBtnMint();
+          console.log(error);
+        });
+    } catch (err) {
+      console.log(err);
+      enableBtnMint();
+    }
   } else {
     if (await allowanceIsInsufficient()) {
       const value = amount * Web3.utils.fromDecimal(70);
@@ -185,36 +205,111 @@ btnMint.addEventListener('click', async () => {
         .on('receipt', enableBtnMint)
         .on('transactionHash', (hash) => {
           enableBtnMint();
+          showModal(`https://etherscan.io/tx/${hash}`);
         })
         .on('error', enableBtnMint);
     } else {
-      const gas = await vxc.methods.fossilMint(amount).estimateGas({
-        from: address,
-      });
-      vxc.methods
-        .fossilMint(amount)
-        .send({
+      try {
+        const gas = await vxc.methods.fossilMint(amount).estimateGas({
           from: address,
-          gas: gas,
-        })
-        .on('receipt', enableBtnMint)
-        .on('transactionHash', (hash) => {
-          enableBtnMint();
-        })
-        .on('error', enableBtnMint);
+        });
+        vxc.methods
+          .fossilMint(amount)
+          .send({
+            from: address,
+            gas: gas,
+          })
+          .on('receipt', enableBtnMint)
+          .on('transactionHash', (hash) => {
+            enableBtnMint();
+            showModal(`https://etherscan.io/tx/${hash}`);
+          })
+          .on('error', enableBtnMint);
+      } catch (error) {
+        console.log(error);
+        enableBtnMint();
+      }
     }
   }
 });
 
+let vxaddress;
 window.onload = async () => {
   const txtMinted = document.getElementById('txtMinted');
   const web3 = await loadWeb3();
   const chainId = await web3.eth.getChainId();
   const vxc = new web3.eth.Contract(vx.abi, config[chainId].vx_address);
+  vxaddress = config[chainId].vx_address;
   const supply = await vxc.methods.totalSupply().call({});
-  console.log(supply);
   if (supply - 1112 > 11111) {
     txtMinted.textContent = `Sold out!`;
   }
   txtMinted.textContent = `${supply - 1112} / 11,111 Minted`;
+};
+
+// Get the modal
+const btnViewTx = document.getElementById('btnViewTx');
+const modal = document.getElementById('txModal');
+const txtModalHeader = document.getElementById('txtModalHeader');
+const loaderModal = document.getElementById('loaderModal');
+const previewModal = document.getElementById('previewModal');
+const btnList = document.getElementById('btnList');
+function showModal(url) {
+  modal.style.display = 'block';
+  btnViewTx.href = url;
+  txtModalHeader.textContent = 'Minting your Voxel';
+  loaderModal.hidden = false;
+  previewModal.hidden = true;
+  btnViewTx.hidden = false;
+  btnList.children = '';
+}
+
+function createButton(name) {
+  console.log(name);
+  const btn = document.createElement('a');
+  console.log(btn);
+  btn.type = 'button';
+  btn.classList = 'btn btn-secondary';
+  btn.target = '_blank';
+  btn.style = 'font-weight: 800; margin-top: 18px;';
+  btn.textContent = `VX #${name}`;
+  btn.href = `https://opensea.io/assets/${vxaddress}/${name}`;
+  console.log('CRETED', btn);
+
+  return btn;
+}
+
+function modalMinted(voxels) {
+  txtModalHeader.textContent = 'Minted!';
+  loaderModal.hidden = true;
+  previewModal.hidden = false;
+  btnViewTx.hidden = true;
+  console.log(voxels);
+  if (voxels.events.Transfer.length > 1) {
+    const tokenIds = voxels.events.Transfer.map((v) => v.returnValues.tokenId);
+    tokenIds.forEach((v) => {
+      const btn = createButton(v);
+      console.log(btn, v);
+      btnList.appendChild(btn);
+    });
+    console.log(tokenIds);
+  } else {
+    const tokenId = voxels.events.Transfer.returnValues.tokenId;
+    const btn = createButton(tokenId);
+    btnList.appendChild(btn);
+    console.log(btnList);
+  }
+}
+function hideModal() {
+  modal.style.display = 'none';
+}
+
+const span = document.getElementsByClassName('xclose')[0];
+span.onclick = hideModal;
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function (event) {
+  if (event.target == modal) {
+    hideModal();
+  }
 };

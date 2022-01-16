@@ -54,6 +54,38 @@
 </head>
 
 <body>
+  <div id="txModal" class="xmodal">
+    <div class="xmodal-content">
+      <span class="xclose">&times;</span>
+      <h3>
+        <strong id="txtModalHeader">Minting your Voxel</strong>
+        <img
+          id="loaderModal"
+          width="24"
+          height="24"
+          src="img/loader.svg"
+          alt="loading"
+        />
+      </h3>
+      <img
+        id="previewModal"
+        hidden
+        style="margin-top: 18px"
+        width="100%"
+        src="img/mintpass.gif"
+      />
+      <a
+        type="button"
+        class="btn btn-secondary"
+        id="btnViewTx"
+        target="_blank"
+        style="font-weight: 800; margin-top: 18px"
+      >
+        View Transaction on Etherscan
+      </a>
+      <div style="display: grid ;" id="btnList"></div>
+    </div>
+  </div>
   <nav
     class="navbar navbar-expand-lg navbar-dark bg-black bg-opacity-75"
     style="position: fixed; width: 100%; z-index: 9999"
@@ -86,6 +118,12 @@
             <a
               class="nav-link nav-link-ltr active header-font"
               href="/claim.html"
+              >Claim</a
+            >
+            <a
+              class="nav-link nav-link-ltr active header-font"
+              href="/admin.html"
+              hidden
               >Claim</a
             >
           </li>
