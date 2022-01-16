@@ -128,8 +128,21 @@ async function allowanceIsInsufficient() {
   );
 }
 
+const loaderMint = document.getElementById('loaderMint');
+const contentMint = document.getElementById('contentMint');
 const btnMint = document.getElementById('btnMint');
+function enableBtnMint() {
+  btnMint.disabled = false;
+  contentMint.hidden = false;
+  loaderMint.hidden = true;
+}
+function disableBtnMint() {
+  btnMint.disabled = true;
+  contentMint.hidden = true;
+  loaderMint.hidden = false;
+}
 btnMint.addEventListener('click', async () => {
+  disableBtnMint();
   const web3 = await loadWeb3();
   const address = await web3Address(web3);
   const chainId = await web3.eth.getChainId();
@@ -149,7 +162,11 @@ btnMint.addEventListener('click', async () => {
         gas: gas,
         value: price * amount,
       })
-      .on('receipt', () => {});
+      .on('receipt', enableBtnMint)
+      .on('transactionHash', (hash) => {
+        enableBtnMint();
+      })
+      .on('error', enableBtnMint);
   } else {
     if (await allowanceIsInsufficient()) {
       const value = amount * Web3.utils.fromDecimal(70);
@@ -165,7 +182,11 @@ btnMint.addEventListener('click', async () => {
           from: address,
           gas: gas,
         })
-        .on('receipt', () => {});
+        .on('receipt', enableBtnMint)
+        .on('transactionHash', (hash) => {
+          enableBtnMint();
+        })
+        .on('error', enableBtnMint);
     } else {
       const gas = await vxc.methods.fossilMint(amount).estimateGas({
         from: address,
@@ -176,7 +197,11 @@ btnMint.addEventListener('click', async () => {
           from: address,
           gas: gas,
         })
-        .on('receipt', () => {});
+        .on('receipt', enableBtnMint)
+        .on('transactionHash', (hash) => {
+          enableBtnMint();
+        })
+        .on('error', enableBtnMint);
     }
   }
 });
