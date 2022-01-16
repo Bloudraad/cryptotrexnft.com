@@ -34,6 +34,8 @@ inputMint.addEventListener('input', async (event) => {
     } else {
       txtCurrency.textContent = 'FOSSIL';
     }
+  } else {
+    txtCurrency.textContent = 'ETH';
   }
   txtMint.textContent = `Mint ${Number.parseInt(inputMint.value)} for ${
     inputMint.value * price
@@ -56,6 +58,8 @@ btnAdd.addEventListener('click', async () => {
     } else {
       txtCurrency.textContent = 'FOSSIL';
     }
+  } else {
+    txtCurrency.textContent = 'ETH';
   }
   txtMint.textContent = `Mint ${inputMint.value} for ${
     inputMint.value * price
@@ -77,6 +81,8 @@ btnMinus.addEventListener('click', async () => {
     } else {
       txtCurrency.textContent = 'FOSSIL';
     }
+  } else {
+    txtCurrency.textContent = 'ETH';
   }
   txtMint.textContent = `Mint ${inputMint.value} for ${
     inputMint.value * price
@@ -94,6 +100,8 @@ btnMax.addEventListener('click', async () => {
     } else {
       txtCurrency.textContent = 'FOSSIL';
     }
+  } else {
+    txtCurrency.textContent = 'ETH';
   }
   txtMint.textContent = `Mint 20 for ${20 * price}`;
 });
@@ -170,6 +178,8 @@ btnMint.addEventListener('click', async () => {
         txtMint.textContent = 'Insufficient ETH';
         txtCurrency.textContent = '';
         return;
+      } else {
+        txtCurrency.textContent = 'FOSSIL';
       }
       const gas = await vxc.methods.mint(amount).estimateGas({
         from: address,
