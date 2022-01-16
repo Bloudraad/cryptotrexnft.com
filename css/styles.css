@@ -109,7 +109,7 @@ input[type='number']::-webkit-outer-spin-button {
   padding: 8px;
 }
 
-.btn-cta,
+/* .btn-cta,
 .btn-cta::after {
   width: 220px;
   height: 43px;
@@ -121,7 +121,141 @@ input[type='number']::-webkit-outer-spin-button {
   letter-spacing: 3px;
   line-height: 16px;
   /* box-shadow: 6px 0px 0px #ad440f; */
-  outline: transparent;
+/* outline: transparent;
+  position: relative;
+} */
+
+/* .btn-cta:hover {
+
+} */
+
+/* CSS */
+.btn-cta {
+  appearance: none;
+  /* font-family: 'Vermin Vibes 1989'; */
+  background: linear-gradient(45deg, transparent 5%, #d56730 5%);
+  border-width: 0;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 3px;
+  line-height: 16px;
+  margin: 0;
+  opacity: 1;
+  outline: 0;
+  /* padding: 1.5em 2.2em; */
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  text-rendering: geometricprecision;
+  text-transform: uppercase;
+  transition: opacity 300ms cubic-bezier(0.694, 0, 0.335, 1),
+    background-color 100ms cubic-bezier(0.694, 0, 0.335, 1),
+    color 100ms cubic-bezier(0.694, 0, 0.335, 1);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: baseline;
+  white-space: nowrap;
+  width: 220px;
+  height: 43px;
+}
+
+.btn-cta:before {
+  animation: opacityFallbackOut 0.5s step-end forwards;
+  backface-visibility: hidden;
+  background-color: #9c4417;
+  clip-path: polygon(100% 0, 100% 100%, 97% 100%, 97% 65%, 97% 0);
+  content: '';
+  height: 43px;
+  left: 0;
+  position: absolute;
+  top: 0;
+  transform: translateZ(0);
+  transition: clip-path 0.5s cubic-bezier(0.165, 0.84, 0.44, 1),
+    -webkit-clip-path 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+  width: 220px;
+}
+
+.btn-cta:hover:before {
+  animation: opacityFallbackIn 0s step-start forwards;
+  clip-path: polygon(100% 0, 100% 100%, 6% 100%, 0 69%, 0 0);
+}
+
+.btn-cta:after {
+  background-color: #9c4417;
+}
+
+.btn-cta span {
+  /* z-index: 1; */
+  position: relative;
+}
+
+.btn-max {
+  appearance: none;
+  font-family: 'Vermin Vibes 1989';
+  background: linear-gradient(225deg, transparent 5%, #d56730 5%);
+  border-width: 0;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 3px;
+  line-height: 16px;
+  margin: 0;
+  opacity: 1;
+  outline: 0;
+  /* padding: 1.5em 2.2em; */
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  text-rendering: geometricprecision;
+  text-transform: uppercase;
+  transition: opacity 300ms cubic-bezier(0.694, 0, 0.335, 1),
+    background-color 100ms cubic-bezier(0.694, 0, 0.335, 1),
+    color 100ms cubic-bezier(0.694, 0, 0.335, 1);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: baseline;
+  white-space: nowrap;
+  width: 40%;
+  height: 43px;
+}
+
+.btn-max:before {
+  animation: opacityFallbackOut 0.5s step-end forwards;
+  backface-visibility: hidden;
+  background-color: #9c4417;
+  clip-path: polygon(10% 30%, 10% 100%, 0% 100%, 0 0, 10% 0);
+  content: '';
+  height: 43px;
+  left: 0;
+  position: absolute;
+  top: 0;
+  transform: translateZ(0);
+  transition: clip-path 0.5s cubic-bezier(0.165, 0.84, 0.44, 1),
+    -webkit-clip-path 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+  width: 100%;
+}
+
+.btn-max:hover:before {
+  animation: opacityFallbackIn 0s step-start forwards;
+  clip-path: polygon(100% 16%, 100% 100%, 0 100%, 0 0, 92% 0);
+  /* z-index: 1; */
+}
+
+.btn-max:after {
+  background-color: #9c4417;
+}
+
+.btn-max span {
+  /* z-index: 9999; */
   position: relative;
 }
 

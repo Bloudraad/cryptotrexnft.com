@@ -28,7 +28,7 @@ inputMint.addEventListener('input', async (event) => {
   if (currencyToggle) {
     price = 70;
     if (await allowanceIsInsufficient()) {
-      txtMint.textContent = 'Approve FOSSIL token usage';
+      txtMint.textContent = 'Approve FOSSIL';
       txtCurrency.textContent = '';
       return;
     }
@@ -168,7 +168,7 @@ btnMint.addEventListener('click', async () => {
         .mint(amount)
         .send({
           from: address,
-          gas: gas,
+          gas: Math.floor(gas * 1.1),
           value: price * amount,
         })
         .on('receipt', (receipt) => {
@@ -186,6 +186,7 @@ btnMint.addEventListener('click', async () => {
     } catch (err) {
       console.log(err);
       enableBtnMint();
+      hideModal();
     }
   } else {
     if (await allowanceIsInsufficient()) {
@@ -200,7 +201,7 @@ btnMint.addEventListener('click', async () => {
         .approve(config[chainId].vx_address, v)
         .send({
           from: address,
-          gas: gas,
+          gas: Math.floor(gas * 1.1),
         })
         .on('receipt', enableBtnMint)
         .on('transactionHash', (hash) => {
@@ -217,7 +218,7 @@ btnMint.addEventListener('click', async () => {
           .fossilMint(amount)
           .send({
             from: address,
-            gas: gas,
+            gas: Math.floor(gas * 1.1),
           })
           .on('receipt', enableBtnMint)
           .on('transactionHash', (hash) => {
@@ -241,8 +242,10 @@ window.onload = async () => {
   const vxc = new web3.eth.Contract(vx.abi, config[chainId].vx_address);
   vxaddress = config[chainId].vx_address;
   const supply = await vxc.methods.totalSupply().call({});
-  if (supply - 1112 > 11111) {
+  if (supply - 1112 + 5 > 11111) {
     txtMinted.textContent = `Sold out!`;
+    btnMint.disabled = true;
+    btnFossilToggle.hidden = true;
   }
   txtMinted.textContent = `${supply - 1112} / 11,111 Minted`;
 };
@@ -284,6 +287,7 @@ function modalMinted(voxels) {
   loaderModal.hidden = true;
   previewModal.hidden = false;
   btnViewTx.hidden = true;
+  btnList.children = '';
   console.log(voxels);
   if (voxels.events.Transfer.length > 1) {
     const tokenIds = voxels.events.Transfer.map((v) => v.returnValues.tokenId);

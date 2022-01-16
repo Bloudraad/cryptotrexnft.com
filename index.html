@@ -210,16 +210,18 @@
               />
               <button id="btnAdd" class="btn-input">+</button>
             </div>
-            <button id="btnMax" class="btn-max">MAX</button>
+            <button id="btnMax" class="btn-max"><span>MAX</span></button>
           </div>
 
-          <button id="btnMint" class="btn btn-cta">
-            <div id="contentMint">
-              <span id="txtMint">Mint 1 for 0.08</span>
-              <span id="txtCurrency">ETH</span>
-            </div>
+          <button id="btnMint" class="btn-cta">
             <div id="loaderMint" hidden>
               <img width="24" height="24" src="img/loader.svg" alt="loading" />
+            </div>
+            <div id="contentMint">
+              <strong style="letter-spacing: 1px">
+                <span id="txtMint">Mint 1 for 0.08</span>
+                <span id="txtCurrency">ETH</span>
+              </strong>
             </div>
           </button>
           <p
@@ -288,8 +290,7 @@
             <p style="margin-top: 24px">
               Cryptotrex VX is a series of 11,111 uniquely generated Trex Voxels
               on the metaverse. Each Cryptotrex VX grants you access to the
-              metaverse on Sandbox, entry to the TrexDAO and provides additional
-              benefits and utility.
+              metaverse on Sandbox and provides additional benefits and utility.
             </p>
             <!-- <a class="btn btn-primary" disabled>View on OpenSea</a> -->
             <a

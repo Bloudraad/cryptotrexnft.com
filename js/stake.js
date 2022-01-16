@@ -304,11 +304,10 @@ async function checkClaimableRewards() {
   const isMinted = await vxc.methods.isGenesisMinted([tokenId]).call({});
   const txtIsVXClaimed = document.getElementById('txtIsVXClaimed');
   const containerIsVXClaimed = document.getElementById('containerIsVXClaimed');
-  if (!isMinted) {
-    containerIsVXClaimed.hidden = false;
-    txtIsVXClaimed.textContent = 'Unclaimed Voxel';
+  if (isMinted[0]) {
+    txtIsVXClaimed.textContent = 'Voxel Claimed';
   } else {
-    containerIsVXClaimed.hidden = true;
+    txtIsVXClaimed.textContent = 'Voxel Unclaimed';
   }
 
   return await c.methods.rewards([tokenId]).call({});
