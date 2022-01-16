@@ -130,7 +130,7 @@ async function allowanceIsInsufficient() {
     .allowance(address, config[chainId].vx_address)
     .call({});
   return (
-    Web3.utils.fromDecimal(Number.parseInt(inputMint.value) * 70) >=
+    Number.parseInt(inputMint.value) * 70 >
     Number.parseInt(Web3.utils.fromWei(allowance, 'ether'))
   );
 }
@@ -156,11 +156,11 @@ btnMint.addEventListener('click', async () => {
   const vxc = new web3.eth.Contract(vx.abi, config[chainId].vx_address);
   const tc = new web3.eth.Contract(t.abi, config[chainId].token_address);
   const amount = Web3.utils.fromDecimal(inputMint.value);
+  btnList.children = '';
   if (!currencyToggle) {
     try {
       const price = await vxc.methods.etherPrice().call({});
       const balance = await web3.eth.getBalance(address);
-      console.log(balance, price * amount);
       if (balance < price * amount) {
         enableBtnMint();
         txtMint.textContent = 'Insufficient ETH';
@@ -184,7 +184,7 @@ btnMint.addEventListener('click', async () => {
         })
         .on('transactionHash', (hash) => {
           enableBtnMint();
-          showModal(`https://etherscan.io/tx/${hash}`);
+          showModal(`https://etherscan.io/tx/${hash}`, 'Minting your Voxel');
         })
         .on('error', (error) => {
           enableBtnMint();
@@ -197,8 +197,7 @@ btnMint.addEventListener('click', async () => {
     }
   } else {
     if (await allowanceIsInsufficient()) {
-      const value = amount * Web3.utils.fromDecimal(70);
-      const v = Web3.utils.toWei(value.toString(), 'ether');
+      const v = Web3.utils.toWei('100000', 'ether');
       const gas = await tc.methods
         .approve(config[chainId].vx_address, v)
         .estimateGas({
@@ -214,10 +213,17 @@ btnMint.addEventListener('click', async () => {
           console.log(receipt);
           enableBtnMint();
           hideModal();
+          txtMint.textContent = `Mint ${inputMint.value} for ${
+            inputMint.value * 70
+          }`;
+          txtCurrency.textContent = 'FOSSIL';
         })
         .on('transactionHash', (hash) => {
           enableBtnMint();
-          showModal(`https://etherscan.io/tx/${hash}`);
+          showModal(
+            `https://etherscan.io/tx/${hash}`,
+            'Approving $FOSSIL usage',
+          );
         })
         .on('error', (err) => {
           console.log(err);
@@ -241,7 +247,7 @@ btnMint.addEventListener('click', async () => {
           })
           .on('transactionHash', (hash) => {
             enableBtnMint();
-            showModal(`https://etherscan.io/tx/${hash}`);
+            showModal(`https://etherscan.io/tx/${hash}`, 'Minting your Voxel');
           })
           .on('error', () => {
             enableBtnMint();
@@ -279,27 +285,24 @@ const txtModalHeader = document.getElementById('txtModalHeader');
 const loaderModal = document.getElementById('loaderModal');
 const previewModal = document.getElementById('previewModal');
 const btnList = document.getElementById('btnList');
-function showModal(url) {
+function showModal(url, text) {
   modal.style.display = 'block';
   btnViewTx.href = url;
-  txtModalHeader.textContent = 'Minting your Voxel';
+  txtModalHeader.textContent = text;
   loaderModal.hidden = false;
   previewModal.hidden = true;
   btnViewTx.hidden = false;
-  btnList.children = '';
+  btnList.replaceChildren();
 }
 
 function createButton(name) {
-  console.log(name);
   const btn = document.createElement('a');
-  console.log(btn);
   btn.type = 'button';
   btn.classList = 'btn btn-secondary';
   btn.target = '_blank';
   btn.style = 'font-weight: 800; margin-top: 18px;';
   btn.textContent = `VX #${name}`;
   btn.href = `https://opensea.io/assets/${vxaddress}/${name}`;
-  console.log('CRETED', btn);
 
   return btn;
 }
@@ -309,21 +312,17 @@ function modalMinted(voxels) {
   loaderModal.hidden = true;
   previewModal.hidden = false;
   btnViewTx.hidden = true;
-  btnList.children = '';
-  console.log(voxels);
+  btnList.replaceChildren();
   if (voxels.events.Transfer.length > 1) {
     const tokenIds = voxels.events.Transfer.map((v) => v.returnValues.tokenId);
     tokenIds.forEach((v) => {
       const btn = createButton(v);
-      console.log(btn, v);
       btnList.appendChild(btn);
     });
-    console.log(tokenIds);
   } else {
     const tokenId = voxels.events.Transfer.returnValues.tokenId;
     const btn = createButton(tokenId);
     btnList.appendChild(btn);
-    console.log(btnList);
   }
 }
 function hideModal() {
@@ -337,5 +336,6 @@ span.onclick = hideModal;
 window.onclick = function (event) {
   if (event.target == modal) {
     hideModal();
+    btnList.replaceChildren();
   }
 };
