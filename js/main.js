@@ -39,6 +39,10 @@ inputMint.addEventListener('input', async (event) => {
     inputMint.value * price
   }`;
 });
+inputMint.addEventListener('focus', (e) => {
+  e.target.focus();
+  e.target.select();
+});
 btnAdd.addEventListener('click', async () => {
   if (inputMint.value >= 20) return;
   inputMint.value++;
