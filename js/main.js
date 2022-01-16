@@ -207,7 +207,8 @@ btnMint.addEventListener('click', async () => {
     } catch (err) {
       console.log(err);
       enableBtnMint();
-      hideModal();
+      // hideModal();
+      showModalError(err, 'Error occurred');
     }
   } else {
     if (await allowanceIsInsufficient()) {
@@ -242,7 +243,7 @@ btnMint.addEventListener('click', async () => {
         .on('error', (err) => {
           console.log(err);
           enableBtnMint();
-          hideModal();
+          showModalError(err, 'Error occurred');
         });
     } else {
       try {
@@ -268,9 +269,9 @@ btnMint.addEventListener('click', async () => {
             hideModal();
           });
       } catch (error) {
-        console.log(error);
+        console.log(err);
         enableBtnMint();
-        hideModal();
+        showModalError(err, 'Error occurred');
       }
     }
   }
@@ -303,6 +304,7 @@ const txtModalHeader = document.getElementById('txtModalHeader');
 const loaderModal = document.getElementById('loaderModal');
 const previewModal = document.getElementById('previewModal');
 const btnList = document.getElementById('btnList');
+const txtErr = document.getElementById('txtErr');
 function showModal(url, text) {
   modal.style.display = 'block';
   btnViewTx.href = url;
@@ -310,6 +312,17 @@ function showModal(url, text) {
   loaderModal.hidden = false;
   previewModal.hidden = true;
   btnViewTx.hidden = false;
+  txtErr.hidden = true;
+  btnList.replaceChildren();
+}
+function showModalError(error, text) {
+  modal.style.display = 'block';
+  txtModalHeader.textContent = text;
+  loaderModal.hidden = false;
+  previewModal.hidden = true;
+  btnViewTx.hidden = true;
+  txtErr.textContent = error;
+  txtErr.hidden = false;
   btnList.replaceChildren();
 }
 
