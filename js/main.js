@@ -211,8 +211,9 @@ btnMint.addEventListener('click', async () => {
           gas: Math.floor(gas * 1.1),
         })
         .on('receipt', (receipt) => {
+          console.log(receipt);
           enableBtnMint();
-          modalMinted(receipt);
+          hideModal();
         })
         .on('transactionHash', (hash) => {
           enableBtnMint();
@@ -234,15 +235,22 @@ btnMint.addEventListener('click', async () => {
             from: address,
             gas: Math.floor(gas * 1.1),
           })
-          .on('receipt', enableBtnMint)
+          .on('receipt', (receipt) => {
+            enableBtnMint();
+            modalMinted(receipt);
+          })
           .on('transactionHash', (hash) => {
             enableBtnMint();
             showModal(`https://etherscan.io/tx/${hash}`);
           })
-          .on('error', enableBtnMint);
+          .on('error', () => {
+            enableBtnMint();
+            hideModal();
+          });
       } catch (error) {
         console.log(error);
         enableBtnMint();
+        hideModal();
       }
     }
   }
