@@ -271,12 +271,12 @@ window.onload = async () => {
   const vxc = new web3.eth.Contract(vx.abi, config[chainId].vx_address);
   vxaddress = config[chainId].vx_address;
   const supply = await vxc.methods.totalSupply().call({});
-  if (supply - 1112 + 5 > 11111) {
+  if (supply > 13333) {
     txtMinted.textContent = `Sold out!`;
     btnMint.disabled = true;
     btnFossilToggle.hidden = true;
   }
-  txtMinted.textContent = `${supply - 1112} / 11,111 Minted`;
+  txtMinted.textContent = `${supply} / 13,333 Minted`;
   const ctc = new web3.eth.Contract(ct.abi, config[chainId].migration_address);
   const balance = await ctc.methods.balanceOf(address).call({});
   btnFossilToggle.hidden = balance == 0;
