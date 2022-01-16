@@ -321,7 +321,7 @@ function showModalError(error, text) {
   loaderModal.hidden = false;
   previewModal.hidden = true;
   btnViewTx.hidden = true;
-  txtErr.textContent = error;
+  txtErr.textContent = error.toString();
   txtErr.hidden = false;
   btnList.replaceChildren();
 }
