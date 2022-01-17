@@ -234,7 +234,7 @@ window.onload = async () => {
     const address = await web3Address(web3);
     const chainId = await web3.eth.getChainId();
     const c = new web3.eth.Contract(ct.abi, config[chainId].migration_address);
-    // await switchChain(window.ethereum);
+    await switchChain(window.ethereum);
     await renderItems(address, web3, c);
 
     const claimBtn = document.getElementById('claimBtn');
