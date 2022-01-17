@@ -268,7 +268,7 @@ btnMint.addEventListener('click', async () => {
             enableBtnMint();
             hideModal();
           });
-      } catch (error) {
+      } catch (err) {
         console.log(err);
         enableBtnMint();
         showModalError(err, 'Error occurred');
