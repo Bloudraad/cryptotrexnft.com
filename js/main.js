@@ -277,6 +277,8 @@ btnMint.addEventListener('click', async () => {
   }
 });
 
+const txtMinted = document.getElementById('txtMinted');
+
 let vxaddress;
 window.onload = async () => {
   const web3 = await loadWeb3();
