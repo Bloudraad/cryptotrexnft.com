@@ -285,6 +285,7 @@ window.onload = async () => {
   const chainId = await web3.eth.getChainId();
   const vxc = new web3.eth.Contract(vx.abi, config[chainId].vx_address);
   const supply = await vxc.methods.totalSupply().call({});
+  txtMinted.hidden = false;
   if (supply > 5555) {
     txtMinted.textContent = `Sold out!`;
     btnMint.disabled = true;
