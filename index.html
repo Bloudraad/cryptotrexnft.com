@@ -198,7 +198,7 @@
             CryptoTrex metaverse. Each piece possesses its own combination of
             accessories, features, and most importantly its own personality
           </p>
-          <!-- <div class="input-mint-container">
+          <div class="input-mint-container">
             <div class="input-mint-input">
               <button id="btnMinus" class="btn-input">-</button>
               <input
@@ -212,11 +212,17 @@
               <button id="btnAdd" class="btn-input">+</button>
             </div>
             <button id="btnMax" class="btn-max"><span>MAX</span></button>
-          </div> -->
+          </div>
 
-          <button id="btnMint" class="btn-cta btn-disabled" disabled>
+          <button id="btnMint" class="btn-cta">
+            <div id="loaderMint" hidden>
+              <img width="24" height="24" src="img/loader.svg" alt="loading" />
+            </div>
             <div id="contentMint">
-              <strong style="letter-spacing: 1px"> Minting Ended! </strong>
+              <strong style="letter-spacing: 1px">
+                <span id="txtMint">Mint 1 for 0.08</span>
+                <span id="txtCurrency">ETH</span>
+              </strong>
             </div>
           </button>
           <p
@@ -226,7 +232,7 @@
             <span id="txtMinted" hidden>0 / 5,555 Minted</span>
           </p>
 
-          <!-- <button
+          <button
             type="button"
             class="btn btn-secondary"
             id="btnFossilToggle"
@@ -234,7 +240,7 @@
             hidden
           >
             Mint with $FOSSIL
-          </button> -->
+          </button>
         </div>
       </div>
     </div>

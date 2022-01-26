@@ -281,16 +281,22 @@ const txtMinted = document.getElementById('txtMinted');
 
 let vxaddress;
 window.onload = async () => {
+  const web3 = await loadWeb3();
+  const chainId = await web3.eth.getChainId();
+  const vxc = new web3.eth.Contract(vx.abi, config[chainId].vx_address);
+  const supply = await vxc.methods.totalSupply().call({});
   txtMinted.hidden = false;
-  txtMinted.textContent = `Sold out!`;
-  btnMint.disabled = true;
-  btnFossilToggle.hidden = true;
-  // txtMinted.textContent = `${supply} / 5,555 Minted`;
-  // const address = await web3Address(web3);
-  // vxaddress = config[chainId].vx_address;
-  // const ctc = new web3.eth.Contract(ct.abi, config[chainId].migration_address);
-  // const balance = await ctc.methods.balanceOf(address).call({});
-  // btnFossilToggle.hidden = balance == 0;
+  if (supply > 5555) {
+    txtMinted.textContent = `Sold out!`;
+    btnMint.disabled = true;
+    btnFossilToggle.hidden = true;
+  }
+  txtMinted.textContent = `${supply} / 5,555 Minted`;
+  const address = await web3Address(web3);
+  vxaddress = config[chainId].vx_address;
+  const ctc = new web3.eth.Contract(ct.abi, config[chainId].migration_address);
+  const balance = await ctc.methods.balanceOf(address).call({});
+  btnFossilToggle.hidden = balance == 0;
 };
 
 // Get the modal
