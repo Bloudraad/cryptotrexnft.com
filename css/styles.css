@@ -180,10 +180,10 @@ input[type='number']::-webkit-outer-spin-button {
   width: 220px;
 }
 
-.btn-cta:hover:before {
+/* .btn-cta:hover:before {
   animation: opacityFallbackIn 0s step-start forwards;
   clip-path: polygon(100% 0, 100% 100%, 6% 100%, 0 69%, 0 0);
-}
+} */
 
 .btn-cta:after {
   background-color: #9c4417;
