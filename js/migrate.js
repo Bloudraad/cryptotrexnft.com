@@ -196,10 +196,12 @@ async function renderItems(address, web3) {
   }
 
   if (v1) {
-    const batchMigrateBtn = document.getElementById('batchMigrateBtn');
-    batchMigrateBtn.textContent = 'Nothing to migrate';
-    batchMigrateBtn.classList = 'btn btn-light is-disabled';
-    batchMigrateBtn.disabled = true;
+    if (v1.length < 1) {
+      const batchMigrateBtn = document.getElementById('batchMigrateBtn');
+      batchMigrateBtn.textContent = 'Nothing to migrate';
+      batchMigrateBtn.classList = 'btn btn-light is-disabled';
+      batchMigrateBtn.disabled = true;
+    }
     const c = new web3.eth.Contract(os.abi, config[chainId].origin_address);
     v1.forEach(async (e) => {
       itemIds.push(e);
