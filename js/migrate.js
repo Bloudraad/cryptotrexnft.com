@@ -195,8 +195,6 @@ async function renderItems(address, web3) {
     addTokenBtn.hidden = false;
   }
 
-  console.log(v1, v2);
-
   if (v1) {
     const batchMigrateBtn = document.getElementById('batchMigrateBtn');
     batchMigrateBtn.textContent = 'Nothing to migrate';
@@ -208,15 +206,29 @@ async function renderItems(address, web3) {
       const balance = await c.methods
         .balanceOf(address, Web3.utils.toBN(e))
         .call({ from: address });
+      const response = await fetch(
+        `${config[chainId].opensea_api}/api/v1/asset/${
+          config[chainId].origin_address
+        }/${Web3.utils.toBN(e)}`,
+        { method: 'GET' },
+      );
+      const body = await response.json();
       if (balance && balance > 0) {
-        list.appendChild(buildCard(e, false));
+        list.appendChild(buildCard(body, false));
       }
     });
   }
 
   if (v2) {
-    v2.forEach((e) => {
-      list.appendChild(buildCard(e, true));
+    v2.forEach(async (e) => {
+      const response = await fetch(
+        `${config[chainId].opensea_api}/api/v1/asset/${
+          config[chainId].migration_address
+        }/${Web3.utils.toBN(e)}`,
+        { method: 'GET' },
+      );
+      const body = await response.json();
+      list.appendChild(buildCard(body, true));
     });
   }
 }
