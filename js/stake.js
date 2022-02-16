@@ -95,12 +95,19 @@ async function getV2Items(address, opensea, newCollection) {
   return body.assets;
 }
 
+async function getItems(ownerAddr, baseURL, contractAddr) {
+  const url = `${baseURL}?owner=${ownerAddr}&contractAddresses[]=${contractAddr}`;
+  const res = await fetch(url);
+  const body = await res.json();
+  return body.ownedNfts.map((d) => d.id.tokenId);
+}
+
 async function renderItems(address, web3, c) {
   const chainId = await web3.eth.getChainId();
-  const v2 = await getV2Items(
+  const v2 = await getItems(
     address,
-    config[chainId].opensea_api,
-    config[chainId].new_collection,
+    config[chainId].alchemy_api,
+    config[chainId].migration_address,
   );
 
   const list = document.getElementById('card-list');
@@ -111,8 +118,15 @@ async function renderItems(address, web3, c) {
 
   if (v2) {
     v2.forEach(async (e) => {
-      itemIds.push(e.token_id);
-      const card = await buildCard(e);
+      itemIds.push(e);
+      const response = await fetch(
+        `${config[chainId].opensea_api}/api/v1/asset/${
+          config[chainId].migration_address
+        }/${Web3.utils.toBN(e)}`,
+        { method: 'GET' },
+      );
+      const body = await response.json();
+      const card = await buildCard(body);
       list.appendChild(card);
     });
   }

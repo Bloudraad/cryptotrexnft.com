@@ -2,6 +2,7 @@ import os from './contracts/ERC1155Test.json';
 import ct from './contracts/CryptoTrex.json';
 import { config } from './config';
 import { loadWeb3, web3Address, switchChain } from './web3.js';
+import Web3 from 'web3';
 
 async function render(address, web3) {
   const approved = await isApproved(web3, address);
@@ -142,18 +143,11 @@ async function addToken(eth) {
 }
 let itemIds = [];
 
-async function getV1Items(address, opensea, oldCollection) {
-  const url = `${opensea}/api/v1/assets?offset=0&limit=50&collection=${oldCollection}&owner=${address}`;
+async function getItems(ownerAddr, baseURL, contractAddr) {
+  const url = `${baseURL}?owner=${ownerAddr}&contractAddresses[]=${contractAddr}`;
   const res = await fetch(url);
   const body = await res.json();
-  return body.assets;
-}
-
-async function getV2Items(address, opensea, newCollection) {
-  const url = `${opensea}/api/v1/assets?offset=0&limit=50&collection=${newCollection}&owner=${address}`;
-  const res = await fetch(url);
-  const body = await res.json();
-  return body.assets;
+  return body.ownedNfts.map((d) => d.id.tokenId);
 }
 
 async function renderApprovalPrompt() {
@@ -165,10 +159,10 @@ async function renderApprovalPrompt() {
   const web3 = await loadWeb3();
   const address = await web3Address(web3);
   const chainId = await web3.eth.getChainId();
-  const v1 = await getV1Items(
+  const v1 = await getItems(
     address,
-    config[chainId].opensea_api,
-    config[chainId].old_collection,
+    config[chainId].alchemy_api,
+    config[chainId].origin_address,
   );
 
   if (v1.length < 1) {
@@ -183,15 +177,16 @@ async function renderItems(address, web3) {
   apprView.hidden = true;
   migrView.hidden = false;
   const chainId = await web3.eth.getChainId();
-  const v1 = await getV1Items(
+
+  const v1 = await getItems(
     address,
-    config[chainId].opensea_api,
-    config[chainId].old_collection,
+    config[chainId].alchemy_api,
+    config[chainId].origin_address,
   );
-  const v2 = await getV2Items(
+  const v2 = await getItems(
     address,
-    config[chainId].opensea_api,
-    config[chainId].new_collection,
+    config[chainId].alchemy_api,
+    config[chainId].migration_address,
   );
 
   const list = document.querySelector('#card-list');
@@ -200,29 +195,40 @@ async function renderItems(address, web3) {
     addTokenBtn.hidden = false;
   }
 
-  if (v1.length < 1) {
+  if (v1) {
     const batchMigrateBtn = document.getElementById('batchMigrateBtn');
     batchMigrateBtn.textContent = 'Nothing to migrate';
     batchMigrateBtn.classList = 'btn btn-light is-disabled';
     batchMigrateBtn.disabled = true;
-  }
-
-  if (v1) {
     const c = new web3.eth.Contract(os.abi, config[chainId].origin_address);
     v1.forEach(async (e) => {
-      itemIds.push(e.token_id);
+      itemIds.push(e);
       const balance = await c.methods
-        .balanceOf(address, e.token_id)
+        .balanceOf(address, Web3.utils.toBN(e))
         .call({ from: address });
+      const response = await fetch(
+        `${config[chainId].opensea_api}/api/v1/asset/${
+          config[chainId].origin_address
+        }/${Web3.utils.toBN(e)}`,
+        { method: 'GET' },
+      );
+      const body = await response.json();
       if (balance && balance > 0) {
-        list.appendChild(buildCard(e, false));
+        list.appendChild(buildCard(body, false));
       }
     });
   }
 
   if (v2) {
-    v2.forEach((e) => {
-      list.appendChild(buildCard(e, true));
+    v2.forEach(async (e) => {
+      const response = await fetch(
+        `${config[chainId].opensea_api}/api/v1/asset/${
+          config[chainId].migration_address
+        }/${Web3.utils.toBN(e)}`,
+        { method: 'GET' },
+      );
+      const body = await response.json();
+      list.appendChild(buildCard(body, true));
     });
   }
 }
