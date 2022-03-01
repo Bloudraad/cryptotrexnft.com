@@ -144,10 +144,16 @@ async function addToken(eth) {
 let itemIds = [];
 
 async function getItems(ownerAddr, baseURL, contractAddr) {
-  const url = `${baseURL}?owner=${ownerAddr}&contractAddresses[]=${contractAddr}`;
+  const url = `${baseURL}?owner=${ownerAddr}&contractAddresses[]=${[
+    contractAddr,
+  ]}`;
   const res = await fetch(url);
   const body = await res.json();
-  return body.ownedNfts.map((d) => d.id.tokenId);
+  return body.ownedNfts.map((d) => {
+    if (d.contract.address.toLowerCase() === contractAddr.toLowerCase()) {
+      return d.id.tokenId;
+    }
+  });
 }
 
 async function renderApprovalPrompt() {

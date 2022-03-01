@@ -14,6 +14,7 @@ export const config = {
     origin_address: '0xe229fB41Ff60Bb2B5C47Cb1E43C9e4d0D507A27E',
     token_address: '0x99eE7Dc7E959B32817e3DeD51cfEeE4c9836d174',
     opensea_api: 'https://testnets-api.opensea.io',
+    alchemy_api: 'https://eth-mainnet.g.alchemy.com/v2/demo/getNFTs/',
     old_collection: 'unidentified-contract-i5yykj3vuu',
     new_collection: 'cryptotrex-vkgog8evuw',
     vx_address: '0xCd43d0b7bF483dBDD08834b86Fd009dCFBA67ad6',

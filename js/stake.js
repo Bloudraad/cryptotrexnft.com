@@ -96,7 +96,9 @@ async function getV2Items(address, opensea, newCollection) {
 }
 
 async function getItems(ownerAddr, baseURL, contractAddr) {
-  const url = `${baseURL}?owner=${ownerAddr}&contractAddresses[]=${contractAddr}`;
+  const url = `${baseURL}?owner=${ownerAddr}&contractAddresses[]=${[
+    contractAddr,
+  ]}`;
   const res = await fetch(url);
   const body = await res.json();
   return body.ownedNfts.map((d) => d.id.tokenId);
