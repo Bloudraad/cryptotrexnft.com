@@ -3,7 +3,7 @@ export const config = {
     migration_address: '0x01FAd58CC2f0d3282724bE1DA34b90709Bf04e37',
     origin_address: '0x495f947276749Ce646f68AC8c248420045cb7b5e',
     token_address: '0x9b805ad1425b17e39870dfe7d1d48ec7fc53690b',
-    opensea_api: 'https://api.opensea.io',
+    opensea_api: '3338c3aae95c4f75863e579dcc5f3964',
     alchemy_api: 'https://eth-mainnet.g.alchemy.com/v2/IPiLvnoO7H1j1QBj6Hn06BkRPK98vVnE/getNFTs/',
     old_collection: 'cryptotrexold',
     new_collection: 'cryptotrex',
