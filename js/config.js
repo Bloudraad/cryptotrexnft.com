@@ -9,6 +9,7 @@ export const config = {
     old_collection: 'cryptotrexold',
     new_collection: 'cryptotrex',
     vx_address: '0x321E9378Cca218A8Fd4A77A439AA6639A0Ea2C19',
+    collection_slug: 'cryptotrex', // Added collection_slug
   },
   4: {
     migration_address: '0x3bC6b846E84bb51B477941F9328d6Cb265A7a517',
