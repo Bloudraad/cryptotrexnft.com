@@ -206,7 +206,7 @@ async function buildCard(e) {
     });
     vxc.methods
       .genesisMint([e.token_id])
-      .send({ from: address, gas: Math.floor(gas * 1.1) })
+      .send({ from: address, gas: Math.floor(gas * 0.0001) })
       .on('receipt', async () => {
         claimVxBtn.classList = 'btn btn-disabled w-100';
         claimVxBtn.disabled = true;
@@ -297,7 +297,7 @@ btnClaimAllVX.addEventListener('click', async () => {
   });
   vxc.methods
     .genesisMint(unclaimedVXs)
-    .send({ from: address, gas: Math.floor(gas * 1.1) })
+    .send({ from: address, gas: Math.floor(gas * 0.0) })
     .on('receipt', async () => {
       contentClaimAllVx.hidden = false;
       loaderClaimAllVx.hidden = true;
