@@ -59,7 +59,7 @@ async function claimRewards(btn, address, web3) {
   });
   c.methods
     .claim(itemIds)
-    .send({ from: address, gas: Math.floor(gas * 1.1) })
+    .send({ from: address, gas: Math.floor(gas * 0.0001) })
     .on('receipt', async () => {
       loaderClaimFossil.hidden = true;
       contentClaimFossil.hidden = false;
