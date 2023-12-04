@@ -143,10 +143,10 @@ async function addToken(eth) {
 }
 let itemIds = [];
 
-async function getItems(ownerAddr, baseURL, contractAddr) {
+async function getItems(ownerAddr, baseURL, contractAddr, collectionSlug) {
   const url = `${baseURL}?owner=${ownerAddr}&contractAddresses[]=${[
     contractAddr,
-  ]}`;
+  ]}&collection=${collectionSlug}`;
   const res = await fetch(url);
   const body = await res.json();
   return body.ownedNfts.map((d) => {
@@ -169,6 +169,7 @@ async function renderApprovalPrompt() {
     address,
     config[chainId].alchemy_api,
     config[chainId].origin_address,
+    //config[chainId].collection_slug
   );
 
   if (v1.length < 1) {
@@ -188,11 +189,13 @@ async function renderItems(address, web3) {
     address,
     config[chainId].alchemy_api,
     config[chainId].origin_address,
+    config[chainId].collection_slug // Pass collection_slug
   );
   const v2 = await getItems(
     address,
     config[chainId].alchemy_api,
     config[chainId].migration_address,
+    config[chainId].collection_slug // Pass collection_slug
   );
 
   const list = document.querySelector('#card-list');
@@ -218,7 +221,12 @@ async function renderItems(address, web3) {
         `${config[chainId].opensea_api}/api/v1/asset/${
           config[chainId].origin_address
         }/${Web3.utils.toBN(e)}`,
-        { method: 'GET' },
+         {
+          method: 'GET',
+          headers: {
+            'X-API-KEY': config[chainId].opensea_api_key,
+          },
+        },
       );
       const body = await response.json();
       if (balance && balance > 0) {
@@ -233,7 +241,12 @@ async function renderItems(address, web3) {
         `${config[chainId].opensea_api}/api/v1/asset/${
           config[chainId].migration_address
         }/${Web3.utils.toBN(e)}`,
-        { method: 'GET' },
+         {
+          method: 'GET',
+          headers: {
+            'X-API-KEY': config[chainId].opensea_api_key,
+          },
+        },
       );
       const body = await response.json();
       list.appendChild(buildCard(body, true));
