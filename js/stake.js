@@ -125,7 +125,12 @@ async function renderItems(address, web3, c) {
         `${config[chainId].opensea_api}/api/v1/asset/${
           config[chainId].migration_address
         }/${Web3.utils.toBN(e)}`,
-        { method: 'GET' },
+         {
+          method: 'GET',
+          headers: {
+            'X-API-KEY': config[chainId].opensea_api_key,
+          },
+        }
       );
       const body = await response.json();
       const card = await buildCard(body);
