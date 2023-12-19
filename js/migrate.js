@@ -218,7 +218,7 @@ async function renderItems(address, web3) {
         .balanceOf(address, Web3.utils.toBN(e))
         .call({ from: address });
       const response = await fetch(
-        `${config[chainId].opensea_api}/v2/chain/ethereum/account/${
+        `${config[chainId].opensea_api}/api/v2/chain/ethereum/account/${
           config[chainId].origin_address
         }/${Web3.utils.toBN(e)}`,
          {
