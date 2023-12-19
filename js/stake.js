@@ -122,7 +122,7 @@ async function renderItems(address, web3, c) {
     v2.forEach(async (e) => {
       itemIds.push(e);
       const response = await fetch(
-        `${config[chainId].opensea_api}/api/v1/asset/${
+        `${config[chainId].opensea_api}/v2/chain/ethereum/contract/${
           config[chainId].migration_address
         }/${Web3.utils.toBN(e)}`,
          {
