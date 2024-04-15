@@ -89,7 +89,7 @@ async function claimRewards(btn, address, web3) {
 }
 
 async function getV2Items(address, opensea, newCollection) {
-  const url = `${opensea}/api/v1/assets?offset=0&limit=50&collection=${newCollection}&owner=${address}`;
+  const url = `${opensea}/api/v2/contract?offset=0&limit=50&collection=${newCollection}&owner=${address}`;
   const res = await fetch(url);
   const body = await res.json();
   return body.assets;
@@ -122,7 +122,7 @@ async function renderItems(address, web3, c) {
     v2.forEach(async (e) => {
       itemIds.push(e);
       const response = await fetch(
-        `${config[chainId].opensea_api}/api/v1/asset/${
+        `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${
           config[chainId].migration_address
         }/${Web3.utils.toBN(e)}`,
          {
