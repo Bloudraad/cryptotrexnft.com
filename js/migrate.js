@@ -218,7 +218,7 @@ async function renderItems(address, web3) {
         .balanceOf(address, Web3.utils.toBN(e))
         .call({ from: address });
       const response = await fetch(
-        `${config[chainId].opensea_api}/api/v1/asset/${
+        `${config[chainId].opensea_api}/api/v2/chain/${chain}/contract/${address}/nfts/${e}{
           config[chainId].origin_address
         }/${Web3.utils.toBN(e)}`,
          {
@@ -231,6 +231,9 @@ async function renderItems(address, web3) {
       const body = await response.json();
       if (balance && balance > 0) {
         list.appendChild(buildCard(body, false));
+        catch (error) {
+      console.error('Error fetching NFT information:', error);
+    }
       }
     });
   }
@@ -238,7 +241,7 @@ async function renderItems(address, web3) {
   if (v2) {
     v2.forEach(async (e) => {
       const response = await fetch(
-        `${config[chainId].opensea_api}/api/v1/asset/${
+        `${config[chainId].opensea_api}/api/v2/chain/${chain}/contract/${address}/nfts/${e}{
           config[chainId].migration_address
         }/${Web3.utils.toBN(e)}`,
          {
@@ -250,6 +253,9 @@ async function renderItems(address, web3) {
       );
       const body = await response.json();
       list.appendChild(buildCard(body, true));
+      catch (error) {
+      console.error('Error fetching NFT information:', error);
+    }
     });
   }
 }
