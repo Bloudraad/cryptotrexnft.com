@@ -233,8 +233,8 @@ v1.forEach(async (e) => {
       );
       const body = await response.json();
       list.appendChild(buildCard(body, false));
-    }
-};
+    };
+}
   }
  if (v2) {
   v2.forEach(async (e) => {
