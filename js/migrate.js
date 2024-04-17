@@ -238,13 +238,14 @@ if (v2) {
   v2.forEach(async (e) => {
     try {
       const response = await fetch(
-        `${config[chainId].opensea_api}/api/v2/chain/${chain}/contract/${address}/nfts/${e}`,
+        `${config[chainId].opensea_api}/api/v2/chain/${chain}/contract/${address}/nfts/${e}}{
+        ${Web3.utils.toBN(e)}`,
         {
           method: 'GET',
           headers: {
             'X-API-KEY': config[chainId].opensea_api_key,
-          },
-        }
+       },
+        },
       );
       const body = await response.json();
       list.appendChild(buildCard(body, true));
@@ -254,7 +255,7 @@ if (v2) {
   });
 }
 
-}
+
 
 function buildCard(e, migrated) {
   const card = document.createElement('div');
