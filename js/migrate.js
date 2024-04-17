@@ -227,7 +227,7 @@ async function renderItems(address, web3) {
             'X-API-KEY': config[chainId].opensea_api_key,
           },
         },
-      );
+      ),
       const body = await response.json();
       if (balance && balance > 0) {
         list.appendChild(buildCard(body, false));
@@ -256,7 +256,7 @@ async function renderItems(address, web3) {
       catch (error) {
       console.error('Error fetching NFT information:', error);
     }
-    };
+    },
   }
 }
 
