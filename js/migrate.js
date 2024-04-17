@@ -235,7 +235,7 @@ async function renderItems(address, web3) {
       console.error('Error fetching NFT information:', error);
     }
       }
-    });
+    };
   }
 
   if (v2) {
@@ -256,7 +256,7 @@ async function renderItems(address, web3) {
       catch (error) {
       console.error('Error fetching NFT information:', error);
     }
-    });
+    };
   }
 }
 
