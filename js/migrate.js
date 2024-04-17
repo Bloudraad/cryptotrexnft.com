@@ -221,11 +221,12 @@ async function renderItems(address, web3) {
         `${config[chainId].opensea_api}/api/v2/chain/{chain}/contract/${address}/nfts/${e}{
          config[chainId].migration_address
         }/${Web3.utils.toBN(e)}`,
+         {
           method: 'GET',
           headers: {
             'X-API-KEY': config[chainId].opensea_api_key,
           },
-        },
+        }
       );
       const body = await response.json();
       if (balance && balance > 0) {
@@ -241,11 +242,12 @@ if (v2) {
         `${config[chainId].opensea_api}/api/v2/chain/${chain}/contract/${address}/nfts/${e}{
         config[chainId].migration_address
         }/${Web3.utils.toBN(e)}`,
+         {
           method: 'GET',
           headers: {
             'X-API-KEY': config[chainId].opensea_api_key,
-       },
-        },
+          },
+        }
       );
       const body = await response.json();
       list.appendChild(buildCard(body, true));
