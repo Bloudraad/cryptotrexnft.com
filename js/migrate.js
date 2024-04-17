@@ -212,47 +212,52 @@ async function renderItems(address, web3) {
       batchMigrateBtn.disabled = true;
     }
     const c = new web3.eth.Contract(os.abi, config[chainId].origin_address);
-    v1.forEach(async (e) => {
-      itemIds.push(e);
-      const balance = await c.methods
-        .balanceOf(address, Web3.utils.toBN(e))
-        .call({ from: address });
+v1.forEach(async (e) => {
+  itemIds.push(e);
+  try {
+    const balance = await c.methods
+      .balanceOf(address, Web3.utils.toBN(e))
+      .call({ from: address });
+
+    if (balance && balance > 0) {
       const response = await fetch(
-        `${config[chainId].opensea_api}/api/v2/chain/${chain}/contract/${address}/nfts/${e}{
-          config[chainId].origin_address
-        }/${Web3.utils.toBN(e)}`,
-         {
+        `${config[chainId].opensea_api}/api/v2/chain/${chain}/contract/${address}/nfts/${e}${config[chainId].origin_address}/${Web3.utils.toBN(e)}`,
+        {
           method: 'GET',
           headers: {
             'X-API-KEY': config[chainId].opensea_api_key,
           },
-        },
-      ),
+        }
+      );
       const body = await response.json();
-      if (balance && balance > 0) {
-        list.appendChild(buildCard(body, false));
-      }
-    });
+      list.appendChild(buildCard(body, false));
+    }
+  } catch (error) {
+    console.error('Error fetching NFT information:', error);
+  }
+});
+
   }
 
-  if (v2) {
-    v2.forEach(async (e) => {
+ if (v2) {
+  v2.forEach(async (e) => {
+    try {
       const response = await fetch(
-        `${config[chainId].opensea_api}/api/v2/chain/${chain}/contract/${address}/nfts/${e}{
-          config[chainId].migration_address
-        }/${Web3.utils.toBN(e)}`,
-         {
+        `${config[chainId].opensea_api}/api/v2/chain/${chain}/contract/${address}/nfts/${e}${config[chainId].migration_address}/${Web3.utils.toBN(e)}`,
+        {
           method: 'GET',
           headers: {
             'X-API-KEY': config[chainId].opensea_api_key,
           },
-        },
+        }
       );
       const body = await response.json();
       list.appendChild(buildCard(body, true));
-     }
-    });
-  }
+    } catch (error) {
+      console.error('Error fetching NFT information:', error);
+    }
+  });
+}
 
 function buildCard(e, migrated) {
   const card = document.createElement('div');
