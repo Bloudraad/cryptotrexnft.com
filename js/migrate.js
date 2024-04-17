@@ -242,7 +242,7 @@ if (v2) {
   v2.forEach(async (e) => {
     try {
       const response = await fetch(
-        `${config[chainId].opensea_api}/api/v2/chain/${chain}/contract/${address}/nfts/${e}${config[chainId].migration_address}/${Web3.utils.toBN(e)}`,
+        `${config[chainId].opensea_api}/api/v2/chain/${chain}/contract/${address}/nfts/${e}/${config[chainId].migration_address}/${Web3.utils.toBN(e)}`,
         {
           method: 'GET',
           headers: {
