@@ -219,9 +219,9 @@ async function renderItems(address, web3) {
         .call({ from: address });
       const response = await fetch(
         `${config[chainId].opensea_api}/api/v2/chain/ethereum/account/${address}/nfts/{
-        /${Web3.utils.toBN(e)}`,
+        ${Web3.utils.toBN(e)}`,
          {
-          method: 'fetch',
+          method: 'GET',
           headers: {
             'X-API-KEY': config[chainId].opensea_api_key,
           },
@@ -240,9 +240,9 @@ async function renderItems(address, web3) {
         `${config[chainId].opensea_api}/api/v2/chain/ethereum/account/${address}/nfts/{
           config[chainId].migration_address
         }
-        /${Web3.utils.toBN(e)}`,
+        ${Web3.utils.toBN(e)}`,
          {
-          method: 'fetch',
+          method: 'GET',
           headers: {
             'X-API-KEY': config[chainId].opensea_api_key,
           },
