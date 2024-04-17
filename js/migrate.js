@@ -333,4 +333,5 @@ addTokenBtn.addEventListener('click', async () => {
 const approveBtn = document.getElementById('approveBtn');
 approveBtn.addEventListener('click', async () => {
   await approve();
-});
+})
+};
