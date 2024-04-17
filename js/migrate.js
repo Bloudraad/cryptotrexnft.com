@@ -231,11 +231,8 @@ async function renderItems(address, web3) {
       const body = await response.json();
       if (balance && balance > 0) {
         list.appendChild(buildCard(body, false));
-        catch (error) {
-      console.error('Error fetching NFT information:', error);
-    }
       }
-    },
+    });
   }
 
   if (v2) {
@@ -253,12 +250,9 @@ async function renderItems(address, web3) {
       );
       const body = await response.json();
       list.appendChild(buildCard(body, true));
-      catch (error) {
-      console.error('Error fetching NFT information:', error);
-    }
-    },
+     }
+    });
   }
-}
 
 function buildCard(e, migrated) {
   const card = document.createElement('div');
