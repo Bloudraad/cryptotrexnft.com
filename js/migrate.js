@@ -221,39 +221,42 @@ v1.forEach(async (e) => {
 
     if (balance && balance > 0) {
       const response = await fetch(
-        `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${address}/nfts/{
-        config[chainId].origin_address
-          }/${Web3.utils.toBN(e)}`,
+        `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${address}/nfts/${config[chainId].origin_address}/${Web3.utils.toBN(e)}`,
         {
           method: 'GET',
           headers: {
             'X-API-KEY': config[chainId].opensea_api_key,
           },
-        },
+        }
       );
       const body = await response.json();
       list.appendChild(buildCard(body, false));
-    };
-}
+    }
+  } catch (error) {
+    console.error('Error fetching NFT information:', error);
   }
- if (v2) {
+});
+
+}
+if (v2) {
   v2.forEach(async (e) => {
     try {
       const response = await fetch(
-        `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${address}/nfts/{
-        config[chainId].migration_address}
-        /${Web3.utils.toBN(e)}`,
+        `${config[chainId].opensea_api}/api/v2/chain/${chain}/contract/${address}/nfts/${e}${config[chainId].migration_address}/${Web3.utils.toBN(e)}`,
         {
           method: 'GET',
           headers: {
             'X-API-KEY': config[chainId].opensea_api_key,
           },
-        },
+        }
       );
       const body = await response.json();
       list.appendChild(buildCard(body, true));
-    };
-  }
+    } catch (error) {
+      console.error('Error fetching NFT information:', error);
+    }
+  });
+}
 }
 
 function buildCard(e, migrated) {
