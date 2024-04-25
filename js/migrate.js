@@ -263,7 +263,7 @@ fetch(url, options)
       const body = await response.json();
       list.appendChild(buildCard(body, true));
     };
-  }
+  
 }
 
 function buildCard(e, migrated) {
