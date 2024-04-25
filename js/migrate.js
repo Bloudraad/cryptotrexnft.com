@@ -217,15 +217,21 @@ async function renderItems(address, web3) {
       const balance = await c.methods
         .balanceOf(address, Web3.utils.toBN(e))
         .call({ from: address });
-      const response = await fetch(
-        `${config[chainId].opensea_api}/api/v2/chain/ethereum/asset/${   // api/v1/asset
-          config[chainId].origin_address
-        }/${Web3.utils.toBN(e)}`,
-         {
-          method: 'GET',
-          headers: {
-            'X-API-KEY': config[chainId].opensea_api_key,
-          },
+const options = {
+  method: 'GET',
+  headers: {
+    accept: 'application/json',
+    'x-api-key': config[chainId].opensea_api_key
+  }
+};
+
+const url = `https://api.opensea.io/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`;
+
+fetch(url, options)
+  .then(response => response.json())
+  .then(response => console.log(response))
+  .catch(err => console.error(err));
+
         },
       );
       const body = await response.json();
@@ -237,15 +243,21 @@ async function renderItems(address, web3) {
 
   if (v2) {
     v2.forEach(async (e) => {
-      const response = await fetch(
-        `${config[chainId].opensea_api}/api/v2/chain/ethereum/asset/${ //api/v1/asset
-          config[chainId].migration_address
-        }/${Web3.utils.toBN(e)}`,
-         {
-          method: 'GET',
-          headers: {
-            'X-API-KEY': config[chainId].opensea_api_key,
-          },
+ const options = {
+  method: 'GET',
+  headers: {
+    accept: 'application/json',
+    'x-api-key': config[chainId].opensea_api_key
+  }
+};
+
+const url = `https://api.opensea.io/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`;
+
+fetch(url, options)
+  .then(response => response.json())
+  .then(response => console.log(response))
+  .catch(err => console.error(err));
+
         },
       );
       const body = await response.json();
