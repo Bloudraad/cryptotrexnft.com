@@ -238,7 +238,7 @@ fetch(url, options)
       if (balance && balance > 0) {
         list.appendChild(buildCard(body, false));
       }
-    });
+    };
   }
 
   if (v2) {
