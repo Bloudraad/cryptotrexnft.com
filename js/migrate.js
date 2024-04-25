@@ -264,8 +264,6 @@ fetch(url, options)
       list.appendChild(buildCard(body, true));
     };
   
-}
-
 function buildCard(e, migrated) {
   const card = document.createElement('div');
   card.classList = 'card';
