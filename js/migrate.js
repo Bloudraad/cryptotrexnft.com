@@ -237,17 +237,25 @@ async function renderItems(address, web3) {
 
   if (v2) {
     v2.forEach(async (e) => {
-      const response = await fetch(
-       `${config[chainId].opensea_api}/v2/chain/ethereum/contract/${
-          config[chainId].migration_address/nfts}
-        /${Web3.utils.toBN(e)}`,
-         {
-          method: 'GET',
-          headers: {
-            'X-API-KEY': config[chainId].opensea_api_key,
-          },
-              },
-      );
+        try {
+            const response = await fetch(
+                `${config[chainId].opensea_api}/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`,
+                {
+                    method: 'GET',
+                    headers: {
+                        'X-API-KEY': config[chainId].opensea_api_key,
+                    },
+                }
+            );
+
+            // Handle the response here
+        } catch (error) {
+            // Handle errors here
+            console.error('Error fetching data:', error);
+        }
+    });
+}
+
       const body = await response.json();
       list.appendChild(buildCard(body, true));
     });
