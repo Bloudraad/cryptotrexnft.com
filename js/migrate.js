@@ -257,7 +257,7 @@ async function renderItems(address, web3) {
             // Handle errors here
             console.error('Error fetching data:', error);
         }
-    };
+    },
 }
 
       const body = await response.json();
