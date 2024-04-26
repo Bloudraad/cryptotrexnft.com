@@ -141,7 +141,6 @@ async function addToken(eth) {
     console.log(error);
   }
 }
-let itemIds = [];
 
 async function getItems(ownerAddr, baseURL, contractAddr, collectionSlug) {
   const url = `${baseURL}?owner=${ownerAddr}&contractAddresses[]=${[
@@ -234,35 +233,31 @@ async function renderItems(address, web3) {
       }
     });
   }
-if (v2) {
+  if (v2) {
     v2.forEach(async (e) => {
-        try {
-            const response = await fetch(
-                `${config[chainId].opensea_api}/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`,
-                {
-                    method: 'GET',
-                    headers: {
-                        'X-API-KEY': config[chainId].opensea_api_key,
-                    },
-                }
-            );
-            
-            // Assuming response is JSON
-            const data = await response.json();
-            
-            // Handle the data or do whatever you need to do with it
-            
-        } catch (error) {
-            // Handle errors here
-            console.error('Error fetching data:', error);
-        }
-    }); // Remove the extra comma before this closing parenthesis
+      try {
+        const response = await fetch(
+          `${config[chainId].opensea_api}/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`,
+          {
+            method: 'GET',
+            headers: {
+              'X-API-KEY': config[chainId].opensea_api_key,
+            },
+          }
+        );
+        const body = await response.json();
+        list.appendChild(buildCard(body, true));
+      } catch (error) {
+        // Handle errors here
+        console.error('Error fetching data:', error);
+      }
+    });
+  }
 }
-
 
       const body = await response.json();
       list.appendChild(buildCard(body, true));
-    });
+    };
   }
 }
 
