@@ -225,7 +225,7 @@ const options = {
   }
 };
 
-const url = `https://api.opensea.io/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`;
+const url = `https://api.opensea.io/api/v2/chain/ethereum/contract/config[chainId].migration_address}/nfts/Web3.utils.toBN(e)`;
 
 fetch(url, options)
   .then(response => response.json())
@@ -251,7 +251,7 @@ fetch(url, options)
   }
 };
 
-const url = `https://api.opensea.io/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`;
+const url = `https://api.opensea.io/api/v2/chain/ethereum/contract/config[chainId].migration_address/nfts/Web3.utils.toBN(e}`;
 
 fetch(url, options)
   .then(response => response.json())
