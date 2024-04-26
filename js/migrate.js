@@ -218,8 +218,8 @@ async function renderItems(address, web3) {
         .balanceOf(address, Web3.utils.toBN(e))
         .call({ from: address });
       const response = await fetch(
-        `${config[chainId].opensea_api}/api/v1/asset/${
-          config[chainId].origin_address
+       `${config[chainId].opensea_api}/v2/chain/ethereum/contract/${
+          config[chainId].migration_address/nfts/
         }/${Web3.utils.toBN(e)}`,
          {
           method: 'GET',
@@ -238,8 +238,8 @@ async function renderItems(address, web3) {
   if (v2) {
     v2.forEach(async (e) => {
       const response = await fetch(
-        `${config[chainId].opensea_api}/api/v1/asset/${
-          config[chainId].migration_address
+       `${config[chainId].opensea_api}/v2/chain/ethereum/contract/${
+          config[chainId].migration_address/nfts/
         }/${Web3.utils.toBN(e)}`,
          {
           method: 'GET',
