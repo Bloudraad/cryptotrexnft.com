@@ -247,8 +247,12 @@ async function renderItems(address, web3) {
                     },
                 }
             );
-
-            // Handle the response here
+            
+            // Assuming response is JSON
+            const data = await response.json();
+            
+            // Handle the data or do whatever you need to do with it
+            
         } catch (error) {
             // Handle errors here
             console.error('Error fetching data:', error);
