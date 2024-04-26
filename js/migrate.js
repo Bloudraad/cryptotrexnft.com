@@ -226,8 +226,7 @@ async function renderItems(address, web3) {
           headers: {
             'X-API-KEY': config[chainId].opensea_api_key,
           },
-        },
-        },
+              },
       );
       const body = await response.json();
       if (balance && balance > 0) {
@@ -247,8 +246,7 @@ async function renderItems(address, web3) {
           headers: {
             'X-API-KEY': config[chainId].opensea_api_key,
           },
-        },
-        },
+              },
       );
       const body = await response.json();
       list.appendChild(buildCard(body, true));
