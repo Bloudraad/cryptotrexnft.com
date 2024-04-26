@@ -234,8 +234,7 @@ async function renderItems(address, web3) {
       }
     });
   }
-
-  if (v2) {
+if (v2) {
     v2.forEach(async (e) => {
         try {
             const response = await fetch(
@@ -257,8 +256,9 @@ async function renderItems(address, web3) {
             // Handle errors here
             console.error('Error fetching data:', error);
         }
-    },
+    }); // Remove the extra comma before this closing parenthesis
 }
+
 
       const body = await response.json();
       list.appendChild(buildCard(body, true));
