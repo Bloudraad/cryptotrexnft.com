@@ -211,21 +211,27 @@ async function renderItems(address, web3) {
       batchMigrateBtn.disabled = true;
     }
     const c = new web3.eth.Contract(os.abi, config[chainId].origin_address);
+  if (v1) {
+    if (v1.length < 1) {
+      const batchMigrateBtn = document.getElementById('batchMigrateBtn');
+      batchMigrateBtn.textContent = 'Nothing to migrate';
+      batchMigrateBtn.classList = 'btn btn-light is-disabled';
+      batchMigrateBtn.disabled = true;
+    }
+    const c = new web3.eth.Contract(os.abi, config[chainId].origin_address);
     v1.forEach(async (e) => {
       itemIds.push(e);
       const balance = await c.methods
         .balanceOf(address, Web3.utils.toBN(e))
         .call({ from: address });
       const response = await fetch(
-       `${config[chainId].opensea_api}/v2/chain/ethereum/contract/${
-          config[chainId].migration_address/nfts}
-          /${Web3.utils.toBN(e)}`,
-         {
+        `${config[chainId].opensea_api}/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`,
+        {
           method: 'GET',
           headers: {
             'X-API-KEY': config[chainId].opensea_api_key,
           },
-              },
+        }
       );
       const body = await response.json();
       if (balance && balance > 0) {
