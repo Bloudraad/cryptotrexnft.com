@@ -243,18 +243,20 @@ if (v2) {
         console.log('Constructed URL:', apiUrl);
 
         // Make the fetch request
-   const response = await fetch(
+  const response = await fetch(
   apiUrl,
   {
     method: 'GET',
     headers: {
-      'X-API-KEY': config[chainId].opensea_api_key,
+      'X-API-KEY': String(config[chainId].opensea_api_key), // Ensure the API key value is explicitly converted to a string
+      'Content-Type': 'application/json', // Optionally include Content-Type header
     },
   }
 );
 
 // Log whether the API key is included in the request headers
 console.log('API Key Used:', response.headers.has('X-API-KEY'));
+
 
 
         // Handle the response...
