@@ -233,11 +233,18 @@ async function renderItems(address, web3) {
       }
     });
   }
- if (v2) {
+if (v2) {
     v2.forEach(async (e) => {
       try {
+        // Construct the URL
+        const apiUrl = `${config[chainId].opensea_api}/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`;
+
+        // Log the constructed URL
+        console.log('Constructed URL:', apiUrl);
+
+        // Make the fetch request
         const response = await fetch(
-          `${config[chainId].opensea_api}/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`,
+          apiUrl,
           {
             method: 'GET',
             headers: {
@@ -245,14 +252,14 @@ async function renderItems(address, web3) {
             },
           }
         );
-        const body = await response.json();
-        list.appendChild(buildCard(body, true));
+
+        // Handle the response...
       } catch (error) {
         // Handle errors here
         console.error('Error fetching data:', error);
       }
     });
-  }
+}
 }
 
 function buildCard(e, migrated) {
