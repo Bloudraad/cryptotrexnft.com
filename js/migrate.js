@@ -235,8 +235,7 @@ async function renderItems(address, web3) {
   }
 // Set up API key configuration
 const apiKey = String(config[chainId].opensea_api_key);
-
-if (v2) {
+  if (v2) {
     v2.forEach(async (e) => {
       try {
         // Construct the URL
@@ -256,7 +255,6 @@ if (v2) {
             },
           }
         );
-
         // Log whether the API key is included in the request headers
         console.log('API Key Used:', response.headers.has('X-API-KEY'));
 
@@ -267,10 +265,6 @@ if (v2) {
       }
     });
 }
-
-
-
-
         // Handle the response...
       } catch (error) {
         // Handle errors here
