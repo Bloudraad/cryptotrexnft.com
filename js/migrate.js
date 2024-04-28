@@ -218,15 +218,13 @@ async function renderItems(address, web3) {
         .balanceOf(address, Web3.utils.toBN(e))
         .call({ from: address });
       const response = await fetch(
-        `${config[chainId].opensea_api}/api/v1/asset/${
-          config[chainId].origin_address
-        }/${Web3.utils.toBN(e)}`,
-         {
+        `${config[chainId].opensea_api}/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`,
+        {
           method: 'GET',
           headers: {
             'X-API-KEY': config[chainId].opensea_api_key,
           },
-        },
+        }
       );
       const body = await response.json();
       if (balance && balance > 0) {
@@ -235,17 +233,38 @@ async function renderItems(address, web3) {
     });
   }
 
-const response = await fetch(
-        apiUrl,
-        {
-          method: 'GET',
-          headers: {
-            'X-API-KEY': apiKey, // Use the API key from the configured variable
-            'Content-Type': 'application/json', // Optionally include Content-Type header
-          },
-        } // <-- Closing parenthesis for the fetch call
-      );
+  if (v2) {
+    v2.forEach(async (e) => {
+      try {
+        // Construct the URL
+        const apiUrl = `${config[chainId].opensea_api}/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`;
 
+        // Log the constructed URL
+        console.log('Constructed URL:', apiUrl);
+
+        // Make the fetch request with the API key included in the headers
+        const response = await fetch(
+          apiUrl,
+          {
+            method: 'GET',
+            headers: {
+              'X-API-KEY': apiKey, // Use the API key from the configured variable
+              'Content-Type': 'application/json', // Optionally include Content-Type header
+            },
+          }
+        );
+        // Log whether the API key is included in the request headers
+        console.log('API Key Used:', response.headers.has('X-API-KEY'));
+
+        // Handle the response...
+      } catch (error) {
+        // Handle errors here
+        console.error('Error fetching data:', error);
+      }
+    });
+  }
+}
+      );
       const body = await response.json();
       list.appendChild(buildCard(body, true));
     });
