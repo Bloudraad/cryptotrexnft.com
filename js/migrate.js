@@ -319,16 +319,22 @@ batchMigrateBtn.addEventListener('click', async () => {
   await batchMigrate(itemIds);
 });
 
+async function renderItems(address, web3, apiKey) {
+  // existing code...
+}
+
 window.onload = async () => {
   try {
     const web3 = await loadWeb3();
     const address = await web3Address(web3);
     switchChain(window.ethereum);
-    render(address, web3);
+    const apiKey = String(config[chainId].opensea_api_key); // Retrieve apiKey here
+    render(address, web3, apiKey); // Pass apiKey to the render function
   } catch (err) {
     console.log(err);
   }
 };
+
 
 const addTokenBtn = document.getElementById('addTokenBtn');
 addTokenBtn.addEventListener('click', async () => {
