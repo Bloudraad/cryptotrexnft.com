@@ -231,42 +231,38 @@ async function renderItems(address, web3) {
       }
     });
   }
-// Set up API key configuration
-const apiKey = String(config[chainId].opensea_api_key);
-// Set up API key configuration
-const apiKey = String(config[chainId].opensea_api_key);
 
-if (v2) {
-  v2.forEach(async (e) => {
-    try {
-      // Construct the URL
-      const apiUrl = `${config[chainId].opensea_api}/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`;
+  if (v2) {
+    v2.forEach(async (e) => {
+      try {
+        // Construct the URL
+        const apiUrl = `${config[chainId].opensea_api}/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`;
 
-      // Log the constructed URL
-      console.log('Constructed URL:', apiUrl);
+        // Log the constructed URL
+        console.log('Constructed URL:', apiUrl);
 
-      // Make the fetch request with the API key included in the headers
-      const response = await fetch(
-        apiUrl,
-        {
-          method: 'GET',
-          headers: {
-            'X-API-KEY': apiKey, // Use the API key from the configured variable
-            'Content-Type': 'application/json', // Optionally include Content-Type header
-          },
-        }
-      );
-      // Log whether the API key is included in the request headers
-      console.log('API Key Used:', response.headers.has('X-API-KEY'));
+        // Make the fetch request with the API key included in the headers
+        const response = await fetch(
+          apiUrl,
+          {
+            method: 'GET',
+            headers: {
+              'X-API-KEY': apiKey, // Use the API key from the configured variable
+              'Content-Type': 'application/json', // Optionally include Content-Type header
+            },
+          }
+        );
+        // Log whether the API key is included in the request headers
+        console.log('API Key Used:', response.headers.has('X-API-KEY'));
 
-      // Handle the response...
-    } catch (error) {
-      // Handle errors here
-      console.error('Error fetching data:', error);
-    }
-  });
+        // Handle the response...
+      } catch (error) {
+        // Handle errors here
+        console.error('Error fetching data:', error);
+      }
+    });
+  }
 }
-
 
 function buildCard(e, migrated) {
   const card = document.createElement('div');
@@ -343,4 +339,3 @@ const approveBtn = document.getElementById('approveBtn');
 approveBtn.addEventListener('click', async () => {
   await approve();
 });
-
