@@ -265,7 +265,7 @@ if (v2) {
       }
     });
   }
-}
+
       const body = await response.json();
       list.appendChild(buildCard(body, true));
     });
