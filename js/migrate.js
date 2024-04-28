@@ -273,14 +273,6 @@ const apiKey = String(config[chainId].opensea_api_key);
       }
     });
 }
-        // Handle the response...
-      } catch (error) {
-        // Handle errors here
-        console.error('Error fetching data:', error);
-      }
-    });
-}
-}
 
 function buildCard(e, migrated) {
   const card = document.createElement('div');
