@@ -235,88 +235,87 @@ async function renderItems(address, web3) {
 
   if (v2) {
     v2.forEach(async (e) => {
-      try {
-        // Construct the URL
-        const apiUrl = `${config[chainId].opensea_api}/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`;
+        try {
+            // Construct the URL
+            const apiUrl = `${config[chainId].opensea_api}/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`;
 
-        // Log the constructed URL
-        console.log('Constructed URL:', apiUrl);
+            // Log the constructed URL
+            console.log('Constructed URL:', apiUrl);
 
-        // Make the fetch request with the API key included in the headers
-        const response = await fetch(
-          apiUrl,
-          {
-            method: 'GET',
-            headers: {
-              'X-API-KEY': apiKey, // Use the API key from the configured variable
-              'Content-Type': 'application/json', // Optionally include Content-Type header
-            },
-          }
-        );
-        // Log whether the API key is included in the request headers
-        console.log('API Key Used:', response.headers.has('X-API-KEY'));
+            // Make the fetch request with the API key included in the headers
+            const response = await fetch(
+                apiUrl,
+                {
+                    method: 'GET',
+                    headers: {
+                        'X-API-KEY': apiKey, // Use the API key from the configured variable
+                        'Content-Type': 'application/json', // Optionally include Content-Type header
+                    },
+                }
+            );
+            // Log whether the API key is included in the request headers
+            console.log('API Key Used:', response.headers.has('X-API-KEY'));
 
-        // Handle the response...
-      } catch (error) {
-        // Handle errors here
-        console.error('Error fetching data:', error);
-      }
+            // Handle the response...
+            const body = await response.json();
+            list.appendChild(buildCard(body, true)); // Move this line inside the try block
+        } catch (error) {
+            // Handle errors here
+            console.error('Error fetching data:', error);
+        }
     });
-  }
 }
-      
-      const body = await response.json();
-      list.appendChild(buildCard(body, true));
-  
+
 function buildCard(e, migrated) {
-  const card = document.createElement('div');
-  card.classList = 'card';
-  card.style = `
-    margin: 4px;
-    background-color: #0a0a0a;
-    color: #fff;
-    border: 1px solid;
-    padding: 24px;
-    border-image-slice: 1;
-    border-image-source: linear-gradient(180deg, #d56730, #d5673041);`;
-  const imageContainer = document.createElement('a');
-  imageContainer.href = e.permalink;
-  imageContainer.target = '_blank';
-  const image = document.createElement('img');
-  image.src = e.image_thumbnail_url;
-  image.crossOrigin = 'anonymous';
-  image.classList = 'card-img-top';
-  imageContainer.appendChild(image);
-  const bodyDiv = document.createElement('div');
-  bodyDiv.classList = 'card-body';
-  const nameDiv = document.createElement('h5');
-  nameDiv.classList.add('card-title');
-  nameDiv.textContent = e.name;
-  const migrateBtn = document.createElement('button');
-  migrateBtn.type = 'button';
+    const card = document.createElement('div');
+    card.classList = 'card';
+    card.style = `
+        margin: 4px;
+        background-color: #0a0a0a;
+        color: #fff;
+        border: 1px solid;
+        padding: 24px;
+        border-image-slice: 1;
+        border-image-source: linear-gradient(180deg, #d56730, #d5673041);`;
+    const imageContainer = document.createElement('a');
+    imageContainer.href = e.permalink;
+    imageContainer.target = '_blank';
+    const image = document.createElement('img');
+    image.src = e.image_thumbnail_url;
+    image.crossOrigin = 'anonymous';
+    image.classList = 'card-img-top';
+    imageContainer.appendChild(image);
+    const bodyDiv = document.createElement('div');
+    bodyDiv.classList = 'card-body';
+    const nameDiv = document.createElement('h5');
+    nameDiv.classList.add('card-title');
+    nameDiv.textContent = e.name;
+    const migrateBtn = document.createElement('button');
+    migrateBtn.type = 'button';
 
-  if (!migrated) {
-    migrateBtn.classList = 'btn btn-secondary';
-    migrateBtn.style = 'font-weight: 800; width: 100%;';
-    migrateBtn.textContent = 'Migrate';
-  } else {
-    migrateBtn.classList = 'btn btn-light disabled';
-    migrateBtn.disabled = true;
-    migrateBtn.style = 'width: 100%';
-    migrateBtn.textContent = 'Migrated';
-  }
-  migrateBtn.addEventListener('click', () => migrate(e.token_id, migrateBtn));
-  card.appendChild(imageContainer);
-  bodyDiv.appendChild(nameDiv);
-  bodyDiv.appendChild(migrateBtn);
-  card.appendChild(bodyDiv);
+    if (!migrated) {
+        migrateBtn.classList = 'btn btn-secondary';
+        migrateBtn.style = 'font-weight: 800; width: 100%;';
+        migrateBtn.textContent = 'Migrate';
+    } else {
+        migrateBtn.classList = 'btn btn-light disabled';
+        migrateBtn.disabled = true;
+        migrateBtn.style = 'width: 100%';
+        migrateBtn.textContent = 'Migrated';
+    }
+    migrateBtn.addEventListener('click', () => migrate(e.token_id, migrateBtn));
+    card.appendChild(imageContainer);
+    bodyDiv.appendChild(nameDiv);
+    bodyDiv.appendChild(migrateBtn);
+    card.appendChild(bodyDiv);
 
-  const cardContainer = document.createElement('div');
-  cardContainer.classList.add('col-md-3', 'col-xs-6', 'pb-1');
-  cardContainer.appendChild(card);
+    const cardContainer = document.createElement('div');
+    cardContainer.classList.add('col-md-3', 'col-xs-6', 'pb-1');
+    cardContainer.appendChild(card);
 
-  return cardContainer;
+    return cardContainer;
 }
+
 
 const batchMigrateBtn = document.getElementById('batchMigrateBtn');
 batchMigrateBtn.addEventListener('click', async () => {
