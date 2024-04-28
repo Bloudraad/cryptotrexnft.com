@@ -267,9 +267,7 @@ async function renderItems(address, web3) {
       
       const body = await response.json();
       list.appendChild(buildCard(body, true));
-    
   }
-}
 
 function buildCard(e, migrated) {
   const card = document.createElement('div');
