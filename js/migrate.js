@@ -211,22 +211,6 @@ async function renderItems(address, web3) {
       batchMigrateBtn.disabled = true;
     }
     const c = new web3.eth.Contract(os.abi, config[chainId].origin_address);
-  if (v1) {
-    if (v1.length < 1) {
-      const batchMigrateBtn = document.getElementById('batchMigrateBtn');
-      batchMigrateBtn.textContent = 'Nothing to migrate';
-      batchMigrateBtn.classList = 'btn btn-light is-disabled';
-      batchMigrateBtn.disabled = true;
-    }
-    const c = new web3.eth.Contract(os.abi, config[chainId].origin_address);
-   if (v1) {
-    if (v1.length < 1) {
-      const batchMigrateBtn = document.getElementById('batchMigrateBtn');
-      batchMigrateBtn.textContent = 'Nothing to migrate';
-      batchMigrateBtn.classList = 'btn btn-light is-disabled';
-      batchMigrateBtn.disabled = true;
-    }
-    const c = new web3.eth.Contract(os.abi, config[chainId].origin_address);
     v1.forEach(async (e) => {
       itemIds.push(e);
       const balance = await c.methods
@@ -241,8 +225,14 @@ async function renderItems(address, web3) {
           },
         }
       );
-// Set up API key configuration
-const apiKey = String(config[chainId].opensea_api_key);
+      const body = await response.json();
+      if (balance && balance > 0) {
+        list.appendChild(buildCard(body, false));
+      }
+    });
+  }
+  // Set up API key configuration
+  const apiKey = String(config[chainId].opensea_api_key);
   if (v2) {
     v2.forEach(async (e) => {
       try {
@@ -253,16 +243,13 @@ const apiKey = String(config[chainId].opensea_api_key);
         console.log('Constructed URL:', apiUrl);
 
         // Make the fetch request with the API key included in the headers
-        const response = await fetch(
-          apiUrl,
-          {
-            method: 'GET',
-            headers: {
-              'X-API-KEY': apiKey, // Use the API key from the configured variable
-              'Content-Type': 'application/json', // Optionally include Content-Type header
-            },
-          }
-        );
+        const response = await fetch(apiUrl, {
+          method: 'GET',
+          headers: {
+            'X-API-KEY': apiKey, // Use the API key from the configured variable
+            'Content-Type': 'application/json', // Optionally include Content-Type header
+          },
+        });
         // Log whether the API key is included in the request headers
         console.log('API Key Used:', response.headers.has('X-API-KEY'));
 
@@ -272,6 +259,7 @@ const apiKey = String(config[chainId].opensea_api_key);
         console.error('Error fetching data:', error);
       }
     });
+  }
 }
 
 function buildCard(e, migrated) {
@@ -349,3 +337,4 @@ const approveBtn = document.getElementById('approveBtn');
 approveBtn.addEventListener('click', async () => {
   await approve();
 });
+
