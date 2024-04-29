@@ -264,7 +264,6 @@ async function renderItems(address, web3) {
             console.error('Error fetching data:', error);
         }
     });
-}
 
 function buildCard(e, migrated) {
     const card = document.createElement('div');
