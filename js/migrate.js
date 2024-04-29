@@ -237,9 +237,7 @@ async function renderItems(address, web3) {
   if (v2) {
     v2.forEach(async (e) => {
         try {
-          console.log('config:', config);
-    console.log('chainId:', chainId);
-    console.log('e:', e);
+      
             // Construct the URL
             const apiUrl = `${config[chainId].opensea_api}/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`;
 
