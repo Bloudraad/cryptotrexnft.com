@@ -184,6 +184,7 @@ async function renderItems(address, web3) {
   apprView.hidden = true;
   migrView.hidden = false;
   const chainId = await web3.eth.getChainId();
+}
 
   const v1 = await getItems(
     address,
