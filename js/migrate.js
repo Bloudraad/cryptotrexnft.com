@@ -222,7 +222,7 @@ async function renderItems(address, web3) {
       };
 
       const url = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`;
-      console.log("Constructed URL:", url);
+      console.log("Constructed URLv1:", url);
       console.log("Headers:", options.headers); // Logging headers to check if the API key is included
 
       try {
@@ -249,7 +249,7 @@ async function renderItems(address, web3) {
 
     v2.forEach(async (e) => {
       const url = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`;
-      console.log("Constructed URL:", url);
+      console.log("Constructed URL_v2:", url);
       console.log("Headers:", options.headers); // Logging headers to check if the API key is included
 
       try {
@@ -264,7 +264,7 @@ async function renderItems(address, web3) {
 }
 
 function buildCard(e, migrated) {
-  console.log("Image URL:", e.image_url); // Add this line to log the image URL
+   console.log("Image URL:", e.nft.image_url); // Log the image URL
   const card = document.createElement('div');
   card.classList = 'card';
   card.style = `
