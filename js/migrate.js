@@ -264,7 +264,7 @@ async function renderItems(address, web3) {
 }
 
 function buildCard(e, migrated) {
-   console.log("Image URL:", e.image_url); // Add this line to log the image URL
+  console.log("Image URL:", e.image_url); // Add this line to log the image URL
   const card = document.createElement('div');
   card.classList = 'card';
   card.style = `
@@ -319,6 +319,7 @@ function buildCard(e, migrated) {
 
   return cardContainer;
 }
+
 
 const batchMigrateBtn = document.getElementById('batchMigrateBtn');
 batchMigrateBtn.addEventListener('click', async () => {
