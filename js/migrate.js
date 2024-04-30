@@ -262,14 +262,9 @@ async function renderItems(address, web3) {
     }
   });
 }
-
-
-
-
-      const body = await response.json();
+const body = await response.json();
       list.appendChild(buildCard(body, true));
-    };
-
+    
 //From here
 function buildCard(e, migrated) {
   const card = document.createElement('div');
