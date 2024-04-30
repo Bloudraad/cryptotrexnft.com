@@ -259,7 +259,6 @@ if (v2) {
       list.appendChild(buildCard(body, true));
     };
   }
-}
 
 function buildCard(e, migrated) {
   const card = document.createElement('div');
