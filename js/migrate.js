@@ -235,19 +235,26 @@ async function renderItems(address, web3) {
     });
   }
 
-  if (v2) {
-    v2.forEach(async (e) => {
-      const response = await fetch(
-        `${config[chainId].opensea_api}/api/v1/asset/${
-          config[chainId].migration_address
-        }/${Web3.utils.toBN(e)}`,
-         {
-          method: 'GET',
-          headers: {
-            'X-API-KEY': config[chainId].opensea_api_key,
-          },
-        },
-      );
+if (v2) {
+  v2.forEach(async (e) => {
+    const url = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`;
+    console.log("Constructed URL:", url);
+
+    const options = {
+      method: 'GET',
+      headers: { accept: 'application/json', 'x-api-key': config[chainId].opensea_api_key }
+    };
+
+    try {
+      const response = await fetch(url, options);
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error(error);
+    }
+  });
+}
+
       const body = await response.json();
       list.appendChild(buildCard(body, true));
     });
