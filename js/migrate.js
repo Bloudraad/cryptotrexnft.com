@@ -235,18 +235,18 @@ async function renderItems(address, web3) {
     });
   }
 
-const options = {
-  method: 'GET',
-  headers: { 
-    accept: 'application/json', 
-    'x-api-key': config[chainId].opensea_api_key 
-  }
-};
-
 if (v2) {
   v2.forEach(async (e) => {
     const url = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`;
     console.log("Constructed URL:", url);
+
+    const options = {
+      method: 'GET',
+      headers: { 
+        accept: 'application/json',
+        'x-api-key': config[chainId].opensea_api_key 
+      }
+    };
 
     console.log("Headers:", options.headers); // Logging headers to check if the API key is included
 
@@ -259,6 +259,7 @@ if (v2) {
     }
   });
 }
+
 
 
       const body = await response.json();
