@@ -233,16 +233,13 @@ async function renderItems(address, web3) {
     } catch (error) {
       console.error(error);
     }
-  });
-}
-
-      );
+  };
       const body = await response.json();
       if (balance && balance > 0) {
         list.appendChild(buildCard(body, false));
       }
-    });
-  }
+    };
+  
 
 if (v2) {
   const options = {
