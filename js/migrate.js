@@ -280,14 +280,14 @@ function buildCard(e, migrated) {
   imageContainer.target = '_blank';
   const image = document.createElement('img');
   image.onload = function() {
-    console.log("Image loaded successfully:", image.src);
+    console.log("Image loaded successfully:", nft.image_url);
   };
   image.onerror = function() {
-    console.error("Failed to load image:", image.src);
+    console.error("Failed to load image:", nft.image_url);
   };
   console.log("NFT Object:", e); // Log the entire NFT object
   console.log("Image URL:", e.image_url); // Log the image UR
-  image.src = e.image_url;
+  image.src = e.nft.image_url;
   image.crossOrigin = 'anonymous';
   image.classList = 'card-img-top';
   imageContainer.appendChild(image);
