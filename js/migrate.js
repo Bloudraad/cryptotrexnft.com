@@ -221,7 +221,7 @@ async function renderItems(address, web3) {
         },
       };
 
-      const url = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/asset/${Web3.utils.toBN(e)}`; //nfts//
+      const url = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/identifier/${Web3.utils.toBN(e)}`; //nfts//
       console.log("Constructed URLv1:", url);
       console.log("Headers:", options.headers); // Logging headers to check if the API key is included
 
@@ -248,7 +248,7 @@ async function renderItems(address, web3) {
     };
 
     v2.forEach(async (e) => {
-      const url = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/asset/${Web3.utils.toBN(e)}`; //nfts/
+      const url = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/identifier/${Web3.utils.toBN(e)}`; //nfts/
       console.log("Constructed URL_v2:", url);
       console.log("Headers:", options.headers); // Logging headers to check if the API key is included
 
@@ -264,7 +264,7 @@ async function renderItems(address, web3) {
 }
 
 function buildCard(e, migrated) {
-   console.log("Image URL:", e.nft.image_url); // Log the image URL
+   console.log("Image URL:", e.image_url); // Log the image URL
   const card = document.createElement('div');
   card.classList = 'card';
   card.style = `
@@ -285,7 +285,8 @@ function buildCard(e, migrated) {
   image.onerror = function() {
     console.error("Failed to load image:", image.src);
   };
-  image.src = e.nft.image_url;;
+  console.log("Image URL:", e.image_url); // Log the image UR
+  image.src = e.image_url;
   image.crossOrigin = 'anonymous';
   image.classList = 'card-img-top';
   imageContainer.appendChild(image);
