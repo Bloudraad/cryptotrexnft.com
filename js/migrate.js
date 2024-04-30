@@ -238,10 +238,8 @@ async function renderItems(address, web3) {
       if (balance && balance > 0) {
         list.appendChild(buildCard(body, false));
       }
-    };
-  
 
-if (v2) {
+    if (v2) {
   const options = {
     method: 'GET',
     headers: { 
