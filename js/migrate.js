@@ -248,7 +248,7 @@ async function renderItems(address, web3) {
     };
 
     v2.forEach(async (e) => {
-      const url = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`; //nfts/
+      const url = `${config[chainId].opensea_api}/api/v2/asset/${contractAddress}/${tokenId}`///api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`; //nfts/
       console.log("Constructed URL_v2:", url);
       console.log("Headers:", options.headers); // Logging headers to check if the API key is included
 
