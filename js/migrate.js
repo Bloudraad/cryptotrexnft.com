@@ -213,20 +213,29 @@ async function renderItems(address, web3) {
     }
     const c = new web3.eth.Contract(os.abi, config[chainId].origin_address);
     v1.forEach(async (e) => {
-      itemIds.push(e);
-      const balance = await c.methods
-        .balanceOf(address, Web3.utils.toBN(e))
-        .call({ from: address });
-      const response = await fetch(
-        `${config[chainId].opensea_api}/api/v1/asset/${
-          config[chainId].origin_address
-        }/${Web3.utils.toBN(e)}`,
-         {
-          method: 'GET',
-          headers: {
-            'X-API-KEY': config[chainId].opensea_api_key,
-          },
-        },
+      const options = {
+    method: 'GET',
+    headers: { 
+      accept: 'application/json', 
+      'x-api-key': config[chainId].opensea_api_key 
+    }
+  };
+
+  v1.forEach(async (e) => {
+    const url = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`;
+    console.log("Constructed URL:", url);
+    console.log("Headers:", options.headers); // Logging headers to check if the API key is included
+    
+    try {
+      const response = await fetch(url, options); // Define response within the loop
+      const body = await response.json(); // Move this line inside the try block
+      console.log(body); // Log the response body
+    } catch (error) {
+      console.error(error);
+    }
+  });
+}
+
       );
       const body = await response.json();
       if (balance && balance > 0) {
