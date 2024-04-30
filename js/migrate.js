@@ -265,7 +265,7 @@ if (v2) {
       const body = await response.json();
       list.appendChild(buildCard(body, true));
     };
-//from here
+
 const options = {
   method: 'GET',
   headers: { 
@@ -290,8 +290,8 @@ if (v2) {
     }
   });
 }
-
-
+function buildCard(e, migrated) {
+  const card = document.createElement('div');
   card.classList = 'card';
   card.style = `
     margin: 4px;
@@ -311,8 +311,7 @@ if (v2) {
   image.onerror = function() {
     console.error("Failed to load image:", image.src);
   };
-  //image.src = e.image_thumbnail_url;
-  image.src = e.image_url;
+  image.src = e.image_thumbnail_url;
   image.crossOrigin = 'anonymous';
   image.classList = 'card-img-top';
   imageContainer.appendChild(image);
@@ -346,6 +345,7 @@ if (v2) {
 
   return cardContainer;
 }
+
 
 //to here
 
