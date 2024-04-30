@@ -265,7 +265,7 @@ if (v2) {
       const body = await response.json();
       list.appendChild(buildCard(body, true));
     };
-
+//from here
 function buildCard(e, migrated) {
   const card = document.createElement('div');
   card.classList = 'card';
@@ -281,6 +281,12 @@ function buildCard(e, migrated) {
   imageContainer.href = e.permalink;
   imageContainer.target = '_blank';
   const image = document.createElement('img');
+  image.onload = function() {
+    console.log("Image loaded successfully:", image.src);
+  };
+  image.onerror = function() {
+    console.error("Failed to load image:", image.src);
+  };
   image.src = e.image_thumbnail_url;
   image.crossOrigin = 'anonymous';
   image.classList = 'card-img-top';
@@ -315,6 +321,7 @@ function buildCard(e, migrated) {
 
   return cardContainer;
 }
+//to here
 
 const batchMigrateBtn = document.getElementById('batchMigrateBtn');
 batchMigrateBtn.addEventListener('click', async () => {
