@@ -266,30 +266,7 @@ if (v2) {
       list.appendChild(buildCard(body, true));
     };
 
-const options = {
-  method: 'GET',
-  headers: { 
-    accept: 'application/json', 
-    'x-api-key': config[chainId].opensea_api_key 
-  }
-};
-
-if (v2) {
-  v2.forEach(async (e) => {
-    const url = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`;
-    console.log("Constructed URL:", url);
-
-    console.log("Headers:", options.headers); // Logging headers to check if the API key is included
-
-    try {
-      const response = await fetch(url, options);
-      const data = await response.json();
-      console.log(data);
-    } catch (error) {
-      console.error(error);
-    }
-  });
-}
+//From here
 function buildCard(e, migrated) {
   const card = document.createElement('div');
   card.classList = 'card';
@@ -311,7 +288,7 @@ function buildCard(e, migrated) {
   image.onerror = function() {
     console.error("Failed to load image:", image.src);
   };
-  image.src = e.image_thumbnail_url;
+  image.src = e.image_url;
   image.crossOrigin = 'anonymous';
   image.classList = 'card-img-top';
   imageContainer.appendChild(image);
