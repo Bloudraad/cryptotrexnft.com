@@ -296,14 +296,33 @@ function buildCard(e, migrated) {
   imageContainer.href = e.permalink;
   imageContainer.target = '_blank';
   const image = document.createElement('img');
+  image.onload = function() {
+  console.log("Image loaded successfully:", image.src);
+};
+
+image.onerror = function() {
+  console.error("Failed to load image:", image.src);
+};
+
+if (e && e.image_url) {
+  image.src = e.image_url;
+} else if (e && e.nft && e.nft.image_url) {
+  image.src = e.nft.image_url;
+} else {
+  console.error("Failed to load image: Image URL not found");
+}
+
+image.crossOrigin = 'anonymous';
+image.classList = 'card-img-top';
+imageContainer.appendChild(image);
 
   image.onload = function() {
-    console.log("Image loaded successfully:", e.nft.image_url);
+    console.log("Image loaded successfully:", e.image_url);
   };
   image.onerror = function() {
-    console.error("Failed to load image:", e.nft.image_url);
+    console.error("Failed to load image:", e.image_url);
   };
-  image.src = image_url;
+  image.src = e.image_url;
   image.crossOrigin = 'anonymous';
   image.classList = 'card-img-top';
   imageContainer.appendChild(image);
