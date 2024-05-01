@@ -263,6 +263,8 @@ v2.forEach(async (e) => {
     console.error(error);
   }
 });
+  }
+}
   
 function buildCard(e, migrated) {
   // Check if the image URL is nested under e.nft
