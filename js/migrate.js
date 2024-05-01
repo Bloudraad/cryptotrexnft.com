@@ -257,17 +257,19 @@ v2.forEach(async (e) => {
   console.log("Headers:", options.headers); // Logging headers to check if the API key is included
   console.log("NFT Image URL:", body.nft ? body.nft.image_url : body.image_url); // Log the NFT image URL
 
-  try {
-    const response = await fetch(url, options); // Define response within the loop
-    const body = await response.json(); // Move this line inside the try block
-    console.log(body); // Log the response body
-    if (balance && balance > 0) {
-       console.log("NFT Image URL:", body.nft ? body.nft.image_url : body.image_url); // Log the NFT image URL
-      list.appendChild(buildCard(body, true)); // Note: Assuming migrated as true
-    }
-  } catch (error) {
-    console.error(error);
+try {
+  const response = await fetch(url, options);
+  const body = await response.json();
+  console.log(body); // Log the response body
+
+  // Assuming balance is defined and in scope here
+  if (body && balance && balance > 0) {
+    console.log("NFT Image URL:", body.nft ? body.nft.image_url : body.image_url); // Log the NFT image URL
+    list.appendChild(buildCard(body, false));
   }
+} catch (error) {
+  console.error(error);
+}
 });
   }
 }
