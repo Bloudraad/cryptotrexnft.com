@@ -293,7 +293,7 @@ function buildCard(e, migrated) {
   image.onerror = function() {
     console.error("Failed to load image:", e.image_url);
   };
-  image.src = e.image_url;
+  image.src = e.opensea_url;
   image.crossOrigin = 'anonymous';
   image.classList = 'card-img-top';
   imageContainer.appendChild(image);
