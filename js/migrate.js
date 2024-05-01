@@ -254,14 +254,24 @@ async function renderItems(address, web3) {
 
       try {
         const response = await fetch(url, options); // Define response within the loop
-        const body = await response.json(); // Move this line inside the try block
-        console.log(body); // Log the response body
-        // Here, just before calling buildCard, add your console.log statement
-    console.log("Before calling buildCard for item:", body);
+    console.log("Response:", response); // Log the response object
+    const body = await response.json(); // Move this line inside the try block
+    console.log("Body:", body); // Log the response body
 
-    // Call buildCard function
-    const cardContainer = buildCard(body, migrated);
-      } catch (error) {
+    // Check if body contains the expected structure
+    if (body && body.nft && body.nft.is_suspicious) {
+      console.log("NFT is suspicious:", body.nft.is_suspicious);
+
+      // Here, just before calling buildCard, add your console.log statement
+      console.log("Before calling buildCard for item:", body);
+
+      // Call buildCard function
+      const cardContainer = buildCard(body, migrated);
+
+      // Append cardContainer to wherever you want in your DOM
+    } else {
+      console.error("Invalid or missing data in the response:", body);
+    }catch (error) {
         console.error(error);
       }
     });
