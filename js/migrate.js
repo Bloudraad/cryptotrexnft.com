@@ -248,15 +248,22 @@ async function renderItems(address, web3) {
     };
 
 v2.forEach(async (e) => {
-  const url = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`; //nfts/
+  const url = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`;
   console.log("Constructed URL_v2:", url);
   console.log("Headers:", options.headers); // Logging headers to check if the API key is included
 
- catch (error) {
+  try {
+    const response = await fetch(url, options); // Define response within the loop
+    const body = await response.json(); // Move this line inside the try block
+    console.log(body); // Log the response body
+    if (balance && balance > 0) {
+      list.appendChild(buildCard(body, true)); // Note: Assuming migrated as true
+    }
+  } catch (error) {
     console.error(error);
-      }
-    });
   }
+});
+
   
 function buildCard(e, migrated) {
   // Check if the image URL is nested under e.nft
