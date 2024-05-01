@@ -268,6 +268,11 @@ try {
 }
   
 function buildCard(e, migrated) {
+    if (e.nft && e.nft.image_url) {
+    console.log("NFT Image URL:", e.nft.image_url);
+  } else {
+    console.error("NFT image URL not found or undefined");
+  }
   // Check the structure of the object 'e'
   console.log("Object 'e':", e);
 
