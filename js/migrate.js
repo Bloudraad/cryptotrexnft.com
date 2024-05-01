@@ -230,7 +230,7 @@ try {
  // Log the entire body object to inspect its structure
   console.log("API Response Body:", body);
   // The error seems to occur here when trying to access body
-  console.log("NFT Image URL:", body.nft ? body.nft.image_url : body.image_url); // Log the NFT image URL
+  console.log("NFT Image URL:", nft.image_url); // Log the NFT image URL
   list.appendChild(buildCard(body, false));
 } catch (error) {
   console.error(error);
@@ -257,7 +257,7 @@ try {
  // Log the entire body object to inspect its structure
   console.log("API Response Body:", body);
   // Log the NFT image URL and append to list
-  console.log("NFT Image URL:", e.image_url); 
+  console.log("NFT Image URL:", e.nft.image_url); 
   list.appendChild(buildCard(body, false));
 } catch (error) {
   console.error(error);
@@ -283,14 +283,14 @@ function buildCard(e, migrated) {
   console.log("Object 'e':", e); // Log the entire 'e' object
   if (e && e.image_url) {
     // Access the image_url property if it exists
-    console.log("Image URL:", e.image_url);
+    console.log("Image URL:", e.nft.image_url);
   } else {
     console.error("Image URL not found in object 'e'");
   }
   console.log("Building card for:", e);
 
   // Check if the image URL is nested under e.nft
-  console.log("Image URL:", e.image_url); // Log the image URL
+  console.log("Image URL:", e.nft.image_url); // Log the image URL
 
   const card = document.createElement('div');
   card.classList = 'card';
@@ -308,12 +308,12 @@ function buildCard(e, migrated) {
   const image = document.createElement('img');
 
   image.onload = function() {
-    console.log("Image loaded successfully:", e.body.nft.image_url );
+    console.log("Image loaded successfully:", e.nft.image_url);
   };
   image.onerror = function() {
-    console.error("Failed to load image:", e.body.nft.image_url );
+    console.error("Failed to load image:", e.nft.image_url);
   };
-  image.src = e.image_url;
+  image.src = e.nft.image_url;
   image.crossOrigin = 'anonymous';
   image.classList = 'card-img-top';
   imageContainer.appendChild(image);
