@@ -290,12 +290,12 @@ function buildCard(e, migrated) {
   const image = document.createElement('img');
 
   image.onload = function() {
-    console.log("Image loaded successfully:", e.image_url);
+    console.log("Image loaded successfully:", e.body.nft.image_url );
   };
   image.onerror = function() {
-    console.error("Failed to load image:", e.image_url);
+    console.error("Failed to load image:", e.body.nft.image_url );
   };
-  image.src = e.opensea_url;
+  image.src = e.body.nft.image_url;
   image.crossOrigin = 'anonymous';
   image.classList = 'card-img-top';
   imageContainer.appendChild(image);
