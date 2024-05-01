@@ -268,7 +268,11 @@ try {
 }
   
 function buildCard(e, migrated) {
-  // Log that the buildCard function is being executed
+  // Check the structure of the object 'e'
+  console.log("Object 'e':", e);
+
+  // Check if the 'image_url' property exists in 'e' or its nested properties
+  console.log("Image URL:", e.image_url);
 
    // Check if the image URL is nested under e.nft
   console.log("Object 'e':", e); // Log the entire 'e' object
