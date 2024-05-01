@@ -279,6 +279,11 @@ async function renderItems(address, web3) {
   }
 }
 function buildCard(e, migrated) {
+  
+  // Check if the image URL is nested under e.nft
+  console.log("Image URL:", e.nft ? e.nft.image_url : e.image_url);
+  
+  console.log("Image URL:", e.image.src);
   const card = document.createElement('div');
   card.classList = 'card';
   card.style = `
@@ -294,12 +299,12 @@ function buildCard(e, migrated) {
   imageContainer.target = '_blank';
   const image = document.createElement('img');
   image.onload = function() {
-    console.log("Image loaded successfully:", e.nft.opensea_url);
+    console.log("Image loaded successfully:", e.image_url);
   };
   image.onerror = function() {
-    console.error("Failed to load image:", e.nft.opensea_url);
+    console.error("Failed to load image:", e.image_url);
   };
-  image.src = e.nft.opensea_url;
+  image.src = e.image_url;
   image.crossOrigin = 'anonymous';
   image.classList = 'card-img-top';
   imageContainer.appendChild(image);
