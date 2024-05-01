@@ -258,6 +258,7 @@ v2.forEach(async (e) => {
     const body = await response.json(); // Move this line inside the try block
     console.log(body); // Log the response body
     if (balance && balance > 0) {
+       console.log("NFT Image URL:", body.nft ? body.nft.image_url : body.image_url); // Log the NFT image URL
       list.appendChild(buildCard(body, true)); // Note: Assuming migrated as true
     }
   } catch (error) {
