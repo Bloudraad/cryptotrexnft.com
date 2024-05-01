@@ -226,19 +226,14 @@ async function renderItems(address, web3) {
       console.log("Headers:", options.headers); // Logging headers to check if the API key is included
 try {
   const response = await fetch(url, options);
-  const body = await response.json();
-  console.log(body); // Log the response body
+  const body = await response.json(); // This is where body is defined
 
-  // Assuming balance is defined and in scope here
-  if (body && balance && balance > 0) {
-    console.log("NFT Image URL:", body.nft ? body.nft.image_url : body.image_url); // Log the NFT image URL
-    list.appendChild(buildCard(body, false));
-  }
+  // The error seems to occur here when trying to access body
+  console.log("NFT Image URL:", body.nft ? body.nft.image_url : body.image_url); // Log the NFT image URL
+  list.appendChild(buildCard(body, false));
 } catch (error) {
   console.error(error);
-}
-
-     
+}  
     });
   }
 
@@ -259,17 +254,15 @@ v2.forEach(async (e) => {
 
 try {
   const response = await fetch(url, options);
-  const body = await response.json();
-  console.log(body); // Log the response body
+  const body = await response.json(); // This is where body is defined
 
-  // Assuming balance is defined and in scope here
-  if (body && balance && balance > 0) {
-    console.log("NFT Image URL:", body.nft ? body.nft.image_url : body.image_url); // Log the NFT image URL
-    list.appendChild(buildCard(body, false));
-  }
+  // The error seems to occur here when trying to access body
+  console.log("NFT Image URL:", body.nft ? body.nft.image_url : body.image_url); // Log the NFT image URL
+  list.appendChild(buildCard(body, false));
 } catch (error) {
   console.error(error);
 }
+
 });
   }
 }
