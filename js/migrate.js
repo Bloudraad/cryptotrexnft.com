@@ -251,21 +251,31 @@ v2.forEach(async (e) => {
   const url = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`; //nfts/
   console.log("Constructed URL_v2:", url);
   console.log("Headers:", options.headers); // Logging headers to check if the API key is included
+
   try {
     const response = await fetch(url, options); // Define response within the loop
     console.log("Response:", response); // Log the response object
     const body = await response.json(); // Move this line inside the try block
     console.log("Body:", body); // Log the response body
 
-     // Here, just before calling buildCard, add your console.log statement
+    // Check if body contains the expected structure
+    if (body && body.nft && body.nft.is_suspicious) {
+      console.log("NFT is suspicious:", body.nft.is_suspicious);
+
+      // Here, just before calling buildCard, add your console.log statement
       console.log("Before calling buildCard for item:", body);
+
+      // Call buildCard function
+      const cardContainer = buildCard(body, migrated);
+
       // Append cardContainer to wherever you want in your DOM
-    } 
-   catch (error) {
+    } else {
+      console.error("Invalid or missing data in the response:", body);
+    }
+  } catch (error) {
     console.error(error);
   }
 });
-}
   
 function buildCard(e, migrated) {
   // Check if the image URL is nested under e.nft
