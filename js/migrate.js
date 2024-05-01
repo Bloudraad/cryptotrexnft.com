@@ -264,7 +264,7 @@ async function renderItems(address, web3) {
 }
 
 function buildCard(e, migrated) {
-  console.log("Image URL:", e.nft.image_url); // Log the image URL
+  console.log("Image URL:", e.nft.opensea_url); // Log the image URL
   const card = document.createElement('div');
   card.classList = 'card';
   card.style = `
@@ -280,12 +280,12 @@ function buildCard(e, migrated) {
   imageContainer.target = '_blank';
   const image = document.createElement('img');
   image.onload = function() {
-    console.log("Image loaded successfully:", e.nft.image_url);
+    console.log("Image loaded successfully:", e.nft.opensea_url);
   };
   image.onerror = function() {
-    console.error("Failed to load image:", e.nft.image_url);
+    console.error("Failed to load image:", e.nft.opensea_url);
   };
-  image.src = e.nft.image_url;
+  image.src = e.nft.opensea_url;
   image.crossOrigin = 'anonymous';
   image.classList = 'card-img-top';
   imageContainer.appendChild(image);
