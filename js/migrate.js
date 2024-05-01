@@ -247,13 +247,13 @@ async function renderItems(address, web3) {
       },
     };
 
-    v2.forEach(async (e) => {
-      const url = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`; //nfts/
-      console.log("Constructed URL_v2:", url);
-      console.log("Headers:", options.headers); // Logging headers to check if the API key is included
+ v2.forEach(async (e) => {
+  const url = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`; //nfts/
+  console.log("Constructed URL_v2:", url);
+  console.log("Headers:", options.headers); // Logging headers to check if the API key is included
 
-      try {
-        const response = await fetch(url, options); // Define response within the loop
+  try {
+    const response = await fetch(url, options); // Define response within the loop
     console.log("Response:", response); // Log the response object
     const body = await response.json(); // Move this line inside the try block
     console.log("Body:", body); // Log the response body
@@ -271,12 +271,12 @@ async function renderItems(address, web3) {
       // Append cardContainer to wherever you want in your DOM
     } else {
       console.error("Invalid or missing data in the response:", body);
-    }catch (error) {
-        console.error(error);
-      }
-    });
+    }
+  } catch (error) {
+    console.error(error);
   }
-}
+});
+
 
 function buildCard(e, migrated) {
   const card = document.createElement('div');
