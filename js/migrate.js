@@ -263,12 +263,14 @@ v2.forEach(async (e) => {
     console.error(error);
   }
 });
+  }
+}
+}
 
   
 function buildCard(e, migrated) {
   // Check if the image URL is nested under e.nft
-  console.log("Image URL:", e.nft ? e.nft.image_url : e.image_url);
-  console.log("Image URL:", e.image.src);
+  console.log("Image URL:", e.nft ? e.nft.image_url : e.image_url); // Log the image URL
   const card = document.createElement('div');
   card.classList = 'card';
   card.style = `
@@ -283,6 +285,7 @@ function buildCard(e, migrated) {
   imageContainer.href = e.permalink;
   imageContainer.target = '_blank';
   const image = document.createElement('img');
+
   image.onload = function() {
     console.log("Image loaded successfully:", e.image_url);
   };
@@ -320,7 +323,6 @@ function buildCard(e, migrated) {
   const cardContainer = document.createElement('div');
   cardContainer.classList.add('col-md-3', 'col-xs-6', 'pb-1');
   cardContainer.appendChild(card);
-
   return cardContainer;
 }
 
