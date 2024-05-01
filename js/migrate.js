@@ -257,7 +257,7 @@ try {
  // Log the entire body object to inspect its structure
   console.log("API Response Body:", body);
   // Log the NFT image URL and append to list
-  console.log("NFT Image URL:", image_url); 
+  console.log("NFT Image URL:", e.image_url); 
   list.appendChild(buildCard(body, false));
 } catch (error) {
   console.error(error);
