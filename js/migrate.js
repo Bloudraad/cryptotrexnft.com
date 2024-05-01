@@ -264,7 +264,7 @@ async function renderItems(address, web3) {
 }
 
 function buildCard(e, migrated) {
-   console.log("Image URL:", e.image_url); // Log the image URL
+  console.log("Image URL:", e.nft.image_url); // Log the image URL
   const card = document.createElement('div');
   card.classList = 'card';
   card.style = `
@@ -280,13 +280,11 @@ function buildCard(e, migrated) {
   imageContainer.target = '_blank';
   const image = document.createElement('img');
   image.onload = function() {
-    console.log("Image loaded successfully:", nft.image_url);
+    console.log("Image loaded successfully:", e.nft.image_url);
   };
   image.onerror = function() {
-    console.error("Failed to load image:", nft.image_url);
+    console.error("Failed to load image:", e.nft.image_url);
   };
-  console.log("NFT Object:", e); // Log the entire NFT object
-  console.log("Image URL:", e.image_url); // Log the image UR
   image.src = e.nft.image_url;
   image.crossOrigin = 'anonymous';
   image.classList = 'card-img-top';
@@ -321,7 +319,6 @@ function buildCard(e, migrated) {
 
   return cardContainer;
 }
-
 
 const batchMigrateBtn = document.getElementById('batchMigrateBtn');
 batchMigrateBtn.addEventListener('click', async () => {
