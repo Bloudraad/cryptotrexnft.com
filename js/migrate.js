@@ -256,6 +256,11 @@ async function renderItems(address, web3) {
         const response = await fetch(url, options); // Define response within the loop
         const body = await response.json(); // Move this line inside the try block
         console.log(body); // Log the response body
+        // Here, just before calling buildCard, add your console.log statement
+    console.log("Before calling buildCard for item:", body);
+
+    // Call buildCard function
+    const cardContainer = buildCard(body, migrated);
       } catch (error) {
         console.error(error);
       }
@@ -264,14 +269,6 @@ async function renderItems(address, web3) {
 }
 
 function buildCard(e, migrated) {
-  // Log the entire NFT object
-  console.log("NFT Object:", e); 
-
-  // Check if the image URL is nested under e.nft
-  console.log("Image URL:", e.nft ? e.nft.image_url : e.image_url);
-  
-  console.log("Image URL:", e.nft.opensea_url); // Log the image URL
-  
   const card = document.createElement('div');
   card.classList = 'card';
   card.style = `
