@@ -227,7 +227,8 @@ async function renderItems(address, web3) {
 try {
   const response = await fetch(url, options);
   const body = await response.json(); // This is where body is defined
-
+ // Log the entire body object to inspect its structure
+  console.log("API Response Body:", body);
   // The error seems to occur here when trying to access body
   console.log("NFT Image URL:", body.nft ? body.nft.image_url : body.image_url); // Log the NFT image URL
   list.appendChild(buildCard(body, false));
@@ -253,7 +254,8 @@ v2.forEach(async (e) => {
 try {
   const response = await fetch(url, options);
   const body = await response.json(); // This is where body is defined
-
+ // Log the entire body object to inspect its structure
+  console.log("API Response Body:", body);
   // Log the NFT image URL and append to list
   console.log("NFT Image URL:", body.nft ? body.nft.image_url : body.image_url); 
   list.appendChild(buildCard(body, false));
