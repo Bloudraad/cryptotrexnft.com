@@ -250,14 +250,12 @@ v2.forEach(async (e) => {
   const url = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`;
   console.log("Constructed URL_v2:", url);
   console.log("Headers:", options.headers); // Logging headers to check if the API key is included
-  console.log("NFT Image URL:", body.nft ? body.nft.image_url : body.image_url); // Log the NFT image URL
-
 try {
   const response = await fetch(url, options);
   const body = await response.json(); // This is where body is defined
 
-  // The error seems to occur here when trying to access body
-  console.log("NFT Image URL:", body.nft ? body.nft.image_url : body.image_url); // Log the NFT image URL
+  // Log the NFT image URL and append to list
+  console.log("NFT Image URL:", body.nft ? body.nft.image_url : body.image_url); 
   list.appendChild(buildCard(body, false));
 } catch (error) {
   console.error(error);
