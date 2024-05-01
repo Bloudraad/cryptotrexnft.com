@@ -276,7 +276,7 @@ async function renderItems(address, web3) {
     console.error(error);
   }
 });
-
+}
 
 function buildCard(e, migrated) {
   const card = document.createElement('div');
