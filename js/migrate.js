@@ -268,11 +268,11 @@ v2.forEach(async (e) => {
 }
   
 function buildCard(e, migrated) {
-// Log that the buildCard function is being executed
+  // Log that the buildCard function is being executed
   console.log("Building card for:", e);
 
   // Check if the image URL is nested under e.nft
-  console.log("Image URL:", e.nft ? e.nft.image_url : e.image_url); 
+  console.log("Image URL:", e.nft ? e.nft.image_url : e.image_url); // Log the image URL
 
   const card = document.createElement('div');
   card.classList = 'card';
@@ -326,6 +326,7 @@ function buildCard(e, migrated) {
   const cardContainer = document.createElement('div');
   cardContainer.classList.add('col-md-3', 'col-xs-6', 'pb-1');
   cardContainer.appendChild(card);
+
   return cardContainer;
 }
 
