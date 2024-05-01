@@ -257,7 +257,7 @@ try {
  // Log the entire body object to inspect its structure
   console.log("API Response Body:", body);
   // Log the NFT image URL and append to list
-  console.log("NFT Image URL:", body.nft ? body.nft.image_url : body.image_url); 
+  console.log("NFT Image URL:", image_url); 
   list.appendChild(buildCard(body, false));
 } catch (error) {
   console.error(error);
@@ -272,7 +272,7 @@ function buildCard(e, migrated) {
   console.log("Building card for:", e);
 
   // Check if the image URL is nested under e.nft
-  console.log("Image URL:", e.nft ? e.nft.image_url : e.image_url); // Log the image URL
+  console.log("Image URL:", e.image_url); // Log the image URL
 
   const card = document.createElement('div');
   card.classList = 'card';
@@ -295,7 +295,7 @@ function buildCard(e, migrated) {
   image.onerror = function() {
     console.error("Failed to load image:", e.body.nft.image_url );
   };
-  image.src = e.body.nft.image_url;
+  image.src = e.image_url;
   image.crossOrigin = 'anonymous';
   image.classList = 'card-img-top';
   imageContainer.appendChild(image);
