@@ -118,7 +118,7 @@ async function renderItems(address, web3, c) {
     addTokenBtn.hidden = false;
   }
 
- /*  if (v2) {
+   if (v2) {
     v2.forEach(async (e) => {
       itemIds.push(e);
       const response = await fetch(
@@ -136,9 +136,9 @@ async function renderItems(address, web3, c) {
       const card = await buildCard(body);
       list.appendChild(card);
     });
-  } */
+  } 
 
- if (v2) {
+/* if (v2) {
   const options = {
     method: 'GET',
     headers: {
@@ -161,10 +161,7 @@ async function renderItems(address, web3, c) {
       console.error(error);
     }
   });
-}
-
-    
-   
+} */   
 
   const rewardsView = document.getElementById('claimableRewardsTxt');
   const rewards = await getClaimableRewards(address, c);
