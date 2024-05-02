@@ -138,28 +138,31 @@ async function renderItems(address, web3, c) {
     });
   } */
 
-  if (v2) {
-    const options = {
-      method: 'GET',
-      headers: {
-        accept: 'application/json',
-        'x-api-key': config[chainId].opensea_api_key,
-      },
-    };
+ if (v2) {
+  const options = {
+    method: 'GET',
+    headers: {
+      accept: 'application/json',
+      'x-api-key': config[chainId].opensea_api_key,
+    },
+  };
 
-v2.forEach(async (e) => {
-  const url = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`;
-  console.log("Constructed URL_v2:", url);
-  console.log("Headers:", options.headers); // Logging headers to check if the API key is included
-  const body = await response.json();
-  const card = await buildCard(body);
-  list.appendChild(card);
- catch (error) {
-  console.error(error);
+  v2.forEach(async (e) => {
+    try {
+      const url = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`;
+      console.log("Constructed URL_v2:", url);
+      console.log("Headers:", options.headers); // Logging headers to check if the API key is included
+
+      const response = await fetch(url, options);
+      const body = await response.json();
+      const card = await buildCard(body);
+      list.appendChild(card);
+    } catch (error) {
+      console.error(error);
+    }
+  });
 }
 
-});
-  }
     
    
 
