@@ -270,9 +270,9 @@ try {
 function buildCard(e, migrated) {
   // Check the structure of the object 'e'
   console.log("Object 'e':", e);
-  if (e && nft.opensea_url) {
+  if (e && e.nft.opensea_url) {
     // Access the image_url property if it exists
-    console.log("Image URL:", nft.opensea_url);
+    console.log("Image URL:", e.nft.opensea_url);
   } else {
     console.error("Image URL not found in object 'e'");
   }
