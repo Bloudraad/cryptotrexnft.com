@@ -270,9 +270,9 @@ try {
 function buildCard(e, migrated) {
   // Check the structure of the object 'e'
   console.log("Object 'e':", e);
-  if (e && e.image_url) {
+  if (e && image.src) {
     // Access the image_url property if it exists
-    console.log("Image URL:", e.image_url);
+    console.log("Image URL:", image.src);
   } else {
     console.error("Image URL not found in object 'e'");
   }
@@ -311,10 +311,10 @@ image.crossOrigin = 'anonymous';
 image.classList = 'card-img-top';
 imageContainer.appendChild(image);
     image.onload = function() {
-    console.log("Image loaded successfully:", e.image_url);
+    console.log("Image loaded successfully:", image.src);
   };
   image.onerror = function() {
-    console.error("Failed to load image:", e.image_url);
+    console.error("Failed to load image:", image.src);
   };
   image.src = e.image_url;
   image.crossOrigin = 'anonymous';
