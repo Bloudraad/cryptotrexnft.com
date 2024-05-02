@@ -150,7 +150,7 @@ async function getItems(ownerAddr, baseURL, contractAddr, collectionSlug) {
     contractAddr,
   ]}&collection=${collectionSlug}`;
    // Log the constructed URL
-  console.log("Constructed URL:", url);
+  console.log("ownerAddr, baseURL, contractAddr, collectionSlug:", url);
   const res = await fetch(url);
   const body = await res.json();
   return body.ownedNfts.map((d) => {
