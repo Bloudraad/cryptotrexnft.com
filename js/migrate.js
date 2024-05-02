@@ -270,9 +270,9 @@ try {
 function buildCard(e, migrated) {
   // Check the structure of the object 'e'
   console.log("Object 'e':", e);
-  if (e && image.src) {
+  if (e && nft.opensea_url) {
     // Access the image_url property if it exists
-    console.log("Image URL:", image.src);
+    console.log("Image URL:", nft.opensea_url);
   } else {
     console.error("Image URL not found in object 'e'");
   }
@@ -316,7 +316,7 @@ imageContainer.appendChild(image);
   image.onerror = function() {
     console.error("Failed to load image:", image.src);
   };
-  image.src = e.image_url;
+  image.src = e.nft.opensea_url;
   image.crossOrigin = 'anonymous';
   image.classList = 'card-img-top';
   imageContainer.appendChild(image);
