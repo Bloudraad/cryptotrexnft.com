@@ -158,13 +158,16 @@ try {
   // Log the NFT image URL and append to list
 //  console.log("NFT Image URL:", e.nft.image_url); 
   list.appendChild(buildCard(body, false));
+  const body = await response.json();
+      const card = await buildCard(body);
+      list.appendChild(card);
 } catch (error) {
   console.error(error);
 }
 
 });
   }
-}
+   
 
   const rewardsView = document.getElementById('claimableRewardsTxt');
   const rewards = await getClaimableRewards(address, c);
