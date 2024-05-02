@@ -90,6 +90,8 @@ async function migrate(id, btn) {
   const address = await web3Address(web3);
   const chainId = await web3.eth.getChainId();
   const tokenId = web3.utils.toBN(id);
+ // Log the BigNumber value
+  console.log("Token ID BigNumber:", tokenId.toString());
 
   const c = new web3.eth.Contract(ct.abi, config[chainId].migration_address);
   c.methods
@@ -268,15 +270,16 @@ try {
 }
   
 function buildCard(e, migrated) {
-  // Check the structure of the object 'e'
+/*  // Check the structure of the object 'e'
   console.log("Object 'e':", e);
-  if (e && e.nft.opensea_url) {
+  if (e && e.nft.image_url) {
     // Access the image_url property if it exists
-    console.log("Image URL:", e.nft.opensea_url);
+    console.log("Image URL:", e.nft.image_url);
   } else {
     console.error("Image URL not found in object 'e'");
   }
-  console.log("Building card for:", e);
+  console.log("Building card for:", e);*/
+  
   const card = document.createElement('div');
   card.classList = 'card';
   card.style = `
@@ -298,14 +301,6 @@ function buildCard(e, migrated) {
 image.onerror = function() {
   console.error("Failed to load image:", image.src);
 };
-
-//if (e && e.image_url) {
-//  image.src = e.image_url;
-//} else if (e && e.nft && e.nft.image_url) {
-//  image.src = e.nft.image_url;
-//} else {
-//  console.error("Failed to load image: Image URL not found");
-//}
 
 image.crossOrigin = 'anonymous';
 image.classList = 'card-img-top';
