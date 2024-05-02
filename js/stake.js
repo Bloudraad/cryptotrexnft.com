@@ -117,8 +117,8 @@ async function renderItems(address, web3, c) {
     const addTokenBtn = document.getElementById('addTokenBtn');
     addTokenBtn.hidden = false;
   }
-/*
- if (v2) {
+
+ /*  if (v2) {
     v2.forEach(async (e) => {
       itemIds.push(e);
       const response = await fetch(
@@ -136,8 +136,9 @@ async function renderItems(address, web3, c) {
       const card = await buildCard(body);
       list.appendChild(card);
     });
-  } */ 
-    if (v2) {
+  } */
+
+  if (v2) {
     const options = {
       method: 'GET',
       headers: {
@@ -150,21 +151,16 @@ v2.forEach(async (e) => {
   const url = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`;
   console.log("Constructed URL_v2:", url);
   console.log("Headers:", options.headers); // Logging headers to check if the API key is included
-try {
-  const response = await fetch(url, options);
-  const body = await response.json(); // This is where body is defined
- // Log the entire body object to inspect its structure
-  console.log("API Response Body:", body);
-  // Log the NFT image URL and append to list
-//  console.log("NFT Image URL:", e.nft.image_url); 
-  list.appendChild(buildCard(body, false));
-    list.appendChild(card);
-} catch (error) {
+  const body = await response.json();
+  const card = await buildCard(body);
+  list.appendChild(card);
+ catch (error) {
   console.error(error);
 }
 
 });
   }
+    
    
 
   const rewardsView = document.getElementById('claimableRewardsTxt');
