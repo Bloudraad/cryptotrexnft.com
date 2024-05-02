@@ -268,16 +268,11 @@ try {
 }
   
 function buildCard(e, migrated) {
-//    if (e.nft && e.nft.image_url) {
-//    console.log("NFT Image URL:", e.nft.image_url);
-//  } else {
-//    console.error("NFT image URL not found or undefined");
-//  }
   // Check the structure of the object 'e'
   console.log("Object 'e':", e);
   if (e && e.image_url) {
     // Access the image_url property if it exists
-    console.log("Image URL:", e.nft.image_url);
+    console.log("Image URL:", e.image_url);
   } else {
     console.error("Image URL not found in object 'e'");
   }
@@ -304,19 +299,18 @@ image.onerror = function() {
   console.error("Failed to load image:", image.src);
 };
 
-if (e && e.image_url) {
-  image.src = e.image_url;
-} else if (e && e.nft && e.nft.image_url) {
-  image.src = e.nft.image_url;
-} else {
-  console.error("Failed to load image: Image URL not found");
-}
+//if (e && e.image_url) {
+//  image.src = e.image_url;
+//} else if (e && e.nft && e.nft.image_url) {
+//  image.src = e.nft.image_url;
+//} else {
+//  console.error("Failed to load image: Image URL not found");
+//}
 
 image.crossOrigin = 'anonymous';
 image.classList = 'card-img-top';
 imageContainer.appendChild(image);
-
-  image.onload = function() {
+    image.onload = function() {
     console.log("Image loaded successfully:", e.image_url);
   };
   image.onerror = function() {
