@@ -7,33 +7,6 @@ import Web3 from 'web3';
 import { tokenIdMap } from './map';
 import imgLoader from '../img/loader.svg';
 
-// Add the loadWeb3 function here
-async function loadWeb3() {
-  // Check if Web3 is already injected
-  if (window.ethereum) {
-    try {
-      // Initialize Web3
-      const web3 = new Web3(window.ethereum);
-      // Request account access if needed
-      await window.ethereum.request({ method: 'eth_requestAccounts' });
-      return web3;
-    } catch (error) {
-      // User denied account access or other error occurred
-      console.error('Error while initializing Web3:', error);
-      throw new Error('Failed to initialize Web3. Please make sure you allow access to your Ethereum account.');
-    }
-  } else if (window.web3) {
-    // Legacy dapp browsers
-    const web3 = new Web3(window.web3.currentProvider);
-    console.warn("Using web3.currentProvider; this may be deprecated in the future. Please update your browser's extension.");
-    return web3;
-  } else {
-    // If no injected Web3 instance is detected, fallback to a local provider
-    console.error('No Web3 provider detected.');
-    throw new Error('No Web3 provider detected. Please install MetaMask or another Ethereum wallet provider.');
-  }
-}
-
 const formatEther = (value) =>
   new Number(Web3.utils.fromWei(value, 'ether')).toFixed(4).toString();
 
@@ -47,7 +20,6 @@ async function addToken(eth) {
   const tokenImage =
     'https://gateway.pinata.cloud/ipfs/QmZpPpnuASN7riY1UwVftSMowJAgMbf9x1k9pCaH5buSEQ';
 
-  
   try {
     // wasAdded is a boolean. Like any RPC method, an error may be thrown.
     await eth.request({
@@ -66,7 +38,6 @@ async function addToken(eth) {
     console.log(error);
   }
 }
-
 let itemIds = [];
 let unclaimedVXs = [];
 
@@ -76,7 +47,6 @@ async function getClaimableRewards(address, c) {
 
 const contentClaimFossil = document.getElementById('contentClaimFossil');
 const loaderClaimFossil = document.getElementById('loaderClaimFossil');
-
 async function claimRewards(btn, address, web3) {
   loaderClaimFossil.hidden = false;
   contentClaimFossil.hidden = true;
@@ -87,7 +57,6 @@ async function claimRewards(btn, address, web3) {
   const gas = await c.methods.claim(itemIds).estimateGas({
     from: address,
   });
-
   c.methods
     .claim(itemIds)
     .send({ from: address, gas: Math.floor(gas * 1.1) })
@@ -117,8 +86,15 @@ async function claimRewards(btn, address, web3) {
       contentClaimFossil.hidden = false;
       btn.disabled = false;
     });
-}
+/*}
 
+async function getV2Items(address, opensea, newCollection) {
+  const url = `${opensea}/api/v1/contract?offset=0&limit=50&collection=${newCollection}&owner=${address}`;
+  const res = await fetch(url);
+  const body = await res.json();
+  return body.assets;
+}*/
+  //New code 
 async function getV2Items(address, opensea, newCollection) {
   const chainId = await web3.eth.getChainId();
   console.log("Chain ID:", chainId);
@@ -138,6 +114,17 @@ async function getV2Items(address, opensea, newCollection) {
   return body.assets;
 }
 
+
+
+/* async function getItems(ownerAddr, baseURL, contractAddr) {
+  const url = `${baseURL}?owner=${ownerAddr}&contractAddresses[]=${[
+    contractAddr,
+  ]}`;
+  const res = await fetch(url);
+  const body = await res.json();
+  return body.ownedNfts.map((d) => d.id.tokenId);
+}*/
+  //new code
 async function getItems(ownerAddr, opensea, contractAddr) {
   const chainId = await web3.eth.getChainId();
   const baseUrl = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${contractAddr}/assets/`;
@@ -172,49 +159,69 @@ async function renderItems(address, web3, c) {
     addTokenBtn.hidden = false;
   }
 
-  if (v2) {
-    const chainId = await web3.eth.getChainId();
-    console.log("Chain ID:", chainId);
-    
-    const options = {
-      method: 'GET',
-      headers: {
-        accept: 'application/json',
-        'X-API-KEY': config[chainId].opensea_api_key,
-      },
-    };
-    console.log("Options:", options);
-    
-    const baseUrl = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/`;
-    console.log("Constructed Base URL:", baseUrl);
-
+  /* if (v2) {
     v2.forEach(async (e) => {
-      try {
-        console.log("Processing item:", e);
-        
-        itemIds.push(e);
-        console.log("Updated itemIds:", itemIds);
-        
-        const url = `${baseUrl}${Web3.utils.toBN(e)}`;
-        console.log("Constructed URL:", url);
-        
-        const response = await fetch(url, options);
-        console.log("Fetch Response:", response);
-        
-        const body = await response.json();
-        console.log("Parsed JSON Body:", body);
-        
-        const card = await buildCard(body);
-        console.log("Built card:", card);
-        
-        list.appendChild(card);
-        console.log("Appended card to list.");
-        
-      } catch (error) {
-        console.error(error);
-      }
+      itemIds.push(e);
+      const response = await fetch(
+        `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${
+          config[chainId].migration_address
+        }/${Web3.utils.toBN(e)}`,
+         {
+          method: 'GET',
+          headers: {
+            'X-API-KEY': config[chainId].opensea_api_key,
+          },
+        }
+      );
+      const body = await response.json();
+      const card = await buildCard(body);
+      list.appendChild(card);
     });
-  }
+  }*/
+if (v2) {
+  const chainId = await web3.eth.getChainId();
+  console.log("Chain ID:", chainId);
+  
+  const options = {
+    method: 'GET',
+    headers: {
+      accept: 'application/json',
+      'X-API-KEY': config[chainId].opensea_api_key,
+    },
+  };
+  console.log("Options:", options);
+  
+  const baseUrl = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/`;
+  console.log("Constructed Base URL:", baseUrl);
+
+  v2.forEach(async (e) => {
+    try {
+      console.log("Processing item:", e);
+      
+      itemIds.push(e);
+      console.log("Updated itemIds:", itemIds);
+      
+      const url = `${baseUrl}${Web3.utils.toBN(e)}`;
+      console.log("Constructed URL:", url);
+      
+      const response = await fetch(url, options);
+      console.log("Fetch Response:", response);
+      
+      const body = await response.json();
+      console.log("Parsed JSON Body:", body);
+      
+      const card = await buildCard(body);
+      console.log("Built card:", card);
+      
+      list.appendChild(card);
+      console.log("Appended card to list.");
+      
+    } catch (error) {
+      console.error(error);
+    }
+  });
+}
+
 
   const rewardsView = document.getElementById('claimableRewardsTxt');
   const rewards = await getClaimableRewards(address, c);
@@ -306,9 +313,18 @@ async function buildCard(e) {
       });
   });
 
+  // const claimFossilBtn = document.createElement('button');
+  // claimFossilBtn.type = 'button';
+  // claimFossilBtn.classList = 'btn btn-secondary w-100';
+  // const fossilAmount = await c.methods.rewards([e.token_id]).call({});
+  // claimFossilBtn.textContent = `Claim Fossil (${formatEther(fossilAmount)})`;
+
+  // claimFossilBtn.addEventListener('click', () => {});
+
   card.appendChild(imageContainer);
   bodyDiv.appendChild(nameDiv);
   bodyDiv.appendChild(claimVxBtn);
+  // bodyDiv.appendChild(claimFossilBtn);
   card.appendChild(bodyDiv);
 
   const cardContainer = document.createElement('div');
@@ -318,7 +334,7 @@ async function buildCard(e) {
   return cardContainer;
 }
 
-/*window.onload = async () => {
+window.onload = async () => {
   try {
     const web3 = await loadWeb3();
     const address = await web3Address(web3);
@@ -335,26 +351,7 @@ async function buildCard(e) {
   } catch (err) {
     console.log(err);
   }
-};*/
-window.onload = async () => {
-  try {
-    const web3 = await loadWeb3(); // Call loadWeb3 here to get the Web3 instance
-    const address = await web3Address(web3); // Use the obtained Web3 instance to get the address
-    const chainId = await web3.eth.getChainId();
-    const c = new web3.eth.Contract(ct.abi, config[chainId].migration_address);
-    await switchChain(window.ethereum);
-    await renderItems(address, web3, c);
-
-    const claimBtn = document.getElementById('claimBtn');
-    claimBtn.addEventListener(
-      'click',
-      async () => await claimRewards(claimBtn, address, web3),
-    );
-  } catch (err) {
-    console.log(err);
-  }
 };
-
 
 const addTokenBtn = document.getElementById('addTokenBtn');
 addTokenBtn.addEventListener('click', async () => {
@@ -403,7 +400,26 @@ btnClaimAllVX.addEventListener('click', async () => {
     });
 });
 
-async function checkClaimableRewards() {
+/*async function checkClaimableRewards() {
+  const web3 = await loadWeb3();
+  const chainId = await web3.eth.getChainId();
+  const c = new web3.eth.Contract(ct.abi, config[chainId].migration_address);
+  const vxc = new web3.eth.Contract(vx.abi, config[chainId].vx_address);
+  const rexIdInput = document.getElementById('rexId');
+  const tokenId = tokenIdMap[rexIdInput.value];
+  const isMinted = await vxc.methods.isGenesisMinted([tokenId]).call({});
+  const txtIsVXClaimed = document.getElementById('txtIsVXClaimed');
+  const containerIsVXClaimed = document.getElementById('containerIsVXClaimed');
+  if (isMinted[0]) {
+    txtIsVXClaimed.textContent = 'Voxel Claimed';
+  } else {
+    txtIsVXClaimed.textContent = 'Voxel Unclaimed';
+  }
+
+  return await c.methods.rewards([tokenId]).call({});
+}
+*/
+  async function checkClaimableRewards() {
   const web3 = await loadWeb3();
   const chainId = await web3.eth.getChainId();
   const c = new web3.eth.Contract(ct.abi, config[chainId].migration_address);
