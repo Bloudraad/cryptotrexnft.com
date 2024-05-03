@@ -7,19 +7,33 @@ import Web3 from 'web3';
 import { tokenIdMap } from './map';
 import imgLoader from '../img/loader.svg';
 
-/*const formatEther = (value) =>
-  new Number(Web3.utils.fromWei(value, 'ether')).toFixed(4).toString();
+// Add the loadWeb3 function here
+async function loadWeb3() {
+  // Check if Web3 is already injected
+  if (window.ethereum) {
+    try {
+      // Initialize Web3
+      const web3 = new Web3(window.ethereum);
+      // Request account access if needed
+      await window.ethereum.request({ method: 'eth_requestAccounts' });
+      return web3;
+    } catch (error) {
+      // User denied account access or other error occurred
+      console.error('Error while initializing Web3:', error);
+      throw new Error('Failed to initialize Web3. Please make sure you allow access to your Ethereum account.');
+    }
+  } else if (window.web3) {
+    // Legacy dapp browsers
+    const web3 = new Web3(window.web3.currentProvider);
+    console.warn("Using web3.currentProvider; this may be deprecated in the future. Please update your browser's extension.");
+    return web3;
+  } else {
+    // If no injected Web3 instance is detected, fallback to a local provider
+    console.error('No Web3 provider detected.');
+    throw new Error('No Web3 provider detected. Please install MetaMask or another Ethereum wallet provider.');
+  }
+}
 
-async function addToken(eth) {
-  const web3 = await loadWeb3();
-  const chainId = await web3.eth.getChainId();
-
-  const tokenAddress = config[chainId].token_address;
-  const tokenSymbol = 'FOSSIL';
-  const tokenDecimals = 18;
-  const tokenImage =
-    'https://gateway.pinata.cloud/ipfs/QmZpPpnuASN7riY1UwVftSMowJAgMbf9x1k9pCaH5buSEQ';
-*/
 const formatEther = (value) =>
   new Number(Web3.utils.fromWei(value, 'ether')).toFixed(4).toString();
 
@@ -32,6 +46,7 @@ async function addToken(eth) {
   const tokenDecimals = 18;
   const tokenImage =
     'https://gateway.pinata.cloud/ipfs/QmZpPpnuASN7riY1UwVftSMowJAgMbf9x1k9pCaH5buSEQ';
+
   
   try {
     // wasAdded is a boolean. Like any RPC method, an error may be thrown.
