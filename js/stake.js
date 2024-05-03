@@ -145,8 +145,6 @@ async function getItems(ownerAddr, opensea, contractAddr) {
   return tokenIds;
 }
 
-
-
 async function renderItems(address, web3, c) {
   const chainId = await web3.eth.getChainId();
   const v2 = await getItems(
