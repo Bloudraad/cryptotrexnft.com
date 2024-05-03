@@ -118,7 +118,7 @@ async function renderItems(address, web3, c) {
     addTokenBtn.hidden = false;
   }
 
-   if (v2) {
+/*   if (v2) {
     v2.forEach(async (e) => {
       itemIds.push(e);
       const response = await fetch(
@@ -136,9 +136,9 @@ async function renderItems(address, web3, c) {
       const card = await buildCard(body);
       list.appendChild(card);
     });
-  } 
-
-/* if (v2) {
+  } */
+//neew code 
+ if (v2) {
   const options = {
     method: 'GET',
     headers: {
@@ -149,10 +149,11 @@ async function renderItems(address, web3, c) {
 
   v2.forEach(async (e) => {
     try {
+      itemIds.push(e); // Include itemIds.push(e) here
       const url = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`;
       console.log("Constructed URL_v2:", url);
       console.log("Headers:", options.headers); // Logging headers to check if the API key is included
-
+      console.log("itemIDS push:", itemIds.push);
       const response = await fetch(url, options);
       const body = await response.json();
       const card = await buildCard(body);
@@ -161,7 +162,8 @@ async function renderItems(address, web3, c) {
       console.error(error);
     }
   });
-} */   
+}
+    
 
   const rewardsView = document.getElementById('claimableRewardsTxt');
   const rewards = await getClaimableRewards(address, c);
