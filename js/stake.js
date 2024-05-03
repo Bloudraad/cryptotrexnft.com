@@ -139,33 +139,38 @@ async function renderItems(address, web3, c) {
   } */
 //new code 
 // Initialize itemIds as an empty array
-const itemIds = [];
+try {
+  const chainId = await web3.eth.getChainId();
+  console.log("Chain ID:", chainId);
 
-if (v2) {
-  const options = {
-    method: 'GET',
-    headers: {
-      accept: 'application/json',
-      'x-api-key': config[chainId].opensea_api_key,
-    },
-  };
+  if (v2) {
+    const options = {
+      method: 'GET',
+      headers: {
+        accept: 'application/json',
+        'x-api-key': config[chainId].opensea_api_key,
+      },
+    };
 
-  v2.forEach(async (e) => {
-    try {
-      console.log("Pushing item to itemIds:", e); // Log the item being pushed to itemIds
-      itemIds.push(e); // Include itemIds.push(e) here
-      const url = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`;
-      console.log("Constructed URL_v2:", url);
-      console.log("Headers:", options.headers); // Logging headers to check if the API key is included
+    v2.forEach(async (e) => {
+      try {
+        console.log("Pushing item to itemIds:", e); // Log the item being pushed to itemIds
+        itemIds.push(e); // Include itemIds.push(e) here
+        const url = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`;
+        console.log("Constructed URL_v2:", url);
+        console.log("Headers:", options.headers); // Logging headers to check if the API key is included
 
-      const response = await fetch(url, options);
-      const body = await response.json();
-      const card = await buildCard(body);
-      list.appendChild(card);
-    } catch (error) {
-      console.error(error);
-    }
-  });
+        const response = await fetch(url, options);
+        const body = await response.json();
+        const card = await buildCard(body);
+        list.appendChild(card);
+      } catch (error) {
+        console.error(error);
+      }
+    });
+  }
+} catch (error) {
+  console.error("Error while getting chain ID:", error);
 }
 
     
