@@ -402,7 +402,7 @@ btnClaimAllVX.addEventListener('click', async () => {
     });
 });
 
-async function checkClaimableRewards() {
+/*async function checkClaimableRewards() {
   const web3 = await loadWeb3();
   const chainId = await web3.eth.getChainId();
   const c = new web3.eth.Contract(ct.abi, config[chainId].migration_address);
@@ -420,3 +420,23 @@ async function checkClaimableRewards() {
 
   return await c.methods.rewards([tokenId]).call({});
 }
+*/
+  async function checkClaimableRewards() {
+  const web3 = await loadWeb3();
+  const chainId = await web3.eth.getChainId();
+  const c = new web3.eth.Contract(ct.abi, config[chainId].migration_address);
+  const vxc = new web3.eth.Contract(vx.abi, config[chainId].vx_address);
+  const rexIdInput = document.getElementById('rexId');
+  const tokenId = tokenIdMap[rexIdInput.value];
+  const isMinted = await vxc.methods.isGenesisMinted([tokenId]).call({});
+  const txtIsVXClaimed = document.getElementById('txtIsVXClaimed');
+  const containerIsVXClaimed = document.getElementById('containerIsVXClaimed');
+  if (isMinted[0]) {
+    txtIsVXClaimed.textContent = 'Voxel Claimed';
+  } else {
+    txtIsVXClaimed.textContent = 'Voxel Unclaimed';
+  }
+
+  return await c.methods.rewards([tokenId]).call({});
+}
+
