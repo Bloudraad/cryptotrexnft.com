@@ -137,7 +137,7 @@ async function renderItems(address, web3, c) {
       list.appendChild(card);
     });
   }*/
-     if (v2) {
+   if (v2) {
 	 const options = {
     method: 'GET',
     headers: {
@@ -146,16 +146,16 @@ async function renderItems(address, web3, c) {
     },
   };
    const baseUrl = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/`;
-    v2.forEach(async (e) => {
+    
+	v2.forEach(async (e) => {
       itemIds.push(e);
       const response = await fetch(
         `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/`,
-        
-      });
-	  const body = await response.json();
+       const body = await response.json();
       const card = await buildCard(body);
-      list.appendChild(card);
-	 }
+      list.appendChild(card); 
+      });
+	   }
     
 
   const rewardsView = document.getElementById('claimableRewardsTxt');
