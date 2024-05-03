@@ -118,7 +118,7 @@ async function renderItems(address, web3, c) {
     addTokenBtn.hidden = false;
   }
 
-/*   if (v2) {
+   if (v2) {
     v2.forEach(async (e) => {
       itemIds.push(e);
       const response = await fetch(
@@ -136,41 +136,7 @@ async function renderItems(address, web3, c) {
       const card = await buildCard(body);
       list.appendChild(card);
     });
-  } */
-//new code 
-// Initialize itemIds as an empty array
-try {
-  const chainId = await web3.eth.getChainId();
-  console.log("Chain ID:", chainId);
-
-  if (v2) {
-  const options = {
-    method: 'GET',
-    headers: {
-      accept: 'application/json',
-      'x-api-key': config[chainId].opensea_api_key,
-    },
-  };
-
-  const baseUrl = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`;
-  
-  v2.forEach(async (e) => {
-    itemIds.push(e); // Pushing item IDs to itemIds array
-    const url = `${baseUrl}${Web3.utils.toBN(e)}`;
-    console.log("Constructed URL_v2:", url);
-    console.log("Headers:", options.headers); // Logging headers to check if the API key is included
-    try {
-      const response = await fetch(url, options);
-      const body = await response.json();
-      console.log("API Response Body:", body);
-      list.appendChild(buildCard(body, true));
-    } catch (error) {
-      console.error(error);
-    }
-  });
-}
-
-
+  }
     
 
   const rewardsView = document.getElementById('claimableRewardsTxt');
