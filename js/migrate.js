@@ -262,7 +262,7 @@ try {
   console.log("API Response Body:", body);
   // Log the NFT image URL and append to list
 //  console.log("NFT Image URL:", e.nft.image_url); 
-  list.appendChild(buildCard(body, false));
+  list.appendChild(buildCard(body, true));
 } catch (error) {
   console.error(error);
 }
