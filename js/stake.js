@@ -303,7 +303,7 @@ async function buildCard(e) {
   return cardContainer;
 }
 
-window.onload = async () => {
+/*window.onload = async () => {
   try {
     const web3 = await loadWeb3();
     const address = await web3Address(web3);
@@ -320,7 +320,26 @@ window.onload = async () => {
   } catch (err) {
     console.log(err);
   }
+};*/
+window.onload = async () => {
+  try {
+    const web3 = await loadWeb3(); // Call loadWeb3 here to get the Web3 instance
+    const address = await web3Address(web3); // Use the obtained Web3 instance to get the address
+    const chainId = await web3.eth.getChainId();
+    const c = new web3.eth.Contract(ct.abi, config[chainId].migration_address);
+    await switchChain(window.ethereum);
+    await renderItems(address, web3, c);
+
+    const claimBtn = document.getElementById('claimBtn');
+    claimBtn.addEventListener(
+      'click',
+      async () => await claimRewards(claimBtn, address, web3),
+    );
+  } catch (err) {
+    console.log(err);
+  }
 };
+
 
 const addTokenBtn = document.getElementById('addTokenBtn');
 addTokenBtn.addEventListener('click', async () => {
