@@ -137,8 +137,11 @@ async function renderItems(address, web3, c) {
       list.appendChild(card);
     });
   } */
-//neew code 
- if (v2) {
+//new code 
+// Initialize itemIds as an empty array
+const itemIds = [];
+
+if (v2) {
   const options = {
     method: 'GET',
     headers: {
