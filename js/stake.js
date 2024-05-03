@@ -86,23 +86,66 @@ async function claimRewards(btn, address, web3) {
       contentClaimFossil.hidden = false;
       btn.disabled = false;
     });
-}
+/*}
 
 async function getV2Items(address, opensea, newCollection) {
   const url = `${opensea}/api/v1/contract?offset=0&limit=50&collection=${newCollection}&owner=${address}`;
   const res = await fetch(url);
   const body = await res.json();
   return body.assets;
+}*/
+  //New code 
+async function getV2Items(address, opensea, newCollection) {
+  const chainId = await web3.eth.getChainId();
+  console.log("Chain ID:", chainId);
+  
+  const baseUrl = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/`;
+  console.log("Constructed Base URL:", baseUrl);
+  
+  const url = `${baseUrl}?offset=0&limit=50&collection=${newCollection}&owner=${address}`;
+  console.log("Constructed URL:", url);
+  
+  const res = await fetch(url);
+  console.log("Fetch Response:", res);
+  
+  const body = await res.json();
+  console.log("Parsed JSON Body:", body);
+  
+  return body.assets;
 }
 
-async function getItems(ownerAddr, baseURL, contractAddr) {
+
+
+/* async function getItems(ownerAddr, baseURL, contractAddr) {
   const url = `${baseURL}?owner=${ownerAddr}&contractAddresses[]=${[
     contractAddr,
   ]}`;
   const res = await fetch(url);
   const body = await res.json();
   return body.ownedNfts.map((d) => d.id.tokenId);
+}*/
+  //new code
+async function getItems(ownerAddr, opensea, contractAddr) {
+  const chainId = await web3.eth.getChainId();
+  const baseUrl = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${contractAddr}/assets/`;
+  console.log("Constructed Base URL:", baseUrl);
+  
+  const url = `${baseUrl}?owner=${ownerAddr}`;
+  console.log("Constructed URL:", url);
+  
+  const res = await fetch(url);
+  console.log("Fetch Response:", res);
+  
+  const body = await res.json();
+  console.log("Parsed JSON Body:", body);
+  
+  const tokenIds = body.assets.map((asset) => asset.token_id);
+  console.log("Extracted Token IDs:", tokenIds);
+  
+  return tokenIds;
 }
+
+
 
 async function renderItems(address, web3, c) {
   const chainId = await web3.eth.getChainId();
@@ -137,23 +180,44 @@ async function renderItems(address, web3, c) {
       list.appendChild(card);
     });
   }*/
- if (v2) {
+if (v2) {
+  const chainId = await web3.eth.getChainId();
+  console.log("Chain ID:", chainId);
+  
   const options = {
     method: 'GET',
     headers: {
       accept: 'application/json',
-      'X-API-KEY': config[chainId].opensea_api_key, // Use 'X-API-KEY' instead of 'x-api-key'
+      'X-API-KEY': config[chainId].opensea_api_key,
     },
   };
-  const baseUrl = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/`;
+  console.log("Options:", options);
   
+  const baseUrl = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/`;
+  console.log("Constructed Base URL:", baseUrl);
+
   v2.forEach(async (e) => {
     try {
+      console.log("Processing item:", e);
+      
       itemIds.push(e);
-      const response = await fetch(baseUrl, options); // Pass options object as the second argument
+      console.log("Updated itemIds:", itemIds);
+      
+      const url = `${baseUrl}${Web3.utils.toBN(e)}`;
+      console.log("Constructed URL:", url);
+      
+      const response = await fetch(url, options);
+      console.log("Fetch Response:", response);
+      
       const body = await response.json();
+      console.log("Parsed JSON Body:", body);
+      
       const card = await buildCard(body);
+      console.log("Built card:", card);
+      
       list.appendChild(card);
+      console.log("Appended card to list.");
+      
     } catch (error) {
       console.error(error);
     }
