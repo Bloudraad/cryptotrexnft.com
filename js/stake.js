@@ -89,7 +89,7 @@ async function claimRewards(btn, address, web3) {
 }
 
 async function getV2Items(address, opensea, newCollection) {
-  const url = `${opensea}/api/v2/contract?offset=0&limit=50&collection=${newCollection}&owner=${address}`;
+  const url = `${opensea}/api/v1/contract?offset=0&limit=50&collection=${newCollection}&owner=${address}`;
   const res = await fetch(url);
   const body = await res.json();
   return body.assets;
@@ -137,12 +137,12 @@ async function renderItems(address, web3, c) {
       list.appendChild(card);
     });
   }*/
-  if (v2) {
+ if (v2) {
   const options = {
     method: 'GET',
     headers: {
       accept: 'application/json',
-      'x-api-key': config[chainId].opensea_api_key,
+      'X-API-KEY': config[chainId].opensea_api_key, // Use 'X-API-KEY' instead of 'x-api-key'
     },
   };
   const baseUrl = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/`;
@@ -150,7 +150,7 @@ async function renderItems(address, web3, c) {
   v2.forEach(async (e) => {
     try {
       itemIds.push(e);
-      const response = await fetch(baseUrl); // Use baseUrl here
+      const response = await fetch(baseUrl, options); // Pass options object as the second argument
       const body = await response.json();
       const card = await buildCard(body);
       list.appendChild(card);
@@ -160,7 +160,6 @@ async function renderItems(address, web3, c) {
   });
 }
 
-    
 
   const rewardsView = document.getElementById('claimableRewardsTxt');
   const rewards = await getClaimableRewards(address, c);
