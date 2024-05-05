@@ -89,6 +89,7 @@ async function claimRewards(btn, address, web3) {
 }
 
 async function getV2Items(address, opensea, newCollection) {
+  console.log("URL_getv2Items:", url);
   const url = `${opensea}/api/v2/contract?offset=0&limit=50&collection=${newCollection}&owner=${address}`;
   const res = await fetch(url);
   const body = await res.json();
