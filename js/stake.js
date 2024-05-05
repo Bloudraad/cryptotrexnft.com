@@ -118,7 +118,8 @@ async function renderItems(address, web3, c) {
     addTokenBtn.hidden = false;
   }
 
-  if (v2) {
+  //Old code here
+ /* if (v2) {
     v2.forEach(async (e) => {
       itemIds.push(e);
       const response = await fetch(
@@ -137,6 +138,27 @@ async function renderItems(address, web3, c) {
       list.appendChild(card);
     });
   }
+  */
+//New code here
+  if (v2) {
+  const options = {
+    method: 'GET',
+    headers: {
+      accept: 'application/json',
+      'x-api-key': config[chainId].opensea_api_key,
+    },
+  };
+
+  v2.forEach(async (e) => {
+    itemIds.push(e);
+    const response = await fetch(`${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/${Web3.utils.toBN(e)}`, options); // Added closing parenthesis and options
+    console.log("Constructed URL_v2_Stake:", url);
+    console.log("Headers:", options.headers); // Logging headers to check if the API key is included
+    const body = await response.json();
+    const card = await buildCard(body);
+    list.appendChild(card);
+  });
+}
 
   const rewardsView = document.getElementById('claimableRewardsTxt');
   const rewards = await getClaimableRewards(address, c);
