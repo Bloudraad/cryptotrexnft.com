@@ -96,14 +96,26 @@ async function getV2Items(address, opensea, newCollection) {
   return body.assets;
 }
 
-async function getItems(ownerAddr, baseURL, contractAddr) {
+/*async function getItems(ownerAddr, baseURL, contractAddr) {
   const url = `${baseURL}?owner=${ownerAddr}&contractAddresses[]=${[
     contractAddr,
   ]}`;
   const res = await fetch(url);
   const body = await res.json();
   return body.ownedNfts.map((d) => d.id.tokenId);
+}*/
+//new code 
+async function getItems(ownerAddr, baseURL, contractAddr) {
+  const url = `${baseURL}?owner=${ownerAddr}&contractAddresses[]=${[
+    contractAddr,
+  ]}`;
+  console.log("Fetching items from URL:", url); // Add this console log to track the constructed URL
+  const res = await fetch(url);
+  const body = await res.json();
+  console.log("Response from server:", body); // Add this console log to track the response from the server
+  return body.ownedNfts.map((d) => d.id.tokenId);
 }
+//till here
 
 async function renderItems(address, web3, c) {
   const chainId = await web3.eth.getChainId();
@@ -112,12 +124,23 @@ async function renderItems(address, web3, c) {
     config[chainId].alchemy_api,
     config[chainId].migration_address,
   );
-
-  const list = document.getElementById('card-list');
+//old code
+ /* const list = document.getElementById('card-list');
   if (web3.currentProvider.isMetaMask) {
     const addTokenBtn = document.getElementById('addTokenBtn');
     addTokenBtn.hidden = false;
   }
+  */
+  //new code
+  const list = document.getElementById('card-list');
+console.log("Card list element:", list); // Log the card list element
+
+if (web3.currentProvider.isMetaMask) {
+  const addTokenBtn = document.getElementById('addTokenBtn');
+  addTokenBtn.hidden = false;
+  console.log("Add token button:", addTokenBtn); // Log the add token button
+}
+
 
   //Old code here
  /* if (v2) {
@@ -220,8 +243,14 @@ async function buildCard(e) {
   imageContainer.href = e.permalink;
   imageContainer.target = '_blank';
   console.log('Image URL_cuildcard:', e.nft.image_url); // Log the image URL to check if it's defined
+ /* const image = document.createElement('img');
+  image.src = e.nft.image_url;*/
+  //--
   const image = document.createElement('img');
-  image.src = e.nft.image_url;
+console.log("Created image element:", image); // Log the created image element
+image.src = e.nft.image_url;
+console.log("Image source URL:", e.nft.image_url); // Log the image source URL
+//--
   image.crossOrigin = 'anonymous';
   image.style.width = '100%';
   image.classList = 'card-img-top';
