@@ -242,7 +242,7 @@ async function buildCard(e) {
   const imageContainer = document.createElement('a');
   imageContainer.href = e.permalink;
   imageContainer.target = '_blank';
-  console.log('Image URL_cuildcard:', e.nft.image_url); // Log the image URL to check if it's defined
+  console.log('Image URL_buildcard:', e.nft.image_url); // Log the image URL to check if it's defined
  /* const image = document.createElement('img');
   image.src = e.nft.image_url;*/
   //--
@@ -263,19 +263,53 @@ console.log("Image source URL:", e.nft.image_url); // Log the image source URL
   nameDiv.textContent = e.name;
 
 
-  const web3 = await loadWeb3();
+ /* const web3 = await loadWeb3();
   const chainId = await web3.eth.getChainId();
   const c = new web3.eth.Contract(ct.abi, config[chainId].migration_address);
   const vxc = new web3.eth.Contract(vx.abi, config[chainId].vx_address);
   const isClaimed = await vxc.methods.isGenesisMinted([e.token_id]).call({});
   const claimVxBtn = document.createElement('button');
   const contentClaimVx = document.createElement('span');
-  const loaderClaimVx = document.createElement('img');
-  loaderClaimVx.width = '24';
+  const loaderClaimVx = document.createElement('img');*/
+  
+  console.log("Loading web3...");
+const web3 = await loadWeb3();
+console.log("Web3 loaded:", web3); // Log the loaded web3 object
+
+console.log("Getting chain ID...");
+const chainId = await web3.eth.getChainId();
+console.log("Chain ID:", chainId); // Log the obtained chain ID
+
+console.log("Creating contract instance c...");
+const c = new web3.eth.Contract(ct.abi, config[chainId].migration_address);
+console.log("Contract instance c:", c); // Log the created contract instance c
+
+console.log("Creating contract instance vxc...");
+const vxc = new web3.eth.Contract(vx.abi, config[chainId].vx_address);
+console.log("Contract instance vxc:", vxc); // Log the created contract instance vxc
+
+console.log("Checking if genesis minted...");
+const isClaimed = await vxc.methods.isGenesisMinted([e.token_id]).call({});
+console.log("Is genesis minted:", isClaimed); // Log the result of checking if genesis is minted
+
+console.log("Creating claim button...");
+const claimVxBtn = document.createElement('button');
+console.log("Claim button created:", claimVxBtn); // Log the created claim button
+
+console.log("Creating content span...");
+const contentClaimVx = document.createElement('span');
+console.log("Content span created:", contentClaimVx); // Log the created content span
+
+console.log("Creating loader image...");
+const loaderClaimVx = document.createElement('img');
+console.log("Loader image created:", loaderClaimVx); // Log the created loader image
+
+/*  loaderClaimVx.width = '24';
   loaderClaimVx.height = '24';
   loaderClaimVx.src = imgLoader;
   loaderClaimVx.hidden = true;
   claimVxBtn.type = 'button';
+  
   contentClaimVx.textContent = 'Claim Voxel';
   claimVxBtn.appendChild(loaderClaimVx);
   claimVxBtn.appendChild(contentClaimVx);
@@ -288,7 +322,34 @@ console.log("Image source URL:", e.nft.image_url); // Log the image source URL
     contentClaimVx.textContent = 'Claim Voxel';
     claimVxBtn.disabled = false;
     unclaimedVXs.push(e.token_id);
-  }
+  }*/
+  console.log("Setting content text for claim button...");
+contentClaimVx.textContent = 'Claim Voxel';
+console.log("Content text set for claim button:", contentClaimVx.textContent);
+
+console.log("Appending loader image to claim button...");
+claimVxBtn.appendChild(loaderClaimVx);
+console.log("Loader image appended to claim button");
+
+console.log("Appending content span to claim button...");
+claimVxBtn.appendChild(contentClaimVx);
+console.log("Content span appended to claim button");
+
+console.log("Checking if voxel is claimed...");
+if (isClaimed[0]) {
+  console.log("Voxel is claimed. Disabling claim button and setting content text to 'Claimed'");
+  claimVxBtn.classList = 'btn btn-disabled w-100';
+  claimVxBtn.disabled = true;
+  contentClaimVx.textContent = 'Claimed';
+} else {
+  console.log("Voxel is not claimed. Enabling claim button and setting content text to 'Claim Voxel'");
+  claimVxBtn.classList = 'btn btn-secondary w-100';
+  contentClaimVx.textContent = 'Claim Voxel';
+  claimVxBtn.disabled = false;
+  unclaimedVXs.push(e.token_id);
+}
+
+  
   claimVxBtn.style = 'margin-bottom: 12px';
   claimVxBtn.addEventListener('click', async () => {
     loaderClaimVx.hidden = false;
