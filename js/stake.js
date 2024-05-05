@@ -177,6 +177,7 @@ async function renderItems(address, web3, c) {
 }
 
 async function buildCard(e) {
+  console.log('API Response:', e);
   const card = document.createElement('div');
   card.classList = 'card';
   card.style = `
