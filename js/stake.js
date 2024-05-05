@@ -470,7 +470,7 @@ btnClaimAllVX.addEventListener('click', async () => {
     });
 });
 
-async function checkClaimableRewards() {
+/*async function checkClaimableRewards() {
   const web3 = await loadWeb3();
   const chainId = await web3.eth.getChainId();
   const c = new web3.eth.Contract(ct.abi, config[chainId].migration_address);
@@ -487,4 +487,46 @@ async function checkClaimableRewards() {
   }
 
   return await c.methods.rewards([tokenId]).call({});
+}*/
+async function checkClaimableRewards() {
+  console.log("Fetching web3 instance...");
+  const web3 = await loadWeb3();
+  console.log("Web3 instance fetched:", web3);
+
+  console.log("Fetching chain ID...");
+  const chainId = await web3.eth.getChainId();
+  console.log("Chain ID fetched:", chainId);
+
+  console.log("Creating contract instance for migration address...");
+  const c = new web3.eth.Contract(ct.abi, config[chainId].migration_address);
+  console.log("Contract instance created:", c);
+
+  console.log("Creating contract instance for VX address...");
+  const vxc = new web3.eth.Contract(vx.abi, config[chainId].vx_address);
+  console.log("VX contract instance created:", vxc);
+
+  console.log("Fetching REX ID input element...");
+  const rexIdInput = document.getElementById('rexId');
+  console.log("REX ID input element fetched:", rexIdInput);
+
+  console.log("Fetching token ID from token ID map based on REX ID input...");
+  const tokenId = tokenIdMap[rexIdInput.value];
+  console.log("Token ID fetched:", tokenId);
+
+  console.log("Checking if voxel is minted...");
+  const isMinted = await vxc.methods.isGenesisMinted([tokenId]).call({});
+  console.log("Is voxel minted:", isMinted);
+
+  console.log("Updating text content for VX claim status...");
+  const txtIsVXClaimed = document.getElementById('txtIsVXClaimed');
+  const containerIsVXClaimed = document.getElementById('containerIsVXClaimed');
+  if (isMinted[0]) {
+    txtIsVXClaimed.textContent = 'Voxel Claimed';
+  } else {
+    txtIsVXClaimed.textContent = 'Voxel Unclaimed';
+  }
+
+  console.log("Fetching rewards for the token ID...");
+  return await c.methods.rewards([tokenId]).call({});
 }
+
