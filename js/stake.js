@@ -151,7 +151,7 @@ async function renderItems(address, web3, c) {
 
   v2.forEach(async (e) => {
     itemIds.push(e);
-    const url = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/${Web3.utils.toBN(e)}`; // Define URL here
+    const url = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`; // Define URL here
     console.log("Constructed URL_v2_Stake:", url);
     console.log("Headers:", options.headers); // Logging headers to check if the API key is included
     const response = await fetch(url, options); // Use the URL here
@@ -160,6 +160,16 @@ async function renderItems(address, web3, c) {
     list.appendChild(card);
   });
 }
+
+  /*
+  try {
+  const response = await fetch(url, options);
+  const body = await response.json(); // This is where body is defined
+ // Log the entire body object to inspect its structure
+  console.log("API Response Body:", body);
+  // Log the NFT image URL and append to list
+//  console.log("NFT Image URL:", e.nft.image_url); 
+  list.appendChild(buildCard(body, true));*/
 
   const rewardsView = document.getElementById('claimableRewardsTxt');
   const rewards = await getClaimableRewards(address, c);
