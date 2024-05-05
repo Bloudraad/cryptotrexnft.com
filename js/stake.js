@@ -151,9 +151,10 @@ async function renderItems(address, web3, c) {
 
   v2.forEach(async (e) => {
     itemIds.push(e);
-    const response = await fetch(`${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/${Web3.utils.toBN(e)}`, options); // Added closing parenthesis and options
+    const url = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/${Web3.utils.toBN(e)}`; // Define URL here
     console.log("Constructed URL_v2_Stake:", url);
     console.log("Headers:", options.headers); // Logging headers to check if the API key is included
+    const response = await fetch(url, options); // Use the URL here
     const body = await response.json();
     const card = await buildCard(body);
     list.appendChild(card);
