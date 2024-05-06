@@ -29,7 +29,7 @@ async function batchMigrate(ids) {
     .migrateBatch(tokenIds)
     .send({ from: address })
     .on('receipt', () => {
-      batchMigrateBtn.disabled = false;
+      batchMigrateBtn.disabled = false; //true
       batchMigrateBtn.textContent = 'Migrated';
       batchMigrateBtn.classList = 'nes-btn is-success';
     })
@@ -99,7 +99,7 @@ async function migrate(id, btn) {
     .migrate(tokenId)
     .send({ from: address })
     .on('receipt', () => {
-      btn.disabled = true;
+      btn.disabled = false; //true
       btn.classList = 'btn btn-success';
       btn.textContent = 'Migrated';
     })
@@ -334,7 +334,7 @@ imageContainer.appendChild(image);
     migrateBtn.textContent = 'Migrate';
   } else {
     migrateBtn.classList = 'btn btn-light disabled';
-    migrateBtn.disabled = true;
+    migrateBtn.disabled = false; //true
     migrateBtn.style = 'width: 100%';
     migrateBtn.textContent = 'Migrated';
   }
