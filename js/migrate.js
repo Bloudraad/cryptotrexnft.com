@@ -6,6 +6,7 @@ import Web3 from 'web3';
 
 async function render(address, web3) {
   const approved = await isApproved(web3, address);
+  console.log("approved :", approved );
   if (approved) {
     await renderItems(address, web3);
   } else {
@@ -175,7 +176,9 @@ async function renderApprovalPrompt() {
     config[chainId].origin_address,
     //config[chainId].collection_slug
   );
-
+  
+console.log("Length of v1 array:", v1.length);
+  
   if (v1.length < 1) {
     const warning = document.getElementById('warningNoTrex');
     warning.hidden = false;
