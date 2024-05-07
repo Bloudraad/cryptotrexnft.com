@@ -218,7 +218,7 @@ console.log("Constructed URL for v1:", urlV1);
 
 
   if (v1) {
-    if (v1.length > 1)  //< 1
+    if (v1.length < 1)  //< 1
     {
       const batchMigrateBtn = document.getElementById('batchMigrateBtn');
       batchMigrateBtn.textContent = 'Nothing to migrate';
