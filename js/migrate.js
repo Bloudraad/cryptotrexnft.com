@@ -178,8 +178,8 @@ async function renderApprovalPrompt() {
   );
   
 console.log("Length of v1 array:", v1.length);
-  
-  if (v1.length < 1) {
+  // 1
+  if (v1.length < 0) {
     const warning = document.getElementById('warningNoTrex');
     warning.hidden = false;
   }
