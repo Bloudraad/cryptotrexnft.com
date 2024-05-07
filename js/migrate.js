@@ -174,12 +174,12 @@ async function renderApprovalPrompt() {
     address,
     config[chainId].alchemy_api,
     config[chainId].origin_address,
-    //config[chainId].collection_slug
+    config[chainId].collection_slug
   );
   
 console.log("Length of v1 array:", v1.length);
   // 1
-  if (v1.length < 0) {
+  if (v1.length < 1) {
     const warning = document.getElementById('warningNoTrex');
     warning.hidden = false;
   }
@@ -218,7 +218,7 @@ console.log("Constructed URL for v1:", urlV1);
 
 
   if (v1) {
-    if (v1.length > 0)  //< 1
+    if (v1.length > 1)  //< 1
     {
       const batchMigrateBtn = document.getElementById('batchMigrateBtn');
       batchMigrateBtn.textContent = 'Nothing to migrate';
