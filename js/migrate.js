@@ -211,8 +211,13 @@ async function renderItems(address, web3) {
     addTokenBtn.hidden = false;
   }
 
+  const chainId = await web3.eth.getChainId();
+  const originContractAddress = config[chainId].origin_address; // Store origin contract address
+  const urlV1 = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${originContractAddress}/nfts/`; // Construct URL for v1
+   console.log("Constructed URL for v1:", urlV1); // Log constructed URL for v1
+
   if (v1) {
-   // if (v1.length < 1) 
+    if (v1.length > 0)  //< 1
     {
       const batchMigrateBtn = document.getElementById('batchMigrateBtn');
       batchMigrateBtn.textContent = 'Nothing to migrate';
