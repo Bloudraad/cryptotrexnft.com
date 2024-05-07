@@ -211,11 +211,10 @@ async function renderItems(address, web3) {
     addTokenBtn.hidden = false;
   }
 
-  const chainId = await web3.eth.getChainId();
-  const originContractAddress = config[chainId].origin_address; // Store origin contract address
-
-const urlV1 = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${originContractAddress}/nfts/`; // Construct URL for v1
-console.log("Constructed URL for v1:", urlV1); // Log constructed URL for v1
+const chainIdValue = await web3.eth.getChainId(); // Rename chainId to a unique name
+const originContractAddress = config[chainIdValue].origin_address;
+const urlV1 = `${config[chainIdValue].opensea_api}/api/v2/chain/ethereum/contract/${originContractAddress}/nfts/`;
+console.log("Constructed URL for v1:", urlV1);
 
 
   if (v1) {
