@@ -212,7 +212,7 @@ async function renderItems(address, web3) {
   }
 
   if (v1) {
-    if (v1.length < 1) {
+   // if (v1.length < 1) {
       const batchMigrateBtn = document.getElementById('batchMigrateBtn');
       batchMigrateBtn.textContent = 'Nothing to migrate';
       batchMigrateBtn.classList = 'btn btn-light is-disabled';
