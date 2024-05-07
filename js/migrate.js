@@ -6,6 +6,7 @@ import Web3 from 'web3';
 
 async function render(address, web3) {
   const approved = await isApproved(web3, address);
+  console.log("approved :", approved );
   if (approved) {
     await renderItems(address, web3);
   } else {
@@ -28,7 +29,7 @@ async function batchMigrate(ids) {
     .migrateBatch(tokenIds)
     .send({ from: address })
     .on('receipt', () => {
-      batchMigrateBtn.disabled = true;
+      batchMigrateBtn.disabled = true; 
       batchMigrateBtn.textContent = 'Migrated';
       batchMigrateBtn.classList = 'nes-btn is-success';
     })
@@ -173,9 +174,11 @@ async function renderApprovalPrompt() {
     address,
     config[chainId].alchemy_api,
     config[chainId].origin_address,
-    //config[chainId].collection_slug
+    config[chainId].collection_slug
   );
-
+  
+console.log("Length of v1 array:", v1.length);
+  // 1
   if (v1.length < 1) {
     const warning = document.getElementById('warningNoTrex');
     warning.hidden = false;
@@ -208,8 +211,15 @@ async function renderItems(address, web3) {
     addTokenBtn.hidden = false;
   }
 
+const chainIdValue = await web3.eth.getChainId(); // Rename chainId to a unique name
+const originContractAddress = config[chainIdValue].origin_address;
+const urlV1 = `${config[chainIdValue].opensea_api}/api/v2/chain/ethereum/contract/${originContractAddress}/nfts/`;
+console.log("Constructed URL for v1:", urlV1);
+
+
   if (v1) {
-    if (v1.length < 1) {
+    if (v1.length < 1)  //< 1
+    {
       const batchMigrateBtn = document.getElementById('batchMigrateBtn');
       batchMigrateBtn.textContent = 'Nothing to migrate';
       batchMigrateBtn.classList = 'btn btn-light is-disabled';
@@ -225,7 +235,7 @@ async function renderItems(address, web3) {
         },
       };
 
-      const url = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`; //nfts//
+      const url = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].origin_address}/nfts/${Web3.utils.toBN(e)}`; //nfts//
       console.log("Constructed URLv1:", url);
       console.log("Headers:", options.headers); // Logging headers to check if the API key is included
 try {
@@ -331,7 +341,7 @@ imageContainer.appendChild(image);
     migrateBtn.textContent = 'Migrate';
   } else {
     migrateBtn.classList = 'btn btn-light disabled';
-    migrateBtn.disabled = true;
+    migrateBtn.disabled = false; //true
     migrateBtn.style = 'width: 100%';
     migrateBtn.textContent = 'Migrated';
   }

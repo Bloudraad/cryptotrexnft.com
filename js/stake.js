@@ -89,20 +89,33 @@ async function claimRewards(btn, address, web3) {
 }
 
 async function getV2Items(address, opensea, newCollection) {
+  console.log("URL_getv2Items:", url);
   const url = `${opensea}/api/v2/contract?offset=0&limit=50&collection=${newCollection}&owner=${address}`;
   const res = await fetch(url);
   const body = await res.json();
   return body.assets;
 }
 
-async function getItems(ownerAddr, baseURL, contractAddr) {
+/*async function getItems(ownerAddr, baseURL, contractAddr) {
   const url = `${baseURL}?owner=${ownerAddr}&contractAddresses[]=${[
     contractAddr,
   ]}`;
   const res = await fetch(url);
   const body = await res.json();
   return body.ownedNfts.map((d) => d.id.tokenId);
+}*/
+//new code 
+async function getItems(ownerAddr, baseURL, contractAddr) {
+  const url = `${baseURL}?owner=${ownerAddr}&contractAddresses[]=${[
+    contractAddr,
+  ]}`;
+  console.log("Fetching items from URL:", url); // Add this console log to track the constructed URL
+  const res = await fetch(url);
+  const body = await res.json();
+  console.log("Response from server:", body); // Add this console log to track the response from the server
+  return body.ownedNfts.map((d) => d.id.tokenId);
 }
+//till here
 
 async function renderItems(address, web3, c) {
   const chainId = await web3.eth.getChainId();
@@ -111,14 +124,26 @@ async function renderItems(address, web3, c) {
     config[chainId].alchemy_api,
     config[chainId].migration_address,
   );
-
-  const list = document.getElementById('card-list');
+//old code
+ /* const list = document.getElementById('card-list');
   if (web3.currentProvider.isMetaMask) {
     const addTokenBtn = document.getElementById('addTokenBtn');
     addTokenBtn.hidden = false;
   }
+  */
+  //new code
+  const list = document.getElementById('card-list');
+console.log("Card list element:", list); // Log the card list element
 
-  if (v2) {
+if (web3.currentProvider.isMetaMask) {
+  const addTokenBtn = document.getElementById('addTokenBtn');
+  addTokenBtn.hidden = false;
+  console.log("Add token button:", addTokenBtn); // Log the add token button
+}
+
+
+  //Old code here
+ /* if (v2) {
     v2.forEach(async (e) => {
       itemIds.push(e);
       const response = await fetch(
@@ -137,13 +162,46 @@ async function renderItems(address, web3, c) {
       list.appendChild(card);
     });
   }
+  */
+//New code here
+  if (v2) {
+  const options = {
+    method: 'GET',
+    headers: {
+      accept: 'application/json',
+      'x-api-key': config[chainId].opensea_api_key,
+    },
+  };
+
+  v2.forEach(async (e) => {
+    itemIds.push(e);
+    const url = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`; // Define URL here
+    console.log("Constructed URL_v2_Stake:", url);
+    console.log("Headers:", options.headers); // Logging headers to check if the API key is included
+    const response = await fetch(url, options); // Use the URL here
+    const body = await response.json();
+    const card = await buildCard(body);
+    list.appendChild(card);
+  });
+}
+
+  /*
+  try {
+  const response = await fetch(url, options);
+  const body = await response.json(); // This is where body is defined
+ // Log the entire body object to inspect its structure
+  console.log("API Response Body:", body);
+  // Log the NFT image URL and append to list
+//  console.log("NFT Image URL:", e.nft.image_url); 
+  list.appendChild(buildCard(body, true));*/
 
   const rewardsView = document.getElementById('claimableRewardsTxt');
   const rewards = await getClaimableRewards(address, c);
   rewardsView.textContent = `${formatEther(rewards)} $FOSSIL`;
 }
 
-async function buildCard(e) {
+/*async function buildCard(e) {
+  console.log('API Response:', e);
   const card = document.createElement('div');
   card.classList = 'card';
   card.style = `
@@ -158,7 +216,8 @@ async function buildCard(e) {
   imageContainer.href = e.permalink;
   imageContainer.target = '_blank';
   const image = document.createElement('img');
-  image.src = e.image_thumbnail_url;
+  image.src = e.nft.image_url;
+  //image.src = e.image_thumbnail_url;
   image.crossOrigin = 'anonymous';
   image.style.width = '100%';
   image.classList = 'card-img-top';
@@ -167,21 +226,90 @@ async function buildCard(e) {
   bodyDiv.classList = 'card-body';
   const nameDiv = document.createElement('h5');
   nameDiv.classList.add('card-title');
+  nameDiv.textContent = e.name;*/
+async function buildCard(e) {
+  console.log('API Response:', e); // Log the API response to check its structure and properties
+  const card = document.createElement('div');
+  card.classList = 'card';
+  card.style = `
+  margin: 4px;
+  background-color: #0a0a0a;
+  color: #fff;
+  border: 1px solid;
+  padding: 24px;
+  border-image-slice: 1;
+  border-image-source: linear-gradient(180deg, #d56730, #d5673041);`;
+  const imageContainer = document.createElement('a');
+  imageContainer.href = e.permalink;
+  imageContainer.target = '_blank';
+  console.log('Image URL_buildcard:', e.nft.image_url); // Log the image URL to check if it's defined
+ /* const image = document.createElement('img');
+  image.src = e.nft.image_url;*/
+  //--
+  const image = document.createElement('img');
+console.log("Created image element:", image); // Log the created image element
+image.src = e.nft.image_url;
+console.log("Image source URL:", e.nft.image_url); // Log the image source URL
+//--
+  image.crossOrigin = 'anonymous';
+  image.style.width = '100%';
+  image.classList = 'card-img-top';
+  imageContainer.appendChild(image);
+  const bodyDiv = document.createElement('div');
+  bodyDiv.classList = 'card-body';
+  const nameDiv = document.createElement('h5');
+  nameDiv.classList.add('card-title');
+  console.log('Name:', e.name); // Log the name property to check if it's defined
   nameDiv.textContent = e.name;
 
-  const web3 = await loadWeb3();
+
+ /* const web3 = await loadWeb3();
   const chainId = await web3.eth.getChainId();
   const c = new web3.eth.Contract(ct.abi, config[chainId].migration_address);
   const vxc = new web3.eth.Contract(vx.abi, config[chainId].vx_address);
   const isClaimed = await vxc.methods.isGenesisMinted([e.token_id]).call({});
   const claimVxBtn = document.createElement('button');
   const contentClaimVx = document.createElement('span');
-  const loaderClaimVx = document.createElement('img');
-  loaderClaimVx.width = '24';
+  const loaderClaimVx = document.createElement('img');*/
+  
+  console.log("Loading web3...");
+const web3 = await loadWeb3();
+console.log("Web3 loaded:", web3); // Log the loaded web3 object
+
+console.log("Getting chain ID...");
+const chainId = await web3.eth.getChainId();
+console.log("Chain ID:", chainId); // Log the obtained chain ID
+
+console.log("Creating contract instance c...");
+const c = new web3.eth.Contract(ct.abi, config[chainId].migration_address);
+console.log("Contract instance c:", c); // Log the created contract instance c
+
+console.log("Creating contract instance vxc...");
+const vxc = new web3.eth.Contract(vx.abi, config[chainId].vx_address);
+console.log("Contract instance vxc:", vxc); // Log the created contract instance vxc
+
+console.log("Checking if genesis minted...");
+const isClaimed = await vxc.methods.isGenesisMinted([e.token_id]).call({});
+console.log("Is genesis minted:", isClaimed); // Log the result of checking if genesis is minted
+
+console.log("Creating claim button...");
+const claimVxBtn = document.createElement('button');
+console.log("Claim button created:", claimVxBtn); // Log the created claim button
+
+console.log("Creating content span...");
+const contentClaimVx = document.createElement('span');
+console.log("Content span created:", contentClaimVx); // Log the created content span
+
+console.log("Creating loader image...");
+const loaderClaimVx = document.createElement('img');
+console.log("Loader image created:", loaderClaimVx); // Log the created loader image
+
+/*  loaderClaimVx.width = '24';
   loaderClaimVx.height = '24';
   loaderClaimVx.src = imgLoader;
   loaderClaimVx.hidden = true;
   claimVxBtn.type = 'button';
+  
   contentClaimVx.textContent = 'Claim Voxel';
   claimVxBtn.appendChild(loaderClaimVx);
   claimVxBtn.appendChild(contentClaimVx);
@@ -194,7 +322,34 @@ async function buildCard(e) {
     contentClaimVx.textContent = 'Claim Voxel';
     claimVxBtn.disabled = false;
     unclaimedVXs.push(e.token_id);
-  }
+  }*/
+  console.log("Setting content text for claim button...");
+contentClaimVx.textContent = 'Claim Voxel';
+console.log("Content text set for claim button:", contentClaimVx.textContent);
+
+console.log("Appending loader image to claim button...");
+claimVxBtn.appendChild(loaderClaimVx);
+console.log("Loader image appended to claim button");
+
+console.log("Appending content span to claim button...");
+claimVxBtn.appendChild(contentClaimVx);
+console.log("Content span appended to claim button");
+
+console.log("Checking if voxel is claimed...");
+if (isClaimed[0]) {
+  console.log("Voxel is claimed. Disabling claim button and setting content text to 'Claimed'");
+  claimVxBtn.classList = 'btn btn-disabled w-100';
+  claimVxBtn.disabled = true;
+  contentClaimVx.textContent = 'Claimed';
+} else {
+  console.log("Voxel is not claimed. Enabling claim button and setting content text to 'Claim Voxel'");
+  claimVxBtn.classList = 'btn btn-secondary w-100';
+  contentClaimVx.textContent = 'Claim Voxel';
+  claimVxBtn.disabled = false;
+  unclaimedVXs.push(e.token_id);
+}
+
+  
   claimVxBtn.style = 'margin-bottom: 12px';
   claimVxBtn.addEventListener('click', async () => {
     loaderClaimVx.hidden = false;
@@ -315,7 +470,7 @@ btnClaimAllVX.addEventListener('click', async () => {
     });
 });
 
-async function checkClaimableRewards() {
+/*async function checkClaimableRewards() {
   const web3 = await loadWeb3();
   const chainId = await web3.eth.getChainId();
   const c = new web3.eth.Contract(ct.abi, config[chainId].migration_address);
@@ -332,4 +487,46 @@ async function checkClaimableRewards() {
   }
 
   return await c.methods.rewards([tokenId]).call({});
+}*/
+async function checkClaimableRewards() {
+  console.log("Fetching web3 instance...");
+  const web3 = await loadWeb3();
+  console.log("Web3 instance fetched:", web3);
+
+  console.log("Fetching chain ID...");
+  const chainId = await web3.eth.getChainId();
+  console.log("Chain ID fetched:", chainId);
+
+  console.log("Creating contract instance for migration address...");
+  const c = new web3.eth.Contract(ct.abi, config[chainId].migration_address);
+  console.log("Contract instance created:", c);
+
+  console.log("Creating contract instance for VX address...");
+  const vxc = new web3.eth.Contract(vx.abi, config[chainId].vx_address);
+  console.log("VX contract instance created:", vxc);
+
+  console.log("Fetching REX ID input element...");
+  const rexIdInput = document.getElementById('rexId');
+  console.log("REX ID input element fetched:", rexIdInput);
+
+  console.log("Fetching token ID from token ID map based on REX ID input...");
+  const tokenId = tokenIdMap[rexIdInput.value];
+  console.log("Token ID fetched:", tokenId);
+
+  console.log("Checking if voxel is minted...");
+  const isMinted = await vxc.methods.isGenesisMinted([tokenId]).call({});
+  console.log("Is voxel minted:", isMinted);
+
+  console.log("Updating text content for VX claim status...");
+  const txtIsVXClaimed = document.getElementById('txtIsVXClaimed');
+  const containerIsVXClaimed = document.getElementById('containerIsVXClaimed');
+  if (isMinted[0]) {
+    txtIsVXClaimed.textContent = 'Voxel Claimed';
+  } else {
+    txtIsVXClaimed.textContent = 'Voxel Unclaimed';
+  }
+
+  console.log("Fetching rewards for the token ID...");
+  return await c.methods.rewards([tokenId]).call({});
 }
+
