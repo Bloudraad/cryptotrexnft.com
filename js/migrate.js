@@ -29,7 +29,7 @@ async function batchMigrate(ids) {
     .migrateBatch(tokenIds)
     .send({ from: address })
     .on('receipt', () => {
-      batchMigrateBtn.disabled = false; //true
+      batchMigrateBtn.disabled = true; 
       batchMigrateBtn.textContent = 'Migrated';
       batchMigrateBtn.classList = 'nes-btn is-success';
     })
@@ -99,7 +99,7 @@ async function migrate(id, btn) {
     .migrate(tokenId)
     .send({ from: address })
     .on('receipt', () => {
-      btn.disabled = false; //true
+      btn.disabled = true;
       btn.classList = 'btn btn-success';
       btn.textContent = 'Migrated';
     })
