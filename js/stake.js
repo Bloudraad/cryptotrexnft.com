@@ -255,7 +255,8 @@ async function buildCard(e) {
  /* const image = document.createElement('img');
   image.src = e.nft.image_url;*/
   //--
-  const image = document.createElement('img');
+/* Tonight -1
+const image = document.createElement('img');
 console.log("Created image element:", image); // Log the created image element
 image.src = e.nft.image_url;
 console.log("Image source URL:", e.nft.image_url); // Log the image source URL
@@ -270,7 +271,34 @@ console.log("Image source URL:", e.nft.image_url); // Log the image source URL
   nameDiv.classList.add('card-title');
   console.log('Name:', e.name); // Log the name property to check if it's defined
   nameDiv.textContent = e.name;
-
+*/
+  //New togight -1
+  const card = document.createElement('div');
+  card.classList = 'card';
+  card.style = `
+  margin: 4px;
+  background-color: #0a0a0a;
+  color: #fff;
+  border: 1px solid;
+  padding: 24px;
+  border-image-slice: 1;
+  border-image-source: linear-gradient(180deg, #d56730, #d5673041);`;
+  const imageContainer = document.createElement('a');
+  imageContainer.href = e.permalink;
+  imageContainer.target = '_blank';
+  console.log('Image URL_buildcard:', e.nft.image_url); // Log the image URL to check if it's defined
+  const image = document.createElement('img');
+  image.src = e.nft.image_url;
+  image.crossOrigin = 'anonymous';
+  image.style.width = '100%';
+  image.classList = 'card-img-top';
+  imageContainer.appendChild(image);
+  const bodyDiv = document.createElement('div');
+  bodyDiv.classList = 'card-body';
+  const nameDiv = document.createElement('h5');
+  nameDiv.classList.add('card-title');
+  console.log('Name:', e.name); // Log the name property to check if it's defined
+  nameDiv.textContent = e.name;
 
  /* const web3 = await loadWeb3();
   const chainId = await web3.eth.getChainId();
