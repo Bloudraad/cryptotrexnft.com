@@ -90,6 +90,8 @@ async function migrate(id, btn) {
   const address = await web3Address(web3);
   const chainId = await web3.eth.getChainId();
   const tokenId = web3.utils.toBN(id);
+ // Log the BigNumber value
+  console.log("Token ID BigNumber:", tokenId.toString());
 
   const c = new web3.eth.Contract(ct.abi, config[chainId].migration_address);
   c.methods
@@ -141,11 +143,14 @@ async function addToken(eth) {
     console.log(error);
   }
 }
+let itemIds = [];
 
 async function getItems(ownerAddr, baseURL, contractAddr, collectionSlug) {
   const url = `${baseURL}?owner=${ownerAddr}&contractAddresses[]=${[
     contractAddr,
   ]}&collection=${collectionSlug}`;
+   // Log the constructed URL
+  console.log("ownerAddr, baseURL, contractAddr, collectionSlug:", url);
   const res = await fetch(url);
   const body = await res.json();
   return body.ownedNfts.map((d) => {
@@ -212,59 +217,71 @@ async function renderItems(address, web3) {
     }
     const c = new web3.eth.Contract(os.abi, config[chainId].origin_address);
     v1.forEach(async (e) => {
-      itemIds.push(e);
-      const balance = await c.methods
-        .balanceOf(address, Web3.utils.toBN(e))
-        .call({ from: address });
-      const response = await fetch(
-        `${config[chainId].opensea_api}/v2/chain/ethereum/contract/${config[chainId].origin_address}/nfts/${Web3.utils.toBN(e)}`,
-        {
-          method: 'GET',
-          headers: {
-            'X-API-KEY': config[chainId].opensea_api_key,
-          },
-        }
-      );
-      const body = await response.json();
-      if (balance && balance > 0) {
-        list.appendChild(buildCard(body, false));
-      }
+      const options = {
+        method: 'GET',
+        headers: {
+          accept: 'application/json',
+          'x-api-key': config[chainId].opensea_api_key,
+        },
+      };
+
+      const url = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`; //nfts//
+      console.log("Constructed URLv1:", url);
+      console.log("Headers:", options.headers); // Logging headers to check if the API key is included
+try {
+  const response = await fetch(url, options);
+  const body = await response.json(); // This is where body is defined
+ // Log the entire body object to inspect its structure
+  console.log("API Response Body:", body);
+  // The error seems to occur here when trying to access body
+  console.log("NFT Image URL:", nft.image_url); // Log the NFT image URL
+  list.appendChild(buildCard(body, false));
+} catch (error) {
+  console.error(error);
+}  
     });
   }
 
   if (v2) {
-    v2.forEach(async (e) => {
-      try {
-        // Construct the URL
-        const apiUrl = `${config[chainId].opensea_api}/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`;
+    const options = {
+      method: 'GET',
+      headers: {
+        accept: 'application/json',
+        'x-api-key': config[chainId].opensea_api_key,
+      },
+    };
 
-        // Log the constructed URL
-        console.log('Constructed URL:', apiUrl);
-
-        // Make the fetch request with the API key included in the headers
-        const response = await fetch(
-          apiUrl,
-          {
-            method: 'GET',
-            headers: {
-              'X-API-KEY': apiKey, // Use the API key from the configured variable
-              'Content-Type': 'application/json', // Optionally include Content-Type header
-            },
-          }
-        );
-        // Log whether the API key is included in the request headers
-        console.log('API Key Used:', response.headers.has('X-API-KEY'));
-
-        // Handle the response...
-      } catch (error) {
-        // Handle errors here
-        console.error('Error fetching data:', error);
-      }
-    });
-  }
+v2.forEach(async (e) => {
+  const url = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`;
+  console.log("Constructed URL_v2:", url);
+  console.log("Headers:", options.headers); // Logging headers to check if the API key is included
+try {
+  const response = await fetch(url, options);
+  const body = await response.json(); // This is where body is defined
+ // Log the entire body object to inspect its structure
+  console.log("API Response Body:", body);
+  // Log the NFT image URL and append to list
+//  console.log("NFT Image URL:", e.nft.image_url); 
+  list.appendChild(buildCard(body, true));
+} catch (error) {
+  console.error(error);
 }
 
+});
+  }
+}
+  
 function buildCard(e, migrated) {
+/*  // Check the structure of the object 'e'
+  console.log("Object 'e':", e);
+  if (e && e.nft.image_url) {
+    // Access the image_url property if it exists
+    console.log("Image URL:", e.nft.image_url);
+  } else {
+    console.error("Image URL not found in object 'e'");
+  }
+  console.log("Building card for:", e);*/
+  
   const card = document.createElement('div');
   card.classList = 'card';
   card.style = `
@@ -279,6 +296,23 @@ function buildCard(e, migrated) {
   imageContainer.href = e.permalink;
   imageContainer.target = '_blank';
   const image = document.createElement('img');
+  image.onload = function() {
+  console.log("Image loaded successfully:", image.src);
+};
+
+image.onerror = function() {
+  console.error("Failed to load image:", image.src);
+};
+
+image.crossOrigin = 'anonymous';
+image.classList = 'card-img-top';
+imageContainer.appendChild(image);
+    image.onload = function() {
+    console.log("Image loaded successfully:", image.src);
+  };
+  image.onerror = function() {
+    console.error("Failed to load image:", image.src);
+  };
   image.src = e.nft.image_url;
   image.crossOrigin = 'anonymous';
   image.classList = 'card-img-top';
@@ -319,22 +353,16 @@ batchMigrateBtn.addEventListener('click', async () => {
   await batchMigrate(itemIds);
 });
 
-async function renderItems(address, web3, apiKey) {
- 
-}
-
 window.onload = async () => {
   try {
     const web3 = await loadWeb3();
     const address = await web3Address(web3);
     switchChain(window.ethereum);
-    const apiKey = String(config[chainId].opensea_api_key); // Retrieve apiKey here
-    render(address, web3, apiKey); // Pass apiKey to the render function
+    render(address, web3);
   } catch (err) {
     console.log(err);
   }
 };
-
 
 const addTokenBtn = document.getElementById('addTokenBtn');
 addTokenBtn.addEventListener('click', async () => {
