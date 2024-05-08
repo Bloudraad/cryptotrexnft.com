@@ -242,9 +242,8 @@ try {
     });
   }
 
-  if (v2)
-  const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-  {
+  if (v2) {
+    const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
     const options = {
       method: 'GET',
       headers: {
