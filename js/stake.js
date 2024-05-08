@@ -229,6 +229,15 @@ if (web3.currentProvider.isMetaMask) {
   nameDiv.textContent = e.name;*/
 async function buildCard(e) {
   console.log('API Response:', e); // Log the API response to check its structure and properties
+
+  if (e && e.token_id) { // Check if e and e.token_id are defined before accessing properties
+    const isClaimed = await vxc.methods.isGenesisMinted([e.token_id]).call({});
+    // Proceed with further processing
+  } else {
+    console.error("Token ID is undefined or null.");
+    // Handle the case where e or e.token_id is undefined
+    return null; // Return early or handle the error case as needed
+  }
   const card = document.createElement('div');
   card.classList = 'card';
   card.style = `
