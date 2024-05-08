@@ -245,7 +245,7 @@ async function buildCard(e) {
   imageContainer.target = '_blank';
   console.log('Image URL_buildcard:', e.nft.image_url); // Log the image URL to check if it's defined
   const image = document.createElement('img');
-  image.src = e.nft.image_url;*/
+  image.src = e.nft.image_url;
   
 
 const image = document.createElement('img');
