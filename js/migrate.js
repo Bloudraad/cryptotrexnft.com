@@ -217,7 +217,7 @@ async function renderItems(address, web3) {
         .balanceOf(address, Web3.utils.toBN(e))
         .call({ from: address });
       const response = await fetch(
-        `${config[chainId].opensea_api}/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`,
+        `${config[chainId].opensea_api}/v2/chain/ethereum/contract/${config[chainId].origin_address}/nfts/${Web3.utils.toBN(e)}`,
         {
           method: 'GET',
           headers: {
@@ -279,7 +279,7 @@ function buildCard(e, migrated) {
   imageContainer.href = e.permalink;
   imageContainer.target = '_blank';
   const image = document.createElement('img');
-  image.src = e.image_thumbnail_url;
+  image.src = e.nft.image_url;
   image.crossOrigin = 'anonymous';
   image.classList = 'card-img-top';
   imageContainer.appendChild(image);
@@ -320,7 +320,7 @@ batchMigrateBtn.addEventListener('click', async () => {
 });
 
 async function renderItems(address, web3, apiKey) {
-  // existing code...
+ 
 }
 
 window.onload = async () => {
