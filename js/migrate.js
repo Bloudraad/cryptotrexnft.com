@@ -234,7 +234,7 @@ try {
  // Log the entire body object to inspect its structure
   console.log("API Response Body:", body);
   // The error seems to occur here when trying to access body
-  console.log("NFT Image URL:", nft.image_url); // Log the NFT image URL
+  console.log("NFT Image URL:", nft.opensea_url); // Log the NFT image URL
   list.appendChild(buildCard(body, false));
 } catch (error) {
   console.error(error);
@@ -313,7 +313,7 @@ imageContainer.appendChild(image);
   image.onerror = function() {
     console.error("Failed to load image:", image.src);
   };
-  image.src = e.nft.image_url;
+  image.src = e.nft.opensea_url;
   image.crossOrigin = 'anonymous';
   image.classList = 'card-img-top';
   imageContainer.appendChild(image);
