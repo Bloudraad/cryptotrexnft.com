@@ -296,9 +296,11 @@ try {
       list.appendChild(buildCard(body, true));
     } catch (error) {
       console.error(error);
-    }
-  });
 }
+
+});
+  }
+
 
   
 function buildCard(e, migrated) {
