@@ -282,7 +282,7 @@ try {
 
 v2.forEach(async (e) => {
 	const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-  const url = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`;
+  const apiUrl = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`;
   const url = proxyUrl + apiUrl;
   console.log("Constructed URL_v2:", url);
   console.log("Headers:", options.headers); // Logging headers to check if the API key is included
