@@ -297,6 +297,17 @@ image.onerror = function() {
 
 image.crossOrigin = 'anonymous';
 image.classList = 'card-img-top';
+  // Fetch the image through the proxy server
+  fetch(`https://cors-anywhere.herokuapp.com/${e.nft.opensea_url}`)
+    .then(response => response.blob())
+    .then(blob => {
+      const objectURL = URL.createObjectURL(blob);
+      image.src = objectURL; // Set the image source
+    })
+    .catch(error => {
+      console.error('Error fetching image:', error);
+      // Handle error if image fetching fails
+    });
 imageContainer.appendChild(image);
     image.onload = function() {
     console.log("Image loaded successfully:", image.src);
