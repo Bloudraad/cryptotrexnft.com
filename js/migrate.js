@@ -271,26 +271,22 @@ try {
   }
 }
 */
-  if (v2) {
-    const options = {
-        method: 'GET',
-        headers: {
-            accept: 'application/json',
-            'x-api-key': config[chainId].opensea_api_key,
-            'Origin': 'https://cryptotrexnft.com', // Add the 'Origin' header with your origin URL
-            // Alternatively, you can add the 'X-Requested-With' header instead of 'Origin'
-            // 'X-Requested-With': 'XMLHttpRequest'
-        },
-    };
+  v2.forEach(async (e) => {
+    if (!e || !e.token_id) {
+        console.error("Invalid item in v2:", e);
+        return; // Skip processing if the item is invalid
+    }
 
-    v2.forEach(async (e) => {
-        const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-        const contractAddress = config[chainId].migration_address; // Use config to get the contract address
-        const tokenId = e.token_id; // Use e.token_id to get the token ID
+    const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+    const contractAddress = config[chainId].migration_address; // Use config to get the contract address
+    const tokenId = e.token_id; // Use e.token_id to get the token ID
+
+    if (typeof tokenId !== 'undefined') {
         const apiUrl = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${contractAddress}/nfts/${Web3.utils.toBN(tokenId)}`;
         const url = proxyUrl + apiUrl;
         console.log("Constructed URL_v2:", url);
         console.log("Headers:", options.headers); // Logging headers to check if the API key is included
+
         try {
             const response = await fetch(url, options);
             const body = await response.json(); // This is where body is defined
@@ -313,9 +309,10 @@ try {
         } catch (error) {
             console.error(error);
         }
-
-    });
-}
+    } else {
+        console.error("Token ID is undefined:", e);
+    }
+});
 }
 function buildCard(e, migrated) {
 /*  // Check the structure of the object 'e'
