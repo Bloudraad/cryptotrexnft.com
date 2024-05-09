@@ -272,14 +272,14 @@ try {
 }
 */
   v2.forEach(async (e) => {
-  /*  if (!e || !e.token_id) {
+    if (!e || !e.id.token_id) {
         console.error("Invalid item in v2:", e);
         return; // Skip processing if the item is invalid
-    }*/
+    }
 
     const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
     const contractAddress = config[chainId].migration_address; // Use config to get the contract address
-  //  const tokenId = e.token_id; // Use e.token_id to get the token ID
+    const tokenId = e.Id.token_id; // Use e.Id.token_id to get the token ID
 
     if (typeof tokenId !== 'undefined') {
         const apiUrl = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${contractAddress}/nfts/${Web3.utils.toBN(tokenId)}`;
@@ -315,16 +315,7 @@ try {
 });
 }
 function buildCard(e, migrated) {
-/*  // Check the structure of the object 'e'
-  console.log("Object 'e':", e);
-  if (e && e.nft.image_url) {
-    // Access the image_url property if it exists
-    console.log("Image URL:", e.nft.image_url);
-  } else {
-    console.error("Image URL not found in object 'e'");
-  }
-  console.log("Building card for:", e);*/
-  
+
   const card = document.createElement('div');
   card.classList = 'card';
   card.style = `
