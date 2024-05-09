@@ -300,7 +300,7 @@ try {
 
 });
   }
-
+}
 function buildCard(e, migrated) {
 /*  // Check the structure of the object 'e'
   console.log("Object 'e':", e);
