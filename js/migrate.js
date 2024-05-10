@@ -341,7 +341,7 @@ imageContainer.appendChild(image);
     migrateBtn.textContent = 'Migrate';
   } else {
     migrateBtn.classList = 'btn btn-light disabled';
-    migrateBtn.disabled = false; //true
+    migrateBtn.disabled = true; //true
     migrateBtn.style = 'width: 100%';
     migrateBtn.textContent = 'Migrated';
   }
