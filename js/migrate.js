@@ -300,7 +300,7 @@ try {
   });
 }
 }
-
+/*
 function buildCard(e, migrated) {
 
   const card = document.createElement('div');
@@ -378,8 +378,86 @@ imageContainer.appendChild(image);
   cardContainer.appendChild(card);
 
   return cardContainer;
+}*/
+function buildCard(e, migrated) {
+  const card = document.createElement('div');
+  card.classList = 'card';
+  card.style = `
+    margin: 4px;
+    background-color: #0a0a0a;
+    color: #fff;
+    border: 1px solid;
+    padding: 24px;
+    border-image-slice: 1;
+    border-image-source: linear-gradient(180deg, #d56730, #d5673041);`;
+
+  const imageContainer = document.createElement('a');
+  imageContainer.href = e.permalink;
+  imageContainer.target = '_blank';
+
+  const image = document.createElement('img');
+  image.onload = function() {
+    console.log("Image loaded successfully:", image.src);
+  };
+
+  image.onerror = function() {
+    console.error("Failed to load image:", image.src);
+  };
+
+  image.crossOrigin = 'anonymous'; // Set crossOrigin attribute for the image
+
+  image.classList = 'card-img-top';
+
+  // Fetch the image through the proxy server
+  fetch(`https://cors-anywhere.herokuapp.com/${e.nft.opensea_url}`)
+    .then(response => response.blob())
+    .then(blob => {
+      const objectURL = URL.createObjectURL(blob);
+      image.src = objectURL; // Set the image source
+    })
+    .catch(error => {
+      console.error('Error fetching image:', error);
+      // Handle error if image fetching fails
+    });
+
+  imageContainer.appendChild(image);
+
+  const bodyDiv = document.createElement('div');
+  bodyDiv.classList = 'card-body';
+
+  const nameDiv = document.createElement('h5');
+  nameDiv.classList.add('card-title');
+  nameDiv.textContent = e.name;
+
+  const migrateBtn = document.createElement('button');
+  migrateBtn.type = 'button';
+
+  if (!migrated) {
+    migrateBtn.classList = 'btn btn-secondary';
+    migrateBtn.style = 'font-weight: 800; width: 100%;';
+    migrateBtn.textContent = 'Migrate';
+  } else {
+    migrateBtn.classList = 'btn btn-light disabled';
+    migrateBtn.disabled = true;
+    migrateBtn.style = 'width: 100%';
+    migrateBtn.textContent = 'Migrated';
+  }
+
+  migrateBtn.addEventListener('click', () => migrate(e.token_id, migrateBtn));
+
+  card.appendChild(imageContainer);
+  bodyDiv.appendChild(nameDiv);
+  bodyDiv.appendChild(migrateBtn);
+  card.appendChild(bodyDiv);
+
+  const cardContainer = document.createElement('div');
+  cardContainer.classList.add('col-md-3', 'col-xs-6', 'pb-1');
+  cardContainer.appendChild(card);
+
+  return cardContainer;
 }
 
+//here
 const batchMigrateBtn = document.getElementById('batchMigrateBtn');
 batchMigrateBtn.addEventListener('click', async () => {
   await batchMigrate(itemIds);
