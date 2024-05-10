@@ -394,31 +394,29 @@ function buildCard(e, migrated) {
   const imageContainer = document.createElement('a');
   imageContainer.href = e.permalink;
   imageContainer.target = '_blank';
-
   const image = document.createElement('img');
   image.onload = function() {
-    console.log("Image loaded successfully:", image.src);
+  console.log("Image loaded successfully:", image.src);
   };
-
   image.onerror = function() {
     console.error("Failed to load image:", image.src);
   };
-
   image.crossOrigin = 'anonymous'; // Set crossOrigin attribute for the image
-
   image.classList = 'card-img-top';
 
   // Fetch the image through the proxy server
-  fetch(`https://cors-anywhere.herokuapp.com/${e.nft.opensea_url}`)
-    .then(response => response.blob())
-    .then(blob => {
-      const objectURL = URL.createObjectURL(blob);
-      image.src = objectURL; // Set the image source
-    })
-    .catch(error => {
-      console.error('Error fetching image:', error);
-      // Handle error if image fetching fails
-    });
+const baseUrl = config[chainId].opensea_api; 
+
+fetch(`${baseUrl}/${e.nft.opensea_url}`)
+  .then(response => response.blob())
+  .then(blob => {
+    const objectURL = URL.createObjectURL(blob);
+    image.src = objectURL; // Set the image source
+  })
+  .catch(error => {
+    console.error('Error fetching image:', error);
+    // Handle error if image fetching fails
+  });
 
   imageContainer.appendChild(image);
 
