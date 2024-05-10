@@ -303,7 +303,7 @@ async function fetchData(chainId) {
     console.error(error);
   }  
 }
-
+  }
 /*
 function buildCard(e, migrated) {
 
