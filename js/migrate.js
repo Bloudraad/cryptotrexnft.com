@@ -228,14 +228,13 @@ async function renderItems(address, web3) {
       const url = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`; //nfts//
       console.log("Constructed URLv1:", url);
       console.log("Headers:", options.headers); // Logging headers to check if the API key is included
-      
 try {
   const response = await fetch(url, options);
   const body = await response.json(); // This is where body is defined
  // Log the entire body object to inspect its structure
   console.log("API Response Body:", body);
   // The error seems to occur here when trying to access body
-  console.log("NFT Image URL:", nft.opensea_url); // Log the NFT image URL
+  console.log("NFT Image URL:", nft.image_url); // Log the NFT image URL
   list.appendChild(buildCard(body, false));
 } catch (error) {
   console.error(error);
@@ -243,7 +242,7 @@ try {
     });
   }
 
- /* if (v2) {
+  if (v2) {
     const options = {
       method: 'GET',
       headers: {
@@ -267,46 +266,13 @@ try {
 } catch (error) {
   console.error(error);
 }
-*/
-  if (v2) {
-  const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-  v2.forEach(async (e) => {
-    const apiUrl = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`;
-    const url = proxyUrl + apiUrl;
-    console.log("Constructed URL_v2:", url);
 
-    const options = {
-      method: 'GET',
-      headers: {
-        accept: 'application/json',
-        'x-api-key': config[chainId].opensea_api_key,
-        'origin': 'https://deploy-preview-41--cryptotrexnft.netlify.app/', // Add your origin URL here
-        // Or alternatively:
-      //   'x-requested-with': 'XMLHttpRequest' // Add this header instead of 'origin'
-      },
-    };
-
-   const url = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`; // Constructing the URL
-console.log("Constructed URLv2:", url);
-console.log("Headers:", options.headers); // Logging headers to check if the API key is included
-
-async function fetchData(chainId) {
-  try {
-    const response = await fetch(url, options);
-    const body = await response.json(); // This is where body is defined
-    // Log the entire body object to inspect its structure
-    console.log("API Response Body:", body);
-    // The error seems to occur here when trying to access body
-    console.log("NFT Image URL:", nft.opensea_url); // Log the NFT image URL
-    list.appendChild(buildCard(body, false));
-  } catch (error) {
-    console.error(error);
-  }  
-}
+});
   }
-/*
+}
+  
 function buildCard(e, migrated) {
-
+ 
   const card = document.createElement('div');
   card.classList = 'card';
   card.style = `
@@ -329,19 +295,8 @@ image.onerror = function() {
   console.error("Failed to load image:", image.src);
 };
 
-//image.crossOrigin = 'anonymous';
+image.crossOrigin = 'anonymous';
 image.classList = 'card-img-top';
-  // Fetch the image through the proxy server
-  fetch(`https://cors-anywhere.herokuapp.com/${e.nft.opensea_url}`)
-    .then(response => response.blob())
-    .then(blob => {
-      const objectURL = URL.createObjectURL(blob);
-      image.src = objectURL; // Set the image source
-    })
-    .catch(error => {
-      console.error('Error fetching image:', error);
-      // Handle error if image fetching fails
-    });
 imageContainer.appendChild(image);
     image.onload = function() {
     console.log("Image loaded successfully:", image.src);
@@ -349,7 +304,7 @@ imageContainer.appendChild(image);
   image.onerror = function() {
     console.error("Failed to load image:", image.src);
   };
-  image.src = e.nft.opensea_url;
+  image.src = e.nft.image_url;
   image.crossOrigin = 'anonymous';
   image.classList = 'card-img-top';
   imageContainer.appendChild(image);
@@ -382,84 +337,8 @@ imageContainer.appendChild(image);
   cardContainer.appendChild(card);
 
   return cardContainer;
-}*/
-function buildCard(e, migrated) {
-  const card = document.createElement('div');
-  card.classList = 'card';
-  card.style = `
-    margin: 4px;
-    background-color: #0a0a0a;
-    color: #fff;
-    border: 1px solid;
-    padding: 24px;
-    border-image-slice: 1;
-    border-image-source: linear-gradient(180deg, #d56730, #d5673041);`;
-
-  const imageContainer = document.createElement('a');
-  imageContainer.href = e.permalink;
-  imageContainer.target = '_blank';
-  const image = document.createElement('img');
-  image.onload = function() {
-  console.log("Image loaded successfully:", image.src);
-  };
-  image.onerror = function() {
-    console.error("Failed to load image:", image.src);
-  };
-  image.crossOrigin = 'anonymous'; // Set crossOrigin attribute for the image
-  image.classList = 'card-img-top';
-
-  // Fetch the image through the proxy server
-const baseUrl = config[chainId].opensea_api; 
-
-fetch(`${baseUrl}/${e.nft.opensea_url}`)
-  .then(response => response.blob())
-  .then(blob => {
-    const objectURL = URL.createObjectURL(blob);
-    image.src = objectURL; // Set the image source
-  })
-  .catch(error => {
-    console.error('Error fetching image:', error);
-    // Handle error if image fetching fails
-  });
-
-  imageContainer.appendChild(image);
-
-  const bodyDiv = document.createElement('div');
-  bodyDiv.classList = 'card-body';
-
-  const nameDiv = document.createElement('h5');
-  nameDiv.classList.add('card-title');
-  nameDiv.textContent = e.name;
-
-  const migrateBtn = document.createElement('button');
-  migrateBtn.type = 'button';
-
-  if (!migrated) {
-    migrateBtn.classList = 'btn btn-secondary';
-    migrateBtn.style = 'font-weight: 800; width: 100%;';
-    migrateBtn.textContent = 'Migrate';
-  } else {
-    migrateBtn.classList = 'btn btn-light disabled';
-    migrateBtn.disabled = true;
-    migrateBtn.style = 'width: 100%';
-    migrateBtn.textContent = 'Migrated';
-  }
-
-  migrateBtn.addEventListener('click', () => migrate(e.token_id, migrateBtn));
-
-  card.appendChild(imageContainer);
-  bodyDiv.appendChild(nameDiv);
-  bodyDiv.appendChild(migrateBtn);
-  card.appendChild(bodyDiv);
-
-  const cardContainer = document.createElement('div');
-  cardContainer.classList.add('col-md-3', 'col-xs-6', 'pb-1');
-  cardContainer.appendChild(card);
-
-  return cardContainer;
 }
 
-//here
 const batchMigrateBtn = document.getElementById('batchMigrateBtn');
 batchMigrateBtn.addEventListener('click', async () => {
   await batchMigrate(itemIds);
