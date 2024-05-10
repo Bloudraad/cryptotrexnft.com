@@ -228,6 +228,7 @@ async function renderItems(address, web3) {
       const url = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`; //nfts//
       console.log("Constructed URLv1:", url);
       console.log("Headers:", options.headers); // Logging headers to check if the API key is included
+      
 try {
   const response = await fetch(url, options);
   const body = await response.json(); // This is where body is defined
@@ -285,21 +286,24 @@ try {
       },
     };
 
-    console.log("Headers:", options.headers); // Logging headers to check if the API key is included
-    try {
-      const response = await fetch(url, options);
-      const body = await response.json(); // This is where body is defined
-      // Log the entire body object to inspect its structure
-      console.log("API Response Body:", body);
-      // Log the NFT image URL and append to list
-      //  console.log("NFT Image URL:", e.nft.image_url); 
-      list.appendChild(buildCard(body, true));
-    } catch (error) {
-      console.error(error);
-    }
-  });
+   const url = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`; // Constructing the URL
+console.log("Constructed URLv2:", url);
+console.log("Headers:", options.headers); // Logging headers to check if the API key is included
+
+async function fetchData(chainId) {
+  try {
+    const response = await fetch(url, options);
+    const body = await response.json(); // This is where body is defined
+    // Log the entire body object to inspect its structure
+    console.log("API Response Body:", body);
+    // The error seems to occur here when trying to access body
+    console.log("NFT Image URL:", nft.opensea_url); // Log the NFT image URL
+    list.appendChild(buildCard(body, false));
+  } catch (error) {
+    console.error(error);
+  }  
 }
-}
+
 /*
 function buildCard(e, migrated) {
 
