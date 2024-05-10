@@ -279,9 +279,9 @@ try {
       headers: {
         accept: 'application/json',
         'x-api-key': config[chainId].opensea_api_key,
-        'origin': 'your-origin-url', // Add your origin URL here
+      //  'origin': 'https://cryptotrexnft.com', // Add your origin URL here
         // Or alternatively:
-        // 'x-requested-with': 'XMLHttpRequest' // Add this header instead of 'origin'
+         'x-requested-with': 'XMLHttpRequest' // Add this header instead of 'origin'
       },
     };
 
