@@ -325,7 +325,7 @@ image.onerror = function() {
   console.error("Failed to load image:", image.src);
 };
 
-image.crossOrigin = 'anonymous';
+//image.crossOrigin = 'anonymous';
 image.classList = 'card-img-top';
   // Fetch the image through the proxy server
   fetch(`https://cors-anywhere.herokuapp.com/${e.nft.opensea_url}`)
