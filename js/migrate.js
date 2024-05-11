@@ -276,7 +276,7 @@ try {
 } catch (error) {
   console.error("Error parsing JSON:", error);
 }
-
+}
 
 });
   }
