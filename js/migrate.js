@@ -229,7 +229,9 @@ async function renderItems(address, web3) {
       console.log("Constructed URLv1:", url);
       console.log("Headers:", options.headers); // Logging headers to check if the API key is included
 try {
+  console.log("Request URLv1-await fetch:", url);
   const response = await fetch(url, options);
+  console.log("Response JSON datav1:", await response.json());
   const body = await response.json(); // This is where body is defined
  // Log the entire body object to inspect its structure
   console.log("API Response Body:", body);
@@ -256,7 +258,9 @@ v2.forEach(async (e) => {
   console.log("Constructed URL_v2:", url);
   console.log("Headers:", options.headers); // Logging headers to check if the API key is included
 try {
+  console.log("Request URL await fetchv2:", url);
   const response = await fetch(url, options);
+  console.log("Response JSON data v2:", await response.json());
   const body = await response.json(); // This is where body is defined
  // Log the entire body object to inspect its structure
   console.log("API Response Body:", body);
