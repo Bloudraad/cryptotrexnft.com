@@ -259,15 +259,10 @@ v2.forEach(async (e) => {
   console.log("Constructed URL_v2:", url);
   console.log("Headers:", options.headers); // Logging headers to check if the API key is included
 try {
- console.log("Request URLv1-await fetch:", url);
-const response = await fetch(url, options);
-
-console.log("Response JSON data v1:", await response.json());
-const body = await response.json(); // This is where body is defined
-
-console.log("API Response Body v1:", body);
-// Log the NFT image URL and append to list
-console.log("NFT Image URL v1:", body.image_url); 
+console.log("Request URLv2-await fetch:", url);
+  const response = await fetch(url, options);
+  console.log("Response JSON data v2:", await response.json());
+  const body = await response.json(); // This is where body is defined
  list.appendChild(buildCard(body, true));
 } catch (error) {
   console.error(error);
@@ -275,7 +270,6 @@ console.log("NFT Image URL v1:", body.image_url);
 
 });
   }
-}
   
 function buildCard(e, migrated) {
  
