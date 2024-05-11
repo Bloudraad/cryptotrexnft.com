@@ -232,16 +232,18 @@ try {
 console.log("Request URLv1-await fetch:", url);
 const response = await fetch(url, options);
 
-console.log("Response JSON data v1:", await response.json());
-const body = await response.json(); // This is where body is defined
+try {
+  const body = await response.json(); // Parse the response body once
 
-console.log("API Response Body v1:", body);
-// Log the NFT image URL and append to list
-console.log("NFT Image URL v1:", body.image_url); 
-list.appendChild(buildCard(body, false));
+  console.log("Response JSON data v1:", body);
+  console.log("API Response Body v1:", body);
+  console.log("NFT Image URL v1:", body.image_url); 
+
+  list.appendChild(buildCard(body, false)); // Use the parsed JSON data
 } catch (error) {
-  console.error(error);
-}  
+  console.error("Error parsing JSON:", error);
+}
+ 
     });
   }
 
@@ -259,18 +261,21 @@ v2.forEach(async (e) => {
   console.log("Constructed URL_v2:", url);
   console.log("Headers:", options.headers); // Logging headers to check if the API key is included
 try {
-	console.log("Request URLv2-await fetch:", url);
-  const response = await fetch(url, options);
-  console.log("Response JSON data v2:", await response.json());
-  const body = await response.json(); // This is where body is defined
- // Log the entire body object to inspect its structure
-  console.log("API Response Body:", body);
-  // Log the NFT image URL and append to list
-//  console.log("NFT Image URL:", e.nft.image_url); 
-  list.appendChild(buildCard(body, true));
+console.log("Request URLv1-await fetch:", url);
+const response = await fetch(url, options);
+
+try {
+  const body = await response.json(); // Parse the response body once
+
+  console.log("Response JSON data v2:", body);
+  console.log("API Response Body v2:", body);
+  console.log("NFT Image URL v2:", body.image_url); 
+
+  list.appendChild(buildCard(body, true)); // Use the parsed JSON data
 } catch (error) {
-  console.error(error);
+  console.error("Error parsing JSON:", error);
 }
+
 
 });
   }
