@@ -280,7 +280,7 @@ try {
 });
   }
 }
-  
+}
 function buildCard(e, migrated) {
  
   const card = document.createElement('div');
