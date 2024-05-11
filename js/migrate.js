@@ -262,7 +262,7 @@ try {
 console.log("Request URLv2-await fetch:", url);
   const response = await fetch(url, options);
   console.log("Response JSON data v2:", await response.json());
-//  const body = await response.json(); // This is where body is defined
+ const body = await response.json(); // This is where body is defined
  list.appendChild(buildCard(body, true));
 } catch (error) {
   console.error(error);
