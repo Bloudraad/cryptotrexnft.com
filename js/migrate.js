@@ -246,6 +246,7 @@ try {
  
     });
   }
+}
 
   if (v2) {
     const options = {
