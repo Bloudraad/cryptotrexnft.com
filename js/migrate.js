@@ -270,6 +270,7 @@ console.log("Request URLv2-await fetch:", url);
 
 });
   }
+}
   
 function buildCard(e, migrated) {
  
