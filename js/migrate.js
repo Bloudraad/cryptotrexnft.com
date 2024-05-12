@@ -268,16 +268,6 @@ if (v2) {
 }
   
 function buildCard(e, migrated) {
-/*  // Check the structure of the object 'e'
-  console.log("Object 'e':", e);
-  if (e && e.nft.image_url) {
-    // Access the image_url property if it exists
-    console.log("Image URL:", e.nft.image_url);
-  } else {
-    console.error("Image URL not found in object 'e'");
-  }
-  console.log("Building card for:", e);*/
-  
   const card = document.createElement('div');
   card.classList = 'card';
   card.style = `
@@ -309,7 +299,7 @@ imageContainer.appendChild(image);
   image.onerror = function() {
     console.error("Failed to load image:", image.src);
   };
-  image.src = e.nft.image_url;
+  image.src = e.ownedNfts.media.thumbnail // e.nft.image_url;
   image.crossOrigin = 'anonymous';
   image.classList = 'card-img-top';
   imageContainer.appendChild(image);
