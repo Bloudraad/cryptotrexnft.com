@@ -268,7 +268,7 @@ if (v2) {
     }
   };
 }
-
+}
   
 function buildCard(e, migrated) {
   const card = document.createElement('div');
