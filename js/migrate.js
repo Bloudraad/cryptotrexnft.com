@@ -265,7 +265,7 @@ if (v2) {
       console.error(error);
       // Handle the error appropriately
     }
-  }
+  };
 }
 
   
