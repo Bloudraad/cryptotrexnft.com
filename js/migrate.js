@@ -302,7 +302,7 @@ imageContainer.appendChild(image);
   image.onerror = function() {
     console.error("Failed to load image:", image.src);
   };
-  image.src = e.nft.identifier;
+  image.src = e.nft.opensea_url;
   image.crossOrigin = 'anonymous';
   image.classList = 'card-img-top';
   imageContainer.appendChild(image);
