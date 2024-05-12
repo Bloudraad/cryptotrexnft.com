@@ -253,25 +253,24 @@ try {
     };
 
 v2.forEach(async (e) => {
-  const url = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`;
-  console.log("Constructed URL_v2:", url);
-  console.log("Headers:", options.headers); // Logging headers to check if the API key is included
-try {
-	console.log("Request URLv2-await fetch:", url);
-  const response = await fetch(url, options);
-  console.log("Response JSON data v2:", await response.json());
-  const body = await response.json(); // This is where body is defined
- // Log the entire body object to inspect its structure
-  console.log("API Response Body:", body);
-  // Log the NFT image URL and append to list
-//  console.log("NFT Image URL:", e.nft.image_url); 
-  list.appendChild(buildCard(body, true));
-} catch (error) {
-  console.error(error);
+    const url = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`;
+    console.log("Constructed URL_v2:", url);
+    console.log("Headers:", options.headers); // Logging headers to check if the API key is included
+    try {
+      console.log("Request URLv2-await fetch:", url);
+      const response = await fetch(url, options);
+      console.log("Response JSON data v2:", await response.json());
+      const body = await response.json(); // Parse the response body once
+      // Log the entire body object to inspect its structure
+      console.log("API Response Body:", body);
+      // Log the NFT image URL and append to list
+      // console.log("NFT Image URL:", e.nft.image_url); 
+      list.appendChild(buildCard(body, true));
+    } catch (error) {
+      console.error(error);
+    }
+  });
 }
-
-});
-  }
 }
   
 function buildCard(e, migrated) {
