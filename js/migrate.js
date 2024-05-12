@@ -229,6 +229,7 @@ async function renderItems(address, web3) {
     const url = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`;
     console.log("Constructed URLv1:", url);
     console.log("Headers:", options.headers); // Logging headers to check if the API key is included
+    console.log("e-v1:", e); // Logging 'e' object
     try {
       console.log("Request URLv1-await fetch:", url);
       const response = await fetch(url, options);
@@ -255,6 +256,7 @@ if (v2) {
     const url = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`;
     console.log("Constructed URL_v2:", url);
     console.log("Headers:", options.headers); // Logging headers to check if the API key is included
+    console.log("e-v2:", e); // Logging 'e' object
 
     try {
       console.log("Request URLv2-await fetch:", url);
