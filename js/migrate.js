@@ -216,6 +216,7 @@ async function renderItems(address, web3) {
       batchMigrateBtn.disabled = true;
     }
     const c = new web3.eth.Contract(os.abi, config[chainId].origin_address);
+	
     v1.forEach(async (e) => {
       const options = {
         method: 'GET',
@@ -229,24 +230,18 @@ async function renderItems(address, web3) {
       console.log("Constructed URLv1:", url);
       console.log("Headers:", options.headers); // Logging headers to check if the API key is included
 try {
-console.log("Request URLv1-await fetch:", url);
-const response = await fetch(url, options);
-
-try {
-  const body = await response.json(); // Parse the response body once
-
-  console.log("Response JSON data v1:", body);
-  console.log("API Response Body v1:", body);
-  console.log("NFT Image URL v1:", body.image_url); 
-
-  list.appendChild(buildCard(body, false)); // Use the parsed JSON data
+  const response = await fetch(url, options);
+  const body = await response.json(); // This is where body is defined
+ // Log the entire body object to inspect its structure
+  console.log("API Response Body:", body);
+  // The error seems to occur here when trying to access body
+  console.log("NFT Image URL:", nft.image_url); // Log the NFT image URL
+  list.appendChild(buildCard(body, false));
 } catch (error) {
-  console.error("Error parsing JSON:", error);
-}
-}
+  console.error(error);
+}  
     });
   }
-}
 
   if (v2) {
     const options = {
@@ -278,8 +273,18 @@ try {
 });
   }
 }
+  
 function buildCard(e, migrated) {
- 
+/*  // Check the structure of the object 'e'
+  console.log("Object 'e':", e);
+  if (e && e.nft.image_url) {
+    // Access the image_url property if it exists
+    console.log("Image URL:", e.nft.image_url);
+  } else {
+    console.error("Image URL not found in object 'e'");
+  }
+  console.log("Building card for:", e);*/
+  
   const card = document.createElement('div');
   card.classList = 'card';
   card.style = `
@@ -311,7 +316,7 @@ imageContainer.appendChild(image);
   image.onerror = function() {
     console.error("Failed to load image:", image.src);
   };
-  image.src = e.image_thumbnail_url//e.nft.image_url;
+  image.src = e.nft.image_url;
   image.crossOrigin = 'anonymous';
   image.classList = 'card-img-top';
   imageContainer.appendChild(image);
