@@ -265,7 +265,7 @@ if (v2) {
     }
   });
 }
-
+}
   
 function buildCard(e, migrated) {
 /*  // Check the structure of the object 'e'
