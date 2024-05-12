@@ -226,7 +226,7 @@ async function renderItems(address, web3) {
       },
     };
 
-    const url = `https://cross-origin.me/${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].origin_address}/nfts/${Web3.utils.toBN(e)}`;
+    const url = `https://api.allorigins.win/${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].origin_address}/nfts/${Web3.utils.toBN(e)}`;
     console.log("Constructed URLv1:", url);
     console.log("Headers:", options.headers); // Logging headers to check if the API key is included
     console.log("e-v1:", e); // Logging 'e' object
@@ -253,7 +253,7 @@ if (v2) {
   };
 
   for (const e of v2) {
-    const url = `https://cross-origin.me/${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`;
+    const url = `https://api.allorigins.win/${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`;
     console.log("Constructed URL_v2:", url);
     console.log("Headers:", options.headers); // Logging headers to check if the API key is included
     console.log("e-v2:", e); // Logging 'e' object
