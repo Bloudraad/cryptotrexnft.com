@@ -208,7 +208,7 @@ async function renderItems(address, web3) {
     addTokenBtn.hidden = false;
   }
 
-  if (v1) {
+ if (v1) {
   if (v1.length < 1) {
     const batchMigrateBtn = document.getElementById('batchMigrateBtn');
     batchMigrateBtn.textContent = 'Nothing to migrate';
@@ -239,7 +239,8 @@ async function renderItems(address, web3) {
       console.error(error);
     }
   });
-}
+} // Add this closing curly brace
+
 
 if (v2) {
   const options = {
