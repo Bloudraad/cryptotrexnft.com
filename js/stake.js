@@ -186,6 +186,7 @@ if (v2) {
 }
 
 async function buildCard(e) {
+  console.log('Item:', e); // Add this line to log the item before accessing token_id
   const card = document.createElement('div');
   card.classList = 'card';
   card.style = `
@@ -200,7 +201,7 @@ async function buildCard(e) {
   imageContainer.href = e.permalink;
   imageContainer.target = '_blank';
   const image = document.createElement('img');
-  image.src = e.image_thumbnail_url;
+  image.src = e.nft.image_url.;
   image.crossOrigin = 'anonymous';
   image.style.width = '100%';
   image.classList = 'card-img-top';
