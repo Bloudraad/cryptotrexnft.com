@@ -317,7 +317,7 @@ const imageContainer = document.createElement('a');
   imageContainer.href = e.permalink;
   imageContainer.target = '_blank';
   const image = document.createElement('img');
-  image.src = e.opensea_url;
+  image.src = e.nft.opensea_url;
   image.crossOrigin = 'anonymous';
   image.classList = 'card-img-top';
   imageContainer.appendChild(image);
