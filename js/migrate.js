@@ -189,18 +189,24 @@ async function renderItems(address, web3) {
   migrView.hidden = false;
   const chainId = await web3.eth.getChainId();
 
-  const v1 = await getItems(
-    address,
-    config[chainId].alchemy_api,
-    config[chainId].origin_address,
-    config[chainId].collection_slug // Pass collection_slug
-  );
-  const v2 = await getItems(
-    address,
-    config[chainId].alchemy_api,
-    config[chainId].migration_address,
-    config[chainId].collection_slug // Pass collection_slug
-  );
+console.log("Fetching items for origin address...");
+const v1 = await getItems(
+  address,
+  config[chainId].alchemy_api,
+  config[chainId].origin_address,
+  config[chainId].collection_slug // Pass collection_slug
+);
+console.log("Items fetched for origin address:", v1);
+
+console.log("Fetching items for migration address...");
+const v2 = await getItems(
+  address,
+  config[chainId].alchemy_api,
+  config[chainId].migration_address,
+  config[chainId].collection_slug // Pass collection_slug
+);
+console.log("Items fetched for migration address:", v2);
+
 
   const list = document.querySelector('#card-list');
   if (web3.currentProvider.isMetaMask) {
