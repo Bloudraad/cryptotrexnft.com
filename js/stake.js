@@ -179,6 +179,7 @@ if (v2) {
     }
   }
 }
+ }
 
 
   const rewardsView = document.getElementById('claimableRewardsTxt');
