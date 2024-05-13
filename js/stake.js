@@ -133,7 +133,7 @@ async function renderItems(address, web3, c) {
     const addTokenBtn = document.getElementById('addTokenBtn');
     addTokenBtn.hidden = false;
   }
-
+  /*
  if (v2) {
   const options = {
     method: 'GET',
@@ -143,7 +143,7 @@ async function renderItems(address, web3, c) {
     },
   };
   const baseUrl = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/`;
-  /*
+
   v2.forEach(async (e) => {
     try {
       itemIds.push(e);
