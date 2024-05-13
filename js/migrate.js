@@ -312,28 +312,11 @@ function buildCard(e, migrated) {
     padding: 24px;
     border-image-slice: 1;
     border-image-source: linear-gradient(180deg, #d56730, #d5673041);`;
-  const imageContainer = document.createElement('a');
+const imageContainer = document.createElement('a');
   imageContainer.href = e.permalink;
   imageContainer.target = '_blank';
   const image = document.createElement('img');
-  image.onload = function() {
-  console.log("Image loaded successfully:", image.src);
-};
-
-image.onerror = function() {
-  console.error("Failed to load image:", image.src);
-};
-
-image.crossOrigin = 'anonymous';
-image.classList = 'card-img-top';
-imageContainer.appendChild(image);
-    image.onload = function() {
-    console.log("Image loaded successfully:", image.src);
-  };
-  image.onerror = function() {
-    console.error("Failed to load image:", image.src);
-  };
-  image.src = e.nft.opensea_url;
+  image.src = e.image_thumbnail_url;
   image.crossOrigin = 'anonymous';
   image.classList = 'card-img-top';
   imageContainer.appendChild(image);
