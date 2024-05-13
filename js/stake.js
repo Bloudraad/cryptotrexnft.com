@@ -201,7 +201,7 @@ async function buildCard(e) {
   imageContainer.href = e.permalink;
   imageContainer.target = '_blank';
   const image = document.createElement('img');
-  image.src = e.nft.image_url.;
+  image.src = e.nft.image_url;
   image.crossOrigin = 'anonymous';
   image.style.width = '100%';
   image.classList = 'card-img-top';
