@@ -117,7 +117,7 @@ async function renderItems(address, web3, c) {
     const addTokenBtn = document.getElementById('addTokenBtn');
     addTokenBtn.hidden = false;
   }
-
+/*
  if (v2) {
   const options = {
     method: 'GET',
@@ -140,6 +140,36 @@ async function renderItems(address, web3, c) {
     }
   });
 }
+*/
+if (v2) {
+  const options = {
+    method: 'GET',
+    headers: {
+      accept: 'application/json',
+      'X-API-KEY': config[chainId].opensea_api_key, // Use 'X-API-KEY' instead of 'x-api-key'
+    },
+  };
+  const baseUrl = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/`;
+  
+  for (const e of v2) {
+    try {
+      console.log(`Fetching data for item ID: ${e}`);
+      itemIds.push(e);
+      const response = await fetch(baseUrl, options); // Pass options object as the second argument
+      console.log(`Response received for item ID: ${e}`);
+      const body = await response.json();
+      console.log(`JSON body received for item ID: ${e}`);
+      const card = await buildCard(body);
+      console.log(`Card built for item ID: ${e}`);
+      list.appendChild(card);
+      console.log(`Card appended for item ID: ${e}`);
+    } catch (error) {
+      console.error(`Error fetching data for item ID ${e}:`, error);
+    }
+  }
+}
+
+
 
 
   const rewardsView = document.getElementById('claimableRewardsTxt');
