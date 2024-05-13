@@ -141,7 +141,7 @@ async function renderItems(address, web3, c) {
   });
 }
 */
-if (v2) {
+if (v2 && v2.length > 0) {
   const options = {
     method: 'GET',
     headers: {
