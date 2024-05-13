@@ -157,21 +157,15 @@ async function renderItems(address, web3, c) {
   });
 }
 */
-if (v2 && v2.length > 0) {
-  const options = {
-    method: 'GET',
-    headers: {
-      accept: 'application/json',
-      'X-API-KEY': config[chainId].opensea_api_key, // Use 'X-API-KEY' instead of 'x-api-key'
-    },
-  };
-  const baseUrl = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/`;
-  
+if (v2) {
   for (const e of v2) {
     try {
       console.log(`Fetching data for item ID: ${e}`);
       itemIds.push(e);
-      const response = await fetch(baseUrl, options); // Pass options object as the second argument
+      const response = await fetch(
+        `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`,
+        { method: 'GET' }
+      );
       console.log(`Response received for item ID: ${e}`);
       const body = await response.json();
       console.log(`JSON body received for item ID: ${e}`);
@@ -184,8 +178,6 @@ if (v2 && v2.length > 0) {
     }
   }
 }
-
-
 
 
   const rewardsView = document.getElementById('claimableRewardsTxt');
