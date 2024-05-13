@@ -145,7 +145,7 @@ async function addToken(eth) {
 }
 let itemIds = [];
 
-async function getItems(ownerAddr, baseURL, contractAddr, collectionSlug) {
+/*async function getItems(ownerAddr, baseURL, contractAddr, collectionSlug) {
   const url = `${baseURL}?owner=${ownerAddr}&contractAddresses[]=${[
     contractAddr,
   ]}&collection=${collectionSlug}`;
@@ -158,7 +158,30 @@ async function getItems(ownerAddr, baseURL, contractAddr, collectionSlug) {
       return d.id.tokenId;
     }
   });
+}*/
+async function getItems(ownerAddr, baseURL, contractAddr, collectionSlug) {
+  const url = `${baseURL}?owner=${ownerAddr}&contractAddresses[]=${[
+    contractAddr,
+  ]}&collection=${collectionSlug}`;
+  // Log the constructed URL
+  console.log("Constructed URL:", url);
+
+  const res = await fetch(url);
+  console.log("Response status:", res.status);
+
+  const body = await res.json();
+  console.log("Response body:", body);
+
+  const items = body.ownedNfts.map((d) => {
+    if (d.contract.address.toLowerCase() === contractAddr.toLowerCase()) {
+      return d.id.tokenId;
+    }
+  });
+
+  console.log("Items fetched:", items);
+  return items;
 }
+
 
 async function renderApprovalPrompt() {
   const apprView = document.getElementById('approvalView');
