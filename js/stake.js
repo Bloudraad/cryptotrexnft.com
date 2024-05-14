@@ -215,7 +215,7 @@ console.log(`Card appended for item ID ${e}.`);
       const card = await buildCard(body);
       console.log(`Card built for item ID ${e}:`, card);
       list.appendChild(card);
-      console.log(`Card appended for item ID ${e}.`);
+     // console.log(`Card appended for item ID ${e}.`);
     } catch (error) {
       console.error(error);
     }
