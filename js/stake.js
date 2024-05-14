@@ -197,9 +197,8 @@ if (v2) {
   }
   
   fetchData();
-//}
-
-//}
+}
+}
    const rewardsView = document.getElementById('claimableRewardsTxt');
   const rewards = await getClaimableRewards(address, c);
   rewardsView.textContent = `${formatEther(rewards)} $FOSSIL`;
@@ -427,7 +426,6 @@ async function checkClaimableRewards() {
   } catch (error) {
     console.error("Error checking claimable rewards:", error);
   }
-}
 
   return await c.methods.rewards([tokenId]).call({});
 }
