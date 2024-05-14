@@ -160,6 +160,7 @@ async function renderItems(address, web3, c) {
 */
 if (v2) {
   console.log("Value of v2:", v2);
+  console.log("Value of itemIds before loop:", itemIds);
   for (const e of v2) {
     try {
       console.log(`Fetching data for item ID: ${e}`);
