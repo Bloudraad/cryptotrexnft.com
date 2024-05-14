@@ -427,6 +427,7 @@ async function checkClaimableRewards() {
   } catch (error) {
     console.error("Error checking claimable rewards:", error);
   }
+}
 
   return await c.methods.rewards([tokenId]).call({});
 }
