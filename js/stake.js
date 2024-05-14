@@ -427,6 +427,57 @@ btnCheck.addEventListener('click', async () => {
 const btnClaimAllVX = document.getElementById('claimAllVxBtn');
 const contentClaimAllVx = document.getElementById('contentClaimAllVx');
 const loaderClaimAllVx = document.getElementById('loaderClaimAllVx');
+
+btnClaimAllVX.addEventListener('click', async () => {
+  console.log("Claim all VX button clicked.");
+  contentClaimAllVx.hidden = true;
+  loaderClaimAllVx.hidden = false;
+  btnClaimAllVX.disabled = true;
+
+  const web3 = await loadWeb3();
+  console.log("Web3 loaded successfully.");
+
+  const chainId = await web3.eth.getChainId();
+  console.log("Chain ID:", chainId);
+
+  const vxc = new web3.eth.Contract(vx.abi, config[chainId].vx_address);
+  console.log("VX contract initialized:", vxc);
+
+  const address = await web3Address(web3);
+  console.log("User address:", address);
+
+  const gas = await vxc.methods.genesisMint(unclaimedVXs).estimateGas({
+    from: address,
+  });
+  console.log("Gas estimation:", gas);
+
+  vxc.methods
+    .genesisMint(unclaimedVXs)
+    .send({ from: address, gas: Math.floor(gas * 1.1) })
+    .on('receipt', async () => {
+      console.log("Transaction receipt received.");
+      contentClaimAllVx.hidden = false;
+      loaderClaimAllVx.hidden = true;
+      btnClaimAllVX.disabled = false;
+    })
+    .on('transactionHash', (hash) => {
+      console.log("Transaction hash:", hash);
+      contentClaimAllVx.hidden = false;
+      loaderClaimAllVx.hidden = true;
+      btnClaimAllVX.disabled = false;
+    })
+    .on('error', (error) => {
+      console.error("Error occurred during transaction:", error);
+      contentClaimAllVx.hidden = false;
+      loaderClaimAllVx.hidden = true;
+      btnClaimAllVX.disabled = false;
+    });
+});
+
+/*
+const btnClaimAllVX = document.getElementById('claimAllVxBtn');
+const contentClaimAllVx = document.getElementById('contentClaimAllVx');
+const loaderClaimAllVx = document.getElementById('loaderClaimAllVx');
 btnClaimAllVX.addEventListener('click', async () => {
   contentClaimAllVx.hidden = true;
   loaderClaimAllVx.hidden = false;
@@ -457,7 +508,7 @@ btnClaimAllVX.addEventListener('click', async () => {
       btnClaimAllVX.disabled = false;
     });
 });
-
+*/
 /*async function checkClaimableRewards() {
   const web3 = await loadWeb3();
   const chainId = await web3.eth.getChainId();
