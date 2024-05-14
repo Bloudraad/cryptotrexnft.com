@@ -189,7 +189,6 @@ async function renderItems(address, web3, c) {
     addTokenBtn.hidden = false;
     console.log("Add token button is now visible.");
   }
-}
 
 
 /*
