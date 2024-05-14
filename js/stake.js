@@ -169,8 +169,30 @@ async function getItems(ownerAddr, baseURL, contractAddr) {
   }
 }
 
+async function renderItems(address, web3, c) {
+  console.log("Rendering items...");
+  const chainId = await web3.eth.getChainId();
+  console.log("Chain ID:", chainId);
+  const v2 = await getItems(
+    address,
+    config[chainId].alchemy_api,
+    config[chainId].migration_address,
+  );
+  console.log("Fetched items from API:", v2);
+
+  const list = document.getElementById('card-list');
+  console.log("Retrieved card list element:", list);
+  
+  if (web3.currentProvider.isMetaMask) {
+    console.log("MetaMask detected. Showing add token button...");
+    const addTokenBtn = document.getElementById('addTokenBtn');
+    addTokenBtn.hidden = false;
+    console.log("Add token button is now visible.");
+  }
+}
 
 
+/*
 async function renderItems(address, web3, c) {
   const chainId = await web3.eth.getChainId();
   const v2 = await getItems(
@@ -185,7 +207,7 @@ async function renderItems(address, web3, c) {
     addTokenBtn.hidden = false;
   }
   
-   /*
+   
   if (v2) {
   const options = {
     method: 'GET',
