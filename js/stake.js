@@ -149,7 +149,7 @@ async function renderItems(address, web3, c) {
     addTokenBtn.hidden = false;
   }
   
-/* if (v2) {
+ if (v2) {
   const options = {
     method: 'GET',
     headers: {
@@ -162,55 +162,29 @@ async function renderItems(address, web3, c) {
 
   v2.forEach(async (e) => {
     try {
-      itemIds.push(e);
+     /* itemIds.push(e);
       const response = await fetch(baseUrl, options); // Pass options object as the second argument
       const body = await response.json();
       const card = await buildCard(body);
       list.appendChild(card);
+      */
+      itemIds.push(e);
+console.log(`Item ID ${e} added to itemIds array.`);
+const response = await fetch(baseUrl, options);
+console.log(`Fetching data for item ID ${e} from ${baseUrl}...`);
+const body = await response.json();
+console.log(`Response received for item ID ${e}:`, body);
+const card = await buildCard(body);
+console.log(`Card built for item ID ${e}:`, card);
+list.appendChild(card);
+console.log(`Card appended for item ID ${e}.`);
+
     } catch (error) {
       console.error(error);
     }
   });
 }
-*/
-if (v2) {
-  console.log("Value of v2:", v2);
-  console.log("Value of itemIds before loop:", itemIds);
-  
-  async function fetchData() {
-    for (const e of v2) {
-      try {
-        console.log(`Fetching data for item ID: ${e}`);
-        itemIds.push(e);
-        const response = await fetch(
-          `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`,
-          { 
-            method: 'GET',
-            headers: {
-              'X-API-Key': config[chainId].opensea_api_key,
-            }
-          }
-        );
-        
-        console.log(`Response received for item ID: ${e}`);
-        
-        if (!response.ok) {
-          throw new Error(`Failed to fetch data for item ID ${e}: ${response.status}`);
-        }
-        
-        const body = await response.json();
-        console.log(`JSON body received for item ID: ${e}`);
-        const card = await buildCard(body);
-        console.log(`Card built for item ID: ${e}`);
-        list.appendChild(card);
-        console.log(`Card appended for item ID: ${e}`);
-      } catch (error) {
-        console.error(`Error fetching data for item ID ${e}:`, error);
-        // Optionally handle the error here (e.g., inform the user)
-      }
-    }
-  }
-}
+
   
   const rewardsView = document.getElementById('claimableRewardsTxt');
   const rewards = await getClaimableRewards(address, c);
