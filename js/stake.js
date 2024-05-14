@@ -198,7 +198,7 @@ if (v2) {
   
   fetchData();
 }
-}
+
    const rewardsView = document.getElementById('claimableRewardsTxt');
   const rewards = await getClaimableRewards(address, c);
   rewardsView.textContent = `${formatEther(rewards)} $FOSSIL`;
