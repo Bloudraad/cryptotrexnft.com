@@ -40,8 +40,12 @@ async function addToken(eth) {
 }
 let itemIds = [];
 let unclaimedVXs = [];
+console.log("Initial value of itemIds:", itemIds);
+console.log("Initial value of unclaimedVXs:", unclaimedVXs);
 
 async function getClaimableRewards(address, c) {
+  console.log("Getting claimable rewards for address:", address);
+  console.log("Using contract:", c);
   return await c.methods.rewards(itemIds).call({ from: address });
 }
 
