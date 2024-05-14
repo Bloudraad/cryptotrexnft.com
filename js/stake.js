@@ -91,13 +91,24 @@ async function claimRewards(btn, address, web3) {
       btn.disabled = false;
     });
 }
-
+/*
 async function getV2Items(address, opensea, newCollection) {
   const url = `${opensea}/api/v2/contract?offset=0&limit=50&collection=${newCollection}&owner=${address}`;
   const res = await fetch(url);
   const body = await res.json();
   return body.assets;
 }
+*/
+async function getV2Items(address, opensea, newCollection) {
+  const url = `${opensea}/api/v1/assets?offset=0&limit=50&collection=${newCollection}&owner=${address}`;
+  console.log("Fetching assets from URL getV2Items:", url);
+  const res = await fetch(url);
+  const body = await res.json();
+  console.log("Fetched assets getV2Items:", body);
+  return body.assets;
+}
+
+
 /*
 async function getItems(ownerAddr, baseURL, contractAddr) {
   const url = `${baseURL}?owner=${ownerAddr}&contractAddresses[]=${[
