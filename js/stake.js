@@ -135,7 +135,7 @@ async function getItems(ownerAddr, baseURL, contractAddr) {
   const body = await res.json();
   return body.ownedNfts.map((d) => d.id.tokenId);
 }
-*/
+
 async function getItems(ownerAddr, baseURL, contractAddr) {
   const url = `${baseURL}?owner=${ownerAddr}&contractAddresses[]=${[
     contractAddr,
@@ -149,7 +149,26 @@ async function getItems(ownerAddr, baseURL, contractAddr) {
     console.error("Error fetching items:", body);
     return []; // Return an empty array or handle the error case as needed
   }
+}*/
+
+//HERE
+async function getItems(ownerAddr, baseURL, contractAddr) {
+  const url = `${baseURL}?owner=${ownerAddr}&contractAddresses[]=${[
+    contractAddr,
+  ]}`;
+  console.log("Fetching items from URL:", url);
+  const res = await fetch(url);
+  const body = await res.json();
+
+  if (body && body.ownedNfts) {
+    console.log("Items fetched successfully:", body.ownedNfts);
+    return body.ownedNfts.map((d) => d.id.tokenId);
+  } else {
+    console.error("Error fetching items:", body);
+    return []; // Return an empty array or handle the error case as needed
+  }
 }
+
 
 
 async function renderItems(address, web3, c) {
