@@ -402,10 +402,18 @@ async function checkClaimableRewards() {
     const chainId = await web3.eth.getChainId();
     console.log("Chain ID:", chainId);
 
-    const c = new web3.eth.Contract(ct.abi, config[chainId].migration_address);
-    const vxc = new web3.eth.Contract(vx.abi, config[chainId].vx_address);
+    console.log("Instantiating contract c...");
+const c = new web3.eth.Contract(ct.abi, config[chainId].migration_address);
+console.log("c:", c);
+
+console.log("Instantiating contract vxc...");
+const vxc = new web3.eth.Contract(vx.abi, config[chainId].vx_address);
+console.log("vxc:", vxc);
+
     
+     console.log("Fetching rexId input element...");
     const rexIdInput = document.getElementById('rexId');
+    console.log("rexIdInput:", rexIdInput);
     const tokenId = tokenIdMap[rexIdInput.value];
     console.log("Token ID:", tokenId);
 
