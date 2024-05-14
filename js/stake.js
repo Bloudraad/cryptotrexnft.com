@@ -134,7 +134,7 @@ async function renderItems(address, web3, c) {
     addTokenBtn.hidden = false;
   }
   
- if (v2) {
+/* if (v2) {
   const options = {
     method: 'GET',
     headers: {
@@ -142,7 +142,7 @@ async function renderItems(address, web3, c) {
       'X-API-KEY': config[chainId].opensea_api_key, // Use 'X-API-KEY' instead of 'x-api-key'
     },
   };
-   /*
+   
   const baseUrl = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/`;
 
   v2.forEach(async (e) => {
@@ -159,6 +159,7 @@ async function renderItems(address, web3, c) {
 }
 */
 if (v2) {
+  console.log("Value of v2:", v2);
   for (const e of v2) {
     try {
       console.log(`Fetching data for item ID: ${e}`);
