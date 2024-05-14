@@ -210,6 +210,7 @@ if (v2) {
       }
     }
   }
+}
   
   const rewardsView = document.getElementById('claimableRewardsTxt');
   const rewards = await getClaimableRewards(address, c);
