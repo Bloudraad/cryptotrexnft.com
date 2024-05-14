@@ -98,11 +98,28 @@ async function getV2Items(address, opensea, newCollection) {
   const body = await res.json();
   return body.assets;
 }
-*/
+
 async function getV2Items(address, opensea, newCollection) {
   const url = `${opensea}/api/v1/assets?offset=0&limit=50&collection=${newCollection}&owner=${address}`;
   console.log("Fetching assets from URL getV2Items:", url);
   const res = await fetch(url);
+  const body = await res.json();
+  console.log("Fetched assets getV2Items:", body);
+  return body.assets;
+}*/
+async function getV2Items(address, opensea, newCollection, apiKey) {
+  const url = `${opensea}/api/v2/assets?collection=${newCollection}&owner=${address}&order_direction=desc&offset=0&limit=50`;
+  console.log("Fetching assets from URL getV2Items:", url);
+  
+  const options = {
+    method: 'GET',
+    headers: {
+      accept: 'application/json',
+      'X-API-KEY': apiKey
+    }
+  };
+  
+  const res = await fetch(url, options);
   const body = await res.json();
   console.log("Fetched assets getV2Items:", body);
   return body.assets;
