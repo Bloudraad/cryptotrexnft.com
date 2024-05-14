@@ -158,7 +158,7 @@ async function renderItems(address, web3, c) {
     },
   };
    
-  const baseUrl = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/`;
+  const baseUrl = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)`;
 
   v2.forEach(async (e) => {
     try {
