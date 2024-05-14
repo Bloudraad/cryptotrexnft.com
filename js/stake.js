@@ -423,9 +423,12 @@ async function checkClaimableRewards() {
       console.log("Voxel is unclaimed.");
       txtIsVXClaimed.textContent = 'Voxel Unclaimed';
     }
+
+    return await c.methods.rewards([tokenId]).call({});
   } catch (error) {
     console.error("Error checking claimable rewards:", error);
+    return null; // Handle error case as needed
   }
-
-  return await c.methods.rewards([tokenId]).call({});
 }
+}
+
