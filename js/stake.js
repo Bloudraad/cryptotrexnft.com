@@ -165,7 +165,12 @@ if (v2) {
       itemIds.push(e);
       const response = await fetch(
         `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/${Web3.utils.toBN(e)}`,
-        { method: 'GET' }
+        { 
+          method: 'GET',
+          headers: {
+            'X-API-Key': config[chainId].opensea_api_key,
+          }
+        }
       );
       console.log(`Response received for item ID: ${e}`);
       const body = await response.json();
