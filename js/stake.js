@@ -239,7 +239,7 @@ if (v2) {
     },
   };
 
-  const baseUrl = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/`;
+  const baseUrl = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/`;
   console.log("Base Url:", baseUrl);
   
   for (const e of v2) {
