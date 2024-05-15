@@ -266,7 +266,6 @@ if (v2) {
 } else {
   console.error('v2 is not an array or is undefined');
 }
-
     
   const rewardsView = document.getElementById('claimableRewardsTxt');
   const rewards = await getClaimableRewards(address, c);
