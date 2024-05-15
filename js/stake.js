@@ -179,6 +179,7 @@ if (web3.currentProvider.isMetaMask) {
     console.log("Constructed URL_v2_Stake:", url);
     console.log("Headers:", options.headers); // Logging headers to check if the API key is included
     const response = await fetch(url, options); // Use the URL here
+    console.log("Response:", response);
     const body = await response.json();
     const card = await buildCard(body);
     list.appendChild(card);
