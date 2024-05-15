@@ -207,7 +207,7 @@ async function renderItems(address, web3, c) {
     addTokenBtn.hidden = false;
   }
   
-   
+   */
   if (v2) {
   const options = {
     method: 'GET',
@@ -243,36 +243,7 @@ console.log(`Card appended for item ID ${e}.`);
     }
   });
 }
-*/
-if (v2) {
-  for (const e of v2) {
-    itemIds.push(e);
-    try {
-      const options = {
-        method: 'GET',
-        headers: { accept: 'application/json','X-API-KEY': config[chainId].opensea_api_key}
-      };
 
-const baseUrl = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/`;
-  console.log("Base Url:", baseUrl);
-    
-  for (const e of v2) {
-    try {
-      itemIds.push(e);
-      console.log(`Item ID ${e} added to itemIds array.`);
-      const response = await fetch(`${baseUrl}${Web3.utils.toBN(e)}`, options);
-      console.log(`Fetching data for item ID ${e} from ${baseUrl}${Web3.utils.toBN(e)}...`);
-      console.log("Response:", response);   
-      
-      const body = await response.json();
-      const card = await buildCard(body);
-      list.appendChild(card);
-    } catch (error) {
-      console.error(error);
-    }
-  }
-}
-  }
   
   const rewardsView = document.getElementById('claimableRewardsTxt');
   const rewards = await getClaimableRewards(address, c);
