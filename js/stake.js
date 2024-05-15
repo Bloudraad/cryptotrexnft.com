@@ -252,7 +252,7 @@ console.log(`Card appended for item ID ${e}.`);
       'X-API-KEY': config[chainId].opensea_api_key,
     },
   };
-console.log("Base URL:", baseURL);
+console.log("Base Url:", baseUrl);
   const baseUrl = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/`;
 
   for (const e of v2) {
