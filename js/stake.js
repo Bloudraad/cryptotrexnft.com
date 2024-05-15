@@ -153,6 +153,7 @@ async function getItems(ownerAddr, baseURL, contractAddr) {
 
 //HERE
 async function getItems(ownerAddr, baseURL, contractAddr) {
+  console.log("Base URL:", baseURL);
   const url = `${baseURL}?owner=${ownerAddr}&contractAddresses[]=${[
     contractAddr,
   ]}`;
@@ -251,13 +252,14 @@ console.log(`Card appended for item ID ${e}.`);
       'X-API-KEY': config[chainId].opensea_api_key,
     },
   };
-
+console.log("Base URL:", baseURL);
   const baseUrl = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/`;
 
   for (const e of v2) {
     try {
       itemIds.push(e);
       console.log(`Item ID ${e} added to itemIds array.`);
+      console.log("Base URL:", baseURL);
       const response = await fetch(`${baseUrl}${Web3.utils.toBN(e)}`, options);
       console.log(`Fetching data for item ID ${e} from ${baseUrl}${Web3.utils.toBN(e)}...`);
       const body = await response.json();
