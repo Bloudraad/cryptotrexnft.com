@@ -392,7 +392,38 @@ async function buildCard(e) {
 
   return cardContainer;
 }
+window.onload = async () => {
+  try {
+    console.log("Window onload started.");
+    const web3 = await loadWeb3();
+    console.log("Web3 loaded successfully:", web3);
+    
+    const address = await web3Address(web3);
+    console.log("User address:", address);
+    
+    const chainId = await web3.eth.getChainId();
+    console.log("Chain ID:", chainId);
+    
+    const c = new web3.eth.Contract(ct.abi, config[chainId].migration_address);
+    console.log("Contract initialized:", c);
 
+    await switchChain(window.ethereum);
+    console.log("Chain switched successfully.");
+    
+    await renderItems(address, web3, c);
+    console.log("Items rendered successfully.");
+
+    const claimBtn = document.getElementById('claimBtn');
+    console.log("Claim button found:", claimBtn);
+    
+    claimBtn.addEventListener('click', async () => await claimRewards(claimBtn, address, web3));
+    console.log("Claim button event listener added.");
+  } catch (err) {
+    console.log("Error in window.onload:", err);
+  }
+};
+
+/*
 window.onload = async () => {
   try {
     const web3 = await loadWeb3();
@@ -410,7 +441,7 @@ window.onload = async () => {
   } catch (err) {
     console.log(err);
   }
-};
+};*/
 
 const addTokenBtn = document.getElementById('addTokenBtn');
 addTokenBtn.addEventListener('click', async () => {
