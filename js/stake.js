@@ -208,20 +208,17 @@ async function renderItems(address, web3, c) {
   }
   
    */
-  if (Array.isArray(v2)) {
-    const options = {
-      method: 'GET',
-      headers: {
-        accept: 'application/json',
-        'X-API-KEY': config[chainId].opensea_api_key,
-      },
-    };
+ if (v2) {
+  const options = {
+    method: 'GET',
+    headers: {
+      accept: 'application/json',
+      'x-api-key': config[chainId].opensea_api_key,
+    },
+  };
 
-    const baseUrl = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/`;
-    console.log("Base Url:", baseUrl);
-    
-    for (const e of v2) {
-      try {
+for (const e of v2) {
+try  {
         itemIds.push(e);
         console.log(`Item ID ${e} added to itemIds array.`);
         const response = await fetch(`${baseUrl}${Web3.utils.toBN(e)}`, options);
@@ -241,11 +238,11 @@ async function renderItems(address, web3, c) {
         console.error(error);
       }
     }
-  } else {
+  } 
+  else {
     console.error('v2 is not an array or is undefined');
   }
-
-  
+    
   const rewardsView = document.getElementById('claimableRewardsTxt');
   const rewards = await getClaimableRewards(address, c);
   rewardsView.textContent = `${formatEther(rewards)} $FOSSIL`;
