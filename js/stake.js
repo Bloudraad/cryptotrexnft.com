@@ -526,16 +526,16 @@ btnClaimAllVX.addEventListener('click', async () => {
   btnClaimAllVX.disabled = true;
 
   const web3 = await loadWeb3();
-  console.log("Web3 loaded successfully.");
+  console.log(" VX button Web3 loaded successfully.");
 
   const chainId = await web3.eth.getChainId();
-  console.log("Chain ID:", chainId);
+  console.log(" VX button Chain ID:", chainId);
 
   const vxc = new web3.eth.Contract(vx.abi, config[chainId].vx_address);
-  console.log("VX contract initialized:", vxc);
+  console.log(" VX button VX contract initialized:", vxc);
 
   const address = await web3Address(web3);
-  console.log("User address:", address);
+  console.log(" VX button User address:", address);
 
   const gas = await vxc.methods.genesisMint(unclaimedVXs).estimateGas({
     from: address,
