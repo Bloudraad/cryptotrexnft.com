@@ -250,6 +250,7 @@ if (v2) {
       console.log(`Fetching data for item ID ${e} from ${baseUrl}${Web3.utils.toBN(e)}...`);
       const body = await response.json();
       console.log(`Response received for item ID v2 ${e}:`, body);
+      continue; // Skip to the next iteration if the data structure is invalid
       
       // Check if the body object has the expected structure
       if (!body || !body.nft || !body.nft.image_url) {
