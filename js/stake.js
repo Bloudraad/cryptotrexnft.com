@@ -255,8 +255,10 @@ if (v2) {
       // Check if the body object has the expected structure
       if (!body || !body.nft || !body.nft.image_url) {
         console.error(`Invalid data structure for item ID ${e}`);
+        console.log("Body content:", body); // Log the body content
         continue; // Skip to the next iteration if the data structure is invalid
       }
+
 
       const card = await buildCard(body);
       list.appendChild(card);
