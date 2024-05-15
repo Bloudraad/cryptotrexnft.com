@@ -250,15 +250,19 @@ if (v2) {
     try {
       const options = {
         method: 'GET',
-        headers: {
-          'X-API-KEY': config[chainId].opensea_api_key
-        }
+        headers: { accept: 'application/json','X-API-KEY': config[chainId].opensea_api_key}
       };
 
-      const response = await fetch(
-        `${config[chainId].opensea_api}/api/v2/asset/${config[chainId].migration_address}/${Web3.utils.toBN(e)}`,
-        options
-      );
+const baseUrl = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/`;
+  console.log("Base Url:", baseUrl);
+    
+  for (const e of v2) {
+    try {
+      itemIds.push(e);
+      console.log(`Item ID ${e} added to itemIds array.`);
+      const response = await fetch(`${baseUrl}${Web3.utils.toBN(e)}`, options);
+      console.log(`Fetching data for item ID ${e} from ${baseUrl}${Web3.utils.toBN(e)}...`);
+      console.log("Response:", response);   
       
       const body = await response.json();
       const card = await buildCard(body);
