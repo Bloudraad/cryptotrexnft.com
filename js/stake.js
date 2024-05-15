@@ -252,18 +252,18 @@ console.log(`Card appended for item ID ${e}.`);
       'X-API-KEY': config[chainId].opensea_api_key,
     },
   };
-console.log("Base Url:", baseUrl);
-  const baseUrl = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/`;
 
+  const baseUrl = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/`;
+  console.log("Base Url:", baseUrl);
+    
   for (const e of v2) {
     try {
       itemIds.push(e);
       console.log(`Item ID ${e} added to itemIds array.`);
-      console.log("Base URL:", baseURL);
       const response = await fetch(`${baseUrl}${Web3.utils.toBN(e)}`, options);
       console.log(`Fetching data for item ID ${e} from ${baseUrl}${Web3.utils.toBN(e)}...`);
       const body = await response.json();
-      console.log(`Response received for item ID ${e}:`, body);
+      console.log(`Response received for item ID v2 ${e}:`, body);
       
       // Check if the body object has the expected structure
       if (!body || !body.nft || !body.nft.image_url) {
