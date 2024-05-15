@@ -248,12 +248,18 @@ if (v2) {
   for (const e of v2) {
     itemIds.push(e);
     try {
+      const options = {
+        method: 'GET',
+        headers: {
+          'X-API-KEY': config[chainId].opensea_api_key
+        }
+      };
+
       const response = await fetch(
-        `${config[chainId].opensea_api}/api/v2/asset/${
-          config[chainId].migration_address
-        }/${Web3.utils.toBN(e)}`,
-        { method: 'GET' }
+        `${config[chainId].opensea_api}/api/v2/asset/${config[chainId].migration_address}/${Web3.utils.toBN(e)}`,
+        options
       );
+      
       const body = await response.json();
       const card = await buildCard(body);
       list.appendChild(card);
@@ -262,7 +268,6 @@ if (v2) {
     }
   }
 }
-
   
   const rewardsView = document.getElementById('claimableRewardsTxt');
   const rewards = await getClaimableRewards(address, c);
