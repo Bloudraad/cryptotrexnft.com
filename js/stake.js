@@ -230,7 +230,7 @@ async function renderItems(address, web3, c) {
   }
   
    */
- if (v2) {
+if (v2) {
   const options = {
     method: 'GET',
     headers: {
@@ -238,34 +238,35 @@ async function renderItems(address, web3, c) {
       'x-api-key': config[chainId].opensea_api_key,
     },
   };
-  const baseUrl = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/${Web3.utils.toBN(e)}`;
-    console.log("Base Url:", baseUrl);
-   
-for (const e of v2) {
-try  {
-        itemIds.push(e);
-        console.log(`Item ID ${e} added to itemIds array.`);
-        const response = await fetch(`${baseUrl}${Web3.utils.toBN(e)}`, options);
-        console.log(`Fetching data for item ID ${e} from ${baseUrl}${Web3.utils.toBN(e)}...`);
-        const body = await response.json();
-        console.log(`Response received for item ID v2 ${e}:`, body);
-        
-        // Check if the body object has the expected structure
-        if (!body || !body.nft || !body.nft.image_url) {
-          console.error(`Invalid data structure for item ID ${e}`);
-          continue; // Skip to the next iteration if the data structure is invalid
-        }
 
-        const card = await buildCard(body);
-        list.appendChild(card);
-      } catch (error) {
-        console.error(error);
+  const baseUrl = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/`;
+  console.log("Base Url:", baseUrl);
+  
+  for (const e of v2) {
+    try {
+      itemIds.push(e);
+      console.log(`Item ID ${e} added to itemIds array.`);
+      const response = await fetch(`${baseUrl}${Web3.utils.toBN(e)}`, options);
+      console.log(`Fetching data for item ID ${e} from ${baseUrl}${Web3.utils.toBN(e)}...`);
+      const body = await response.json();
+      console.log(`Response received for item ID v2 ${e}:`, body);
+      
+      // Check if the body object has the expected structure
+      if (!body || !body.nft || !body.nft.image_url) {
+        console.error(`Invalid data structure for item ID ${e}`);
+        continue; // Skip to the next iteration if the data structure is invalid
       }
+
+      const card = await buildCard(body);
+      list.appendChild(card);
+    } catch (error) {
+      console.error(error);
     }
-  } 
-  else {
-    console.error('v2 is not an array or is undefined');
   }
+} else {
+  console.error('v2 is not an array or is undefined');
+}
+
     
   const rewardsView = document.getElementById('claimableRewardsTxt');
   const rewards = await getClaimableRewards(address, c);
