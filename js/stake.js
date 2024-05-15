@@ -244,7 +244,7 @@ console.log(`Card appended for item ID ${e}.`);
   });
 }
 */
-  if (v2) {
+  if (Array.isArray(v2)) {
   const options = {
     method: 'GET',
     headers: {
@@ -272,15 +272,14 @@ console.log(`Card appended for item ID ${e}.`);
       }
 
       const card = await buildCard(body);
-     // console.log(`Card built for item ID ${e}:`, card);
       list.appendChild(card);
-     // console.log(`Card appended for item ID ${e}.`);
     } catch (error) {
       console.error(error);
     }
   }
+} else {
+  console.error('v2 is not an array or is undefined');
 }
-
   
   const rewardsView = document.getElementById('claimableRewardsTxt');
   const rewards = await getClaimableRewards(address, c);
