@@ -238,7 +238,7 @@ async function renderItems(address, web3, c) {
       'x-api-key': config[chainId].opensea_api_key,
     },
   };
-  const baseUrl = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/nfts/`;
+  const baseUrl = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/${config[chainId].migration_address}/${Web3.utils.toBN(e)}`;
     console.log("Base Url:", baseUrl);
    
 for (const e of v2) {
