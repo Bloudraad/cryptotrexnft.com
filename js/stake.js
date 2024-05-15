@@ -128,21 +128,21 @@ async function getV2Items(address, opensea, newCollection, apiKey) {
 }
 */
 async function getV2Items(address, opensea, newCollection) {
-  const url = `${opensea}/api/v2/chain/amoy/contract/${newCollection}/assets/?offset=0&limit=50&owner=${address}`;
+  const url = `${opensea}/api/v2/chain/ethereum/contract/${newCollection}/assets/?offset=0&limit=50&owner=${address}`;
   const options = {
     method: 'GET',
     headers: { accept: 'application/json', 'x-api-key': config[chainId].opensea_api_key, }
   };
 
   try {
-    console.log("Fetching items from URL:", url);
+    console.log("Fetching items from URL getV2Items:", url);
     const res = await fetch(url, options);
-    console.log("Response status:", res.status);
+    console.log("Response status getV2Items:", res.status);
     const body = await res.json();
-    console.log("Fetched items:", body.assets);
+    console.log("Fetched items getV2Items:", body.assets);
     return body.assets;
   } catch (error) {
-    console.error("Error fetching items:", error);
+    console.error("Error fetching items getV2Items:", error);
     return []; // Return empty array in case of error
   }
 }
@@ -179,15 +179,15 @@ async function getItems(ownerAddr, baseURL, contractAddr) {
   const url = `${baseURL}?owner=${ownerAddr}&contractAddresses[]=${[
     contractAddr,
   ]}`;
-  console.log("Fetching items from URL:", url);
+  console.log("Fetching items from URL getItems:", url);
   const res = await fetch(url);
   const body = await res.json();
-
-  if (body && body.ownedNfts) {
-    console.log("Items fetched successfully:", body.ownedNfts);
+//body && 
+  if (body.ownedNfts) {
+    console.log("Items fetched successfully getItems:", body.ownedNfts);
     return body.ownedNfts.map((d) => d.id.tokenId);
   } else {
-    console.error("Error fetching items:", body);
+    console.error("Error fetching items getItems:", body);
     return []; // Return an empty array or handle the error case as needed
   }
 }
