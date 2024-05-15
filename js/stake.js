@@ -261,6 +261,7 @@ if (v2) {
 
 
       const card = await buildCard(body);
+      console.log("Built card:", card); // Log the built card
       list.appendChild(card);
     } catch (error) {
       console.error(error);
@@ -276,7 +277,7 @@ if (v2) {
 }
 
 async function buildCard(e) {
-  console.log('Item:', e); // Add this line to log the item before accessing token_id
+  console.log('Item buildCard(e):', e); // Add this line to log the item before accessing token_id
   const card = document.createElement('div');
   card.classList = 'card';
   card.style = `
