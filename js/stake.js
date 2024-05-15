@@ -270,7 +270,8 @@ console.log(`Card appended for item ID ${e}.`);
         console.error(`Invalid data structure for item ID ${e}`);
         continue; // Skip to the next iteration if the data structure is invalid
       }
-
+      
+      console.log("Building card with body v2:", body);
       const card = await buildCard(body);
       list.appendChild(card);
     } catch (error) {
