@@ -299,7 +299,7 @@ async function buildCard(e) {
   nameDiv.classList.add('card-title');
   nameDiv.textContent = e.name;
 
-  const web3 = await loadWeb3();
+ /* const web3 = await loadWeb3();
   const chainId = await web3.eth.getChainId();
   const c = new web3.eth.Contract(ct.abi, config[chainId].migration_address);
   const vxc = new web3.eth.Contract(vx.abi, config[chainId].vx_address);
@@ -356,8 +356,75 @@ async function buildCard(e) {
         claimVxBtn.classList = 'btn btn-secondary w-100';
         claimVxBtn.disabled = false;
       });
+  });*/
+//here
+const web3 = await loadWeb3();
+const chainId = await web3.eth.getChainId();
+const c = new web3.eth.Contract(ct.abi, config[chainId].migration_address);
+const vxc = new web3.eth.Contract(vx.abi, config[chainId].vx_address);
+const isClaimed = await vxc.methods.isGenesisMinted([e.token_id]).call({});
+const claimVxBtn = document.createElement('button');
+const contentClaimVx = document.createElement('span');
+const loaderClaimVx = document.createElement('img');
+loaderClaimVx.width = '24';
+loaderClaimVx.height = '24';
+loaderClaimVx.src = imgLoader;
+loaderClaimVx.hidden = true;
+claimVxBtn.type = 'button';
+contentClaimVx.textContent = 'Claim Voxel';
+claimVxBtn.appendChild(loaderClaimVx);
+claimVxBtn.appendChild(contentClaimVx);
+if (isClaimed[0]) {
+  claimVxBtn.classList = 'btn btn-disabled w-100';
+  claimVxBtn.disabled = true;
+  contentClaimVx.textContent = 'Claimed';
+} else {
+  claimVxBtn.classList = 'btn btn-secondary w-100';
+  contentClaimVx.textContent = 'Claim Voxel';
+  claimVxBtn.disabled = false;
+  unclaimedVXs.push(e.token_id);
+}
+claimVxBtn.style = 'margin-bottom: 12px';
+claimVxBtn.addEventListener('click', async () => {
+  console.log('Claim Voxel button clicked.');
+  loaderClaimVx.hidden = false;
+  contentClaimVx.hidden = true;
+  claimVxBtn.disabled = true;
+  const address = await web3Address(web3);
+  console.log('User address:', address);
+  const gas = await vxc.methods.genesisMint([e.token_id]).estimateGas({
+    from: address,
   });
+  console.log('Gas estimation:', gas);
+  vxc.methods
+    .genesisMint([e.token_id])
+    .send({ from: address, gas: Math.floor(gas * 1.1) })
+    .on('receipt', async () => {
+      console.log('Voxel claimed successfully.');
+      claimVxBtn.classList = 'btn btn-disabled w-100';
+      claimVxBtn.disabled = true;
+      contentClaimVx.textContent = 'Claimed';
+      loaderClaimVx.hidden = true;
+      contentClaimVx.hidden = false;
+    })
+    .on('transactionHash', (hash) => {
+      console.log('Transaction hash:', hash);
+      contentClaimVx.textContent = 'Claiming...';
+      claimVxBtn.classList = 'btn btn-disabled w-100';
+      claimVxBtn.disabled = true;
+    })
+    .on('error', (error) => {
+      console.error('Error occurred during claiming:', error);
+      loaderClaimVx.hidden = true;
+      contentClaimVx.hidden = false;
+      contentClaimVx.textContent = 'Claim VX';
+      claimVxBtn.classList = 'btn btn-secondary w-100';
+      claimVxBtn.disabled = false;
+    });
+});
 
+
+  
   // const claimFossilBtn = document.createElement('button');
   // claimFossilBtn.type = 'button';
   // claimFossilBtn.classList = 'btn btn-secondary w-100';
