@@ -272,6 +272,7 @@ const baseUrl = `${config[chainId].opensea_api}/api/v2/chain/ethereum/contract/$
     }
   }
 }
+  }
   
   const rewardsView = document.getElementById('claimableRewardsTxt');
   const rewards = await getClaimableRewards(address, c);
