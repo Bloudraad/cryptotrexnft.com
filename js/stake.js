@@ -107,6 +107,8 @@ async function getV2Items(address, opensea, newCollection) {
   console.log("Fetched assets getV2Items:", body);
   return body.assets;
 }*/
+
+/*
 async function getV2Items(address, opensea, newCollection, apiKey) {
   const url = `${opensea}/api/v2/assets?collection=${newCollection}&owner=${address}&order_direction=desc&offset=0&limit=50`;
   console.log("Fetching assets from URL getV2Items:", url);
@@ -123,6 +125,26 @@ async function getV2Items(address, opensea, newCollection, apiKey) {
   const body = await res.json();
   console.log("Fetched assets getV2Items:", body);
   return body.assets;
+}
+*/
+async function getV2Items(address, opensea, newCollection) {
+  const url = `${opensea}/api/v2/chain/amoy/contract/${newCollection}/assets/?offset=0&limit=50&owner=${address}`;
+  const options = {
+    method: 'GET',
+    headers: { accept: 'application/json', 'x-api-key': config[chainId].opensea_api_key, }
+  };
+
+  try {
+    console.log("Fetching items from URL:", url);
+    const res = await fetch(url, options);
+    console.log("Response status:", res.status);
+    const body = await res.json();
+    console.log("Fetched items:", body.assets);
+    return body.assets;
+  } catch (error) {
+    console.error("Error fetching items:", error);
+    return []; // Return empty array in case of error
+  }
 }
 
 
