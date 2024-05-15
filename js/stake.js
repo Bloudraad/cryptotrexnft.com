@@ -262,6 +262,7 @@ console.log(`Card appended for item ID ${e}.`);
       console.log(`Item ID ${e} added to itemIds array.`);
       const response = await fetch(`${baseUrl}${Web3.utils.toBN(e)}`, options);
       console.log(`Fetching data for item ID ${e} from ${baseUrl}${Web3.utils.toBN(e)}...`);
+      console.log("Response:", response);
       const body = await response.json();
       console.log(`Response received for item ID v2 ${e}:`, body);
       
