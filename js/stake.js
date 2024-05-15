@@ -364,9 +364,11 @@ async function buildCard(e) {
 //here
 const web3 = await loadWeb3();
 const chainId = await web3.eth.getChainId();
+console.log('Chain ID:', chainId);
 const c = new web3.eth.Contract(ct.abi, config[chainId].migration_address);
 const vxc = new web3.eth.Contract(vx.abi, config[chainId].vx_address);
 const isClaimed = await vxc.methods.isGenesisMinted([e.token_id]).call({});
+console.log('Is Genesis Minted:', isClaimed);
 const claimVxBtn = document.createElement('button');
 const contentClaimVx = document.createElement('span');
 const loaderClaimVx = document.createElement('img');
