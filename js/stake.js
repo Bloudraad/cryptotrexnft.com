@@ -398,28 +398,28 @@ window.onload = async () => {
   try {
     console.log("Window onload started.");
     const web3 = await loadWeb3();
-    console.log("Web3 loaded successfully:", web3);
+    console.log("Windows Web3 loaded successfully:", web3);
     
     const address = await web3Address(web3);
-    console.log("User address:", address);
+    console.log("Windows User address:", address);
     
     const chainId = await web3.eth.getChainId();
-    console.log("Chain ID:", chainId);
+    console.log("Windows Chain ID:", chainId);
     
     const c = new web3.eth.Contract(ct.abi, config[chainId].migration_address);
-    console.log("Contract initialized:", c);
+    console.log("Windows Contract initialized:", c);
 
     await switchChain(window.ethereum);
-    console.log("Chain switched successfully.");
+    console.log("Windows Chain switched successfully.");
     
     await renderItems(address, web3, c);
-    console.log("Items rendered successfully.");
+    console.log("Windows Items rendered successfully.");
 
     const claimBtn = document.getElementById('claimBtn');
-    console.log("Claim button found:", claimBtn);
+    console.log("Windows Claim button found:", claimBtn);
     
     claimBtn.addEventListener('click', async () => await claimRewards(claimBtn, address, web3));
-    console.log("Claim button event listener added.");
+    console.log("Windows Claim button event listener added.");
   } catch (err) {
     console.log("Error in window.onload:", err);
   }
